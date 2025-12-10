@@ -1,0 +1,77 @@
+##### Definition der möglich verwendbaren CPU-Threads
+
+i:Ts/NumberOfThreads = 0
+
+##### Verwendete Physikliste
+
+#sv:Ph/Default/Modules = 1 "g4em-standard_opt0"
+
+
+##### Quelle 
+
+
+s:Ge/World/Material = "Vacuum"
+
+
+s:Ge/BeamPosition/Parent="World"
+s:Ge/BeamPosition/Type="Group"
+d:Ge/BeamPosition/TransX= -200.0 cm
+d:Ge/BeamPosition/TransY= 200.0 cm
+d:Ge/BeamPosition/TransZ= 0. cm
+d:Ge/BeamPosition/RotX=90. deg
+d:Ge/BeamPosition/RotY=270. deg
+d:Ge/BeamPosition/RotZ=0. deg
+
+s:So/Demo/Type = "Beam"
+s:So/Demo/Component = "BeamPosition"
+s:So/Demo/BeamParticle = "proton"
+d:So/Demo/BeamEnergy = 200. MeV
+u:So/Demo/BeamEnergySpread = 0
+s:So/Demo/BeamPositionDistribution = "Flat"
+s:So/Demo/BeamPositionCutoffShape = "Ellipse"
+d:So/Demo/BeamPositionCutoffX = 0.25 mm
+d:So/Demo/BeamPositionCutoffY = 0.25 mm
+d:So/Demo/BeamPositionSpreadX = 0.0000001 mm
+d:So/Demo/BeamPositionSpreadY = 0.0000001 mm
+s:So/Demo/BeamAngularDistribution = "None"
+d:So/Demo/BeamAngularCutoffX = 90. deg
+d:So/Demo/BeamAngularCutoffY = 90. deg
+d:So/Demo/BeamAngularSpreadX = 0.0000000000000000032 rad
+d:So/Demo/BeamAngularSpreadY = 0.0000000000000000032 rad
+i:So/Demo/NumberOfHistoriesInRun = 1000 #100 Teilchen werden simuliert
+
+##### Einlesen der Patienten-Datei
+
+includeFile = HUtoMaterialSchneider.txt
+
+#Definition vom Wasserphantom
+s:Ge/Patient/Type = "TsBox"
+s:Ge/Patient/Material = "Vacuum"
+s:Ge/Patient/Parent = "World"
+d:Ge/Patient/HLX = 200.0 cm
+d:Ge/Patient/HLY = 200.0 cm
+d:Ge/Patient/HLZ = 200.0 cm
+d:Ge/Patient/TransX = 0. m
+d:Ge/Patient/TransY = 0. m
+d:Ge/Patient/TransZ = 0. m
+d:Ge/Patient/RotX = 0. deg
+d:Ge/Patient/RotY = 0. deg
+d:Ge/Patient/RotZ = 0. deg
+i:Ge/Patient/XBins = 2000
+i:Ge/Patient/YBins = 2000
+i:Ge/Patient/ZBins = 1
+s:Ge/Patient/Field 		    	= "DipoleMagnet" 
+u:Ge/Patient/MagneticFieldDirectionX	= 0.0
+u:Ge/Patient/MagneticFieldDirectionY 	= 0.0
+u:Ge/Patient/MagneticFieldDirectionZ 	= 1.0
+d:Ge/Patient/MagneticFieldStrength   	= 1.5 tesla
+d:Ge/Patient/MaxStepSize = 0.02 mm 
+
+
+##### Definition des Scorers zur Dosisberechnung
+
+s:Sc/MyScorer/Quantity                  = "EnergyFluence"
+s:Sc/MyScorer/Component                 = "Patient"
+s:Sc/MyScorer/OutputFile                = "TOPAS_Beam"
+s:Sc/MyScorer/OutputType                = "csv"
+s:Sc/MyScorer/IfOutputFileAlreadyExists = "Overwrite"

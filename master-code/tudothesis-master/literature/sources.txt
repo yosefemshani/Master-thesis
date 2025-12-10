@@ -1,0 +1,80 @@
+1: "Integrated MRI-guided proton therapy planning: Accounting for the full MRI field in a perpendicular system"
+https://aapm.onlinelibrary.wiley.com/doi/10.1002/mp.15398
+
+2: "Proton beam deflection in MRI fields: Implications for MRI-guided proton therapy"
+https://aapm.onlinelibrary.wiley.com/doi/10.1118/1.4916661
+-> SHOWs THAT PBS IS MOST USEFUL METHOD!
+
+3: "Feasibility of MRI guided proton therapy: magnetic field dose effects"
+https://iopscience.iop.org/article/10.1088/0031-9155/53/20/003
+
+4: "An analytical solution to proton Bragg peak deflection in a magnetic field"
+https://iopscience.iop.org/article/10.1088/0031-9155/57/17/N329
+
+5: "Dosimetric feasibility of real-time MRI-guided proton therapy"
+https://aapm.onlinelibrary.wiley.com/doi/10.1118/1.4897570
+
+6: "Dosimetric feasibility of intensity modulated proton therapy in a transverse magnetic field of 1.5 T"
+https://iopscience.iop.org/article/10.1088/0031-9155/60/15/5955
+
+7: "A Monte-Carlo study to assess the effect of 1.5 T magnetic fields on the overall robustness of pencil-beam scanning proton radiotherapy plans for prostate cancer"
+https://iopscience.iop.org/article/10.1088/1361-6560/aa8de9
+
+8: "Magnetic field effects on particle beams and their implications for dose calculation in MR-guided particle therapy"
+https://aapm.onlinelibrary.wiley.com/doi/10.1002/mp.12105
+
+!!!9: "Prediction and compensation of magnetic beam deflection in MR-integrated proton therapy: a method optimized regarding accuracy, versatility and speed"
+https://iopscience.iop.org/article/10.1088/1361-6560/62/4/1548
+
+10: "A pencil beam algorithm for magnetic resonance image-guided proton therapy"
+https://aapm.onlinelibrary.wiley.com/doi/10.1002/mp.12854
+
+11: "Feasibility of MRI-only treatment planning for proton therapy in brain and prostate cancers: Dose calculation accuracy in substitute CT images"
+https://aapm.onlinelibrary.wiley.com/doi/full/10.1118/1.4958677
+
+12: "Feasibility of MR-only proton dose calculations for prostate cancer radiotherapy using a commercial pseudo-CT generation method"
+https://iopscience.iop.org/article/10.1088/1361-6560/aa9677
+
+13: "Proton range shift analysis on brain pseudo-CT generated from T1 and T2 MR"
+https://www.tandfonline.com/doi/full/10.1080/0284186X.2018.1477257
+
+14: "MR-guided proton therapy: a review and a preview"
+https://ro-journal.biomedcentral.com/articles/10.1186/s13014-020-01571-x
+
+!!!15: "Integrating a low-field open MR scanner with a static proton research beam line: proof of concept."
+https://iopscience.iop.org/article/10.1088/1361-6560/aaece8
+
+16: "Technical Note: Experimental verification of magnetic field-induced beam deflection and Bragg peak displacement for MR-integrated proton therapy"
+https://aapm.onlinelibrary.wiley.com/doi/10.1002/mp.12961
+
+!!!17: "Characterization of magnetic interference and image artefacts during simultaneous in-beam MR imaging and proton pencil beam scanning"
+https://iopscience.iop.org/article/10.1088/1361-6560/abb16f/meta
+
+18: "Magnetic resonance imaging (MRI) guided proton therapy: A review of the clinical challenges, potential benefits and pathway to implementation"
+https://www.sciencedirect.com/science/article/pii/S0167814022001165
+
+!!!19: "A fast analytical dose calculation approach for MRI-guided proton therapy"
+https://iopscience.iop.org/article/10.1088/1361-6560/acf90d
+
+20: "Proton beam behavior in a parallel configured MRI-proton therapy hybrid: Effects of time-varying gradient magnetic fields"
+https://aapm.onlinelibrary.wiley.com/doi/10.1002/mp.13309
+
+ EGAL!!! ist 9 !21: "Prediction and compensation of magnetic beam deflection in MR-integrated proton therapy: a method optimized regarding accuracy, versatility and speed"
+https://iopscience.iop.org/article/10.1088/1361-6560/62/4/1548
+
+22: "A pencil beam algorithm for magnetic resonance image‐guided proton therapy"
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5969113/
+
+23: "Future of medical physics: Real-time MRI-guided proton therapy"
+https://aapm.onlinelibrary.wiley.com/doi/10.1002/mp.12371
+
+24: "Toward robust proton therapy planning and delivery"
+https://tcr.amegroups.org/article/view/601/html
+
+!!!!!25: "A pencil beam algorithm for proton dose calculations"
+http://iopscience.iop.org/0031-9155/41/8/005
+--> calculation algorithm in matRad
+
+!!!!26: "Fast calculation of the exact radiological path for a three-dimensional CT array"
+http://www.ncbi.nlm.nih.gov/pubmed/4000088
+--> siddon ray tracing algorithm

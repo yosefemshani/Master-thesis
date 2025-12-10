@@ -1,0 +1,185 @@
+\chapter{Theoretical background}
+\label{sec:theory}
+This chapter outlines the theoretical foundations for developing a magnetic field influenced pencil beam spot algorithm. Key concepts include charged particle interactions with matter (see \autoref{sec:interactionofcharged}) and magnetic fields (see \autoref{sec:interactionofchargedmagnet}), a candidate optimization technique for shifting deflected spots (see \autoref{sec:gradientdescenttheory}), and Monte Carlo simulations (see \autoref{sec:montecarlo}). Additionally, the chapter reviews the radiotherapy workflow (see \autoref{sec:radiationtherapy}) and introduces the treatment planning system used in this thesis (see \autoref{sec:tpstheory}). Finally, the concept of a \gls{hulut} is explained (see \autoref{sec:HULUTtheory}).
+
+\section{Interaction of charged particles with matter}
+\label{sec:interactionofcharged}
+In this thesis, it is assumed that only charged particles are considered. Focusing on proton therapy, protons serve as the primary charged particles under analysis. Their charge generates an electric field that increases the likelihood of interactions compared to neutral particles such as neutrons or photons. The use of charged particles leads to the emission of secondary electrons, which contributes to tissue damage. The energy loss of these particles encompasses nuclear, electronic, and radiative components \cite{krieger_wechselwirkungen_2023}.
+~\\
+
+The total stopping power $\symup{S_{tot}}$ is described with
+\begin{equation}
+\label{eqn:totalstoppingpower}
+    S_{\symup{tot}} = \left[\left(\frac{dE}{dx}\right)_{\symup{nucl}} + \left(\frac{dE}{dx}\right)_{\symup{col}} + \left(\frac{dE}{dx}\right)_{\symup{rad}}\right] \, .
+\end{equation}
+At lower energy levels, nuclear energy loss becomes dominant \cite{hull_ion_2011}. However, this interaction is generally negligible in clinical contexts, as protons typically have energies in the range of \(\symup{200 \, MeV \leq E \leq 250 \, MeV}\) \cite{sengbusch_maximum_2009}.
+~\\
+
+Radiative energy loss is also negligible, as it is minimal compared to electronic energy loss \cite{hull_ion_2011}.
+~\\
+
+In the clinically relevant proton energy range, the electronic energy loss is significant \cite{krieger_wechselwirkungen_2023, hull_ion_2011} . This total energy loss results from inelastic interactions between the charged particle and the shell electrons, as well as interactions with the nucleus. Clinically, the main focus is on inelastic scattering leading to the emission of secondary electrons \cite{krieger_wechselwirkungen_2023}.
+~\\
+
+With these assumptions, the total stopping power (\autoref{eqn:totalstoppingpower}) can be approximated with
+\begin{equation}
+    S_{\symup{tot}} \approx \left(\frac{dE}{dx}\right)_{\symup{col}} \, .
+\end{equation}
+~\\
+The approximate total stopping power, $S_{\symup{tot}}$, can be calculated using the Bethe Bloch formula \cite{bethe_zur_1930, bloch_bremsvermogen_1933, bloch_zur_1933}.  A simplified form of this formula is used, tailored specifically for applications in proton therapy \cite{newhauser_physics_2015}
+\begin{equation}
+\label{eqn:bethebloch}
+    - \left(\frac{dE}{dx}\right)_{\symup{col}} \approx \Gamma \rho \frac{z_T}{A_T} \frac{Z^2}{\beta_{\symup{rel}}^2} \left[\frac{1}{2} \ln\left(\frac{2m_e c^2 \beta_{\symup{rel}}^2 W_{\symup{max}}}{I^2}\right) - \beta_{\symup{rel}}^2 - \frac{\delta}{2} - \frac{C}{z}\right] \, ,
+\end{equation}
+~\\where $\Gamma = 2 \pi N_A r^2_e m_e c^2$ and $W_{\symup{max}} = \frac{2 m_e c^2 \beta_{\symup{rel}}^2 \gamma^2}{1 + \frac{2 \gamma m_e}{M_0} + \left(\frac{m_e}{M_0}\right)}$. Here $\Gamma$ is a constant that includes the Avogadro constant $N_A$, the electron radius $r_e$, the electron mass $m_e$, and the speed of light $c$. The term $W_{\max }$ represents the maximum energy transfer to an electron. The properties of the target material are defined by the atomic number $z_T$, the mass number $A_T$, the density $\rho$, and the mean excitation potential $I$. This mean excitation potential $I$ is discussed further in the following chapters (see \autoref{sec:iterative}). The projectile properties include the atomic number $Z$, the mass $M_0$, the Lorentz factor $\gamma$, and the relativistic velocity $\beta_{\symup{rel}} = \frac{v}{c}$, where $v$ is the projectile velocity. The density correction term $\delta$ accounts for reduced energy loss at higher energies due to changes in the electric field and its interaction with shell electrons \cite{newhauser_physics_2015}. Finally the shell correction term $C$ becomes significant at lower energies \cite{newhauser_physics_2015}.
+
+\newpage
+
+\section{Interaction of charged particles with magnetic fields}
+\label{sec:interactionofchargedmagnet}
+Given a static, uniform electric field $\vec{E}$ and magnetic field $\vec{B}$, the trajectory of a charged particle in a vacuum is influenced by the Lorentz force $\vec{F_{\symup{L}}}$ \cite{hoffmann_proton_2015}. In the context of relativistic dynamics, the Lorentz force law for a charge $q$ can be expressed as
+\begin{equation}
+    \vec{F_{\symup{L}}} = \frac{\symup{d}\vec{p}}{\symup{d}t} = q \left(\vec{E} + \vec{v} \times \vec{B}\right) \, \, \, ,
+\end{equation}
+where the relativistic momentum is described by
+\begin{equation}
+    \vec{p} = m \vec{v} = \frac{m_{\symup{0}} \vec{v}}{\sqrt{1 - \frac{v^2}{c^2}}} \, \, \, ,
+\end{equation}
+with the speed of light $c$. For relativistic dynamics, the mass $m$ is expanded by the Lorentz factor
+\begin{equation}
+    \gamma = \left(1 - \frac{v^2}{c^2}\right)^{-\frac{1}{2}} \, \, \, ,
+\end{equation}
+relative to the rest mass $m_{\symup{0}}$. Assuming $\vec{E} = \symup{0}$ leads to a constant velocity $v$. Since $m$ and $\gamma$ are constants as well, the motion of a particle in a static uniform magnetic field can be treated as if it were non-relativistic
+\begin{equation}
+    \vec{F_{\symup{L}}} = m \frac{\symup{d}\vec{v}}{\symup{d}t} = q \left(\vec{v} \times \vec{B}\right) \, \, \, ,
+\end{equation}
+except that the particle's mass is greater than its rest mass by a factor of $\gamma$.
+~\\
+
+To derive the radius $r$ of the circular component of a charged particle's helical trajectory in a magnetic field, the balance between the centripetal force $\vec{F}_{\symup{C}}$ and the Lorentz force $\vec{F}_{\symup{L}}$ is considered. Setting $\vec{F}_{\symup{C}} = \vec{F}_{\symup{L}}$, leads to
+\begin{equation}
+    \frac{m v^2}{r} = q v B \, \, \, ,
+\end{equation}
+where $v$ is the particles' velocity relative to the magnetic field $B$. Solving for $r$ yields
+\begin{equation}
+\label{eqn:radiusmagnet}
+    r = \frac{m v}{q B} \, \, \, .
+\end{equation}
+Thus, the particle follows a helical path with a radius $r$.
+\newpage
+The trajectory of a positively charged particle is generally demonstrated in \autoref{fig:helixtrajectory}.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[height=9cm]{../Screenshots/helix.png}
+    \caption{Helical trajectory of a positively charged particle in a magnetic field with marked radius \cite{hoffmann_proton_2015}.}
+    \label{fig:helixtrajectory}
+\end{figure}
+
+\section{Gradient descent optimization method}
+\label{sec:gradientdescenttheory}
+The gradient descent algorithm is an iterative optimization method used to minimize a differentiable function $f(\vec{x})$ \cite{boyd_convex_2004}. Starting from an initial position $\vec{x}_0$, the algorithm updates $\vec{x}$ in the direction opposite to the gradient $\nabla f(\vec{x})$, which points toward the steepest ascent. By moving against the gradient, a local minimum is approached. The update rule is given by
+\begin{equation}
+    \vec{x}_{i+1} = \vec{x}_i - \eta \nabla f(\vec{x}_i) \, \, \, ,
+\end{equation}
+where $\eta$ is the learning rate, a parameter that determines the step size. This iterative process continues until $\nabla f(\vec{x}) \approx 0$, indicating that a local minimum is reached. %The choice of \( \eta \) is critical; if too large, the algorithm may diverge, while if too small, convergence can be slow.
+\newpage
+
+\section{Monte Carlo simulations}
+\label{sec:montecarlo}
+\gls{mc} simulations are a computational technique used to model complex systems by simulating the random processes within them. This method leverages repeated random sampling to approximate solutions to problems that are analytically intractable, making it valuable for applications requiring high precision. In radiotherapy, \gls{mc} simulations are particularly beneficial as they enable detailed modeling of particle interactions within human tissue, accounting for the stochastic nature of radiation transport and dose deposition \cite{andreo_monte_2018}.
+~\\
+
+\gls{topas} is a \gls{mc} simulation platform designed for particle transport simulations, especially in medical physics. Built on the Geant4 toolkit, \gls{topas} enables highly detailed simulations of particle interactions with various materials, including tissue-equivalent substances used in radiotherapy and dosimetry \cite{perl_topas_2012} \cite{faddegon_topas_2020}. Configured through a set of editable parameter files, \gls{topas} supports a wide range of particle types. In this thesis, \gls{topas} serves as the ground truth for estimating proton stopping positions.
+~\\
+
+A \gls{topas} simulation is set up by a set of parameter files. These files can be edited using a plain text editor. The syntax of a parameter is defined as:
+~\\
+\begin{python}
+	Parameter_Type : Parameter_Name = Parameter_Value # Optional comment
+\end{python}
+The parameter type indicates the type of value being used, such as an integer "i", a string "s", or a decimal "d" with an associated unit. Parameter names follow an object-oriented, hierarchical structure and always begin with a prefix assigned by \gls{topas} that indicates the parameter type. For example, "Ge" stands for geometric parameters, while "So" refers to particle source-related parameters. The prefix is followed by the object name for which the parameter is defined. Finally, the value of the parameter is specified, which can be either a string or a number with a unit, depending on its type. This structure provides clarity in the parameter file, making it immediately clear what type of parameter is being specified.
+
+\newpage
+\section{Radiation therapy}
+\label{sec:radiationtherapy}
+Radiotherapy is a medical treatment that uses high-energy radiation to destroy cancer cells, aiming to reduce or eliminate tumors while minimizing damage to surrounding healthy tissue. The radiotherapy workflow is visualized in \autoref{fig:radiotherapy}. The first step, \textbf{Consultation}, includes an initial patient evaluation to determine suitability for radiotherapy. During \textbf{Simulation}, \gls{ct} imaging is performed with the patient in the treatment position to guide subsequent planning. In the \textbf{Contouring} stage, target volumes and critical organs are delineated to define areas requiring treatment and those to be protected. The \textbf{Planning} phase involves calculating an optimal dose distribution to maximize tumor control while sparing healthy tissue. This thesis focuses on this step of radiation therapy. A candidate research \gls{tps} and further introductions into treatment planning will be discussed in the following \autoref{sec:tpstheory}. For conventional radiotherapy, \textbf{Delivery} is the administration of radiation using a \gls{linac} according to the treatment plan. Finally, \textbf{Follow-up} includes monitoring and assessing patient response to treatment to evaluate its effectiveness.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/radiotherapy.png}
+    \caption{Illustration of radiotherapy workflow consisting of consultation, simulation, contouring, planning, delivery and follow-up stages \cite{marvaso_virtual_2022}.}
+    \label{fig:radiotherapy}
+\end{figure}
+~\\When analyzing treatment planning in proton therapy, the proton range is of critical importance, as it determines the depth at which the maximum dose is delivered within tissue. Unlike conventional X-ray radiotherapy, protons deposit most of their energy at the end of their path, forming a characteristic Bragg peak in the percentage depth dose profile.
+\newpage
+The proton range can be approximated using the \gls{csda}, which calculates the average path length a proton travels before coming to rest. Clinically, the proton range is often defined by the $\symup{80\, \,\%}$ distal fall-off point of the Bragg peak, \( R_{\symup{80}} \), where the dose drops sharply. This is illustrated in \autoref{fig:protonddc}. It has been shown that
+\begin{equation}
+\label{eqn:csdar80}
+    \text{CSDA} \approx R_{\text{80}} \, \, \, ,
+\end{equation}
+making it a useful approximation for clinical applications \cite{paganetti_proton_2018}.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/protonddc.png}
+    \caption{Visualization of proton percentage depth dose curve example with marked characteristic Bragg peak as well as highlighted proton range, $R_{\symup{80}}$, at $\symup{80 \, \,\%}$ distal fall-off of the Bragg peak \cite{park_variation_2011}.}
+    \label{fig:protonddc}
+\end{figure}
+~\\Accurate determination of the proton range is essential in proton therapy to ensure precise dose delivery to the tumor while minimizing exposure to surrounding healthy tissue.
+
+
+
+
+\newpage
+\section{matRad treatment planning system}
+\label{sec:tpstheory}
+The \gls{tps} analyzed in this thesis is the open source software matRad. This \gls{tps} supports intensity modulated photon, proton, and carbon ion therapy. It is developed for educational and research purposes only and is not intended for clinical use. The software environment is completely coded in MATLAB \cite{wieser_development_2017}. The matRad workflow is visually illustrated in \autoref{fig:matradworkflow}.
+%\subsection{Workflow}
+%\label{sec:matRadworkflow}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{matradworkflow.pdf}
+    \caption{Illustration of the matRad workflow consisting of six different steps.}
+    \label{fig:matradworkflow}
+\end{figure}
+\subsubsection*{Imaging}
+The first step is to import an imaging dataset, e.g. \gls{mri} or \gls{ct}. matRad allows the transformation of common imaging formats, such as \gls{dicom}, into ".mat" files for compatibility reasons. This transformation can be done by using the \gls{gui} provided by matRad. All of the other functions in the following steps can be analyzed using the matRad source code.
+
+\subsubsection*{Objectives}
+For the imported image and contours of \glspl{oar} and \gls{ctv}, objectives and constraints must be set, such as limiting the maximum dose or achieving a mean dose. In matRad, users can also define the goal's priority and set a penalty for unmet targets, with higher penalties increasing computational cost.
+
+\subsubsection*{Treatment plan setup}
+The treatment plan setup sets field values, such as the gantry and couch angle, the radiation mode, e.g. photons, carbons or protons and the \gls{rbe} calculation method. The isocenter and number of beams are also set. Furthermore, the bixel width can be set. This bixel concept is explained further in the next step.
+
+\subsubsection*{Steering information}
+All geometric information about the irradiation is stored in the "stf" structure, which uses prior steps to calculate steering information. The overall geometry follows a ray and bixel concept, illustrated in \autoref{fig:raybixelconcept}. In the steering information the end position coordinates are calculated, which is the focus of this thesis.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[height=4cm]{../Screenshots/matrad/raybixelconcept.png}
+    \caption{A virtual radiation source (yellow) emits equidistant rays (solid black) to cover the target volume (red) within the patient (green). In the isocenter plane (not shown), the distance between beams equals the bixel width, representing discrete fluence elements (dashed black). The depth of the target is determined along each ray, and spots (black dots) are placed accordingly \cite{bangert_dose_nodate}.}
+    \label{fig:raybixelconcept}
+\end{figure}
+\subsubsection*{Dose influence matrix}
+A conventional pencil beam model is used for dose calculation \cite{bangert_dose_nodate}. The result of the dose calculation is a dose influence matrix, which is stored in a "dij" structure. In general, the "dij" entries are calculated row by row. This matrix has the following syntax:
+\begin{align*}
+        D_{ij} = \begin{pmatrix}
+                    D_{11} & \cdots & D_{1j} \\
+                    \vdots & \ddots & \vdots \\
+                    D_{i1} & \cdots & D_{ij} \\
+                 \end{pmatrix}
+\end{align*}
+\newpage
+\subsubsection*{Optimization}
+The goal of optimization is to determine bixel and spot weights that achieve the best possible dose distribution based on the clinical objectives and constraints of the radiation treatment. With the interior optimization algorithm the dose can be calculated with 
+\begin{equation}
+    d_i = \sum_j = D_{ij} \cdot w_j \, \, \, \, ,
+\end{equation} 
+where $D_{ij}$ is the dose influence matrix and $w_j$ is the weighting factor for each bixel $j$ resulting from the optimization algorithm with consideration of specified objectives and constraints. This step is particularly important for creating treatment plans that provide approximate clinically relevant \gls{dvh} results. Finally, matRad offers a visualization of the resulting treatment plan with its dose distribution, as well as a printout of a \gls{dvh}.
+
+\section{Hounsfield look-up table}
+\label{sec:HULUTtheory}
+A \gls{hulut} is used to convert \gls{ct} numbers into corresponding \gls{rspr} values. Each \gls{ct} number reflects the attenuation properties of a specific tissue relative to water, allowing differentiation between various tissue types. A $n \times m$ \gls{rspr} map is generated from an $n \times m$ \gls{ct} number map, representing a \gls{ct} slice. This approach approximates the stopping power of different tissues by relating it to the stopping power in water through the \gls{rspr} map. With the help of linear interpolation, the material assignment based on these conversions is crucial in simulations and treatment planning, especially in radiotherapy, where precise tissue characterization directly impacts dose calculations and treatment accuracy. A candidate \gls{hulut} conversion curve is illustrated in \autoref{fig:hlutplot}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=10cm]{../Screenshots/hlut.jpg}
+    \caption{Visualization of candidate \gls{hulut} conversion. Modified from \cite{peters_consensus_2023}.}
+    \label{fig:hlutplot}
+\end{figure}

@@ -1,0 +1,675 @@
+This is LuaHBTeX, Version 1.15.0 (TeX Live 2022)  (format=lualatex 2022.12.18)  18 NOV 2024 14:13
+ restricted system commands enabled.
+**sdistance.tex
+(./sdistance.tex
+LaTeX2e <2022-11-01> patch level 1
+Lua module: luaotfload 2022-10-03 3.23 Lua based OpenType font support
+Lua module: lualibs 2022-10-04 2.75 ConTeXt Lua standard libraries.
+Lua module: lualibs-extended 2022-10-04 2.75 ConTeXt Lua libraries -- extended c
+ollection.
+luaotfload | conf : Root cache directory is "/home/yosef/.local/texlive/2022/tex
+mf-var/luatex-cache/generic/names".
+luaotfload | init : Loading fontloader "fontloader-2022-10-03.lua" from kpse-res
+olved path "/home/yosef/.local/texlive/2022/texmf-dist/tex/luatex/luaotfload/fon
+tloader-2022-10-03.lua".
+Lua-only attribute luaotfload@noligature = 1
+luaotfload | init : Context OpenType loader version 3.120
+Inserting `luaotfload.node_processor' in `pre_linebreak_filter'.
+Inserting `luaotfload.node_processor' in `hpack_filter'.
+Inserting `luaotfload.glyph_stream' in `glyph_stream_provider'.
+Inserting `luaotfload.define_font' in `define_font'.
+Lua-only attribute luaotfload_color_attribute = 2
+luaotfload | conf : Root cache directory is "/home/yosef/.local/texlive/2022/tex
+mf-var/luatex-cache/generic/names".
+Inserting `luaotfload.harf.strip_prefix' in `find_opentype_file'.
+Inserting `luaotfload.harf.strip_prefix' in `find_truetype_file'.
+Removing  `luaotfload.glyph_stream' from `glyph_stream_provider'.
+Inserting `luaotfload.harf.glyphstream' in `glyph_stream_provider'.
+Inserting `luaotfload.harf.finalize_vlist' in `post_linebreak_filter'.
+Inserting `luaotfload.harf.finalize_hlist' in `hpack_filter'.
+Inserting `luaotfload.cleanup_files' in `wrapup_run'.
+Inserting `luaotfload.harf.finalize_unicode' in `finish_pdffile'.
+Inserting `luaotfload.glyphinfo' in `glyph_info'.
+Lua-only attribute luaotfload.letterspace_done = 3
+Inserting `luaotfload.aux.set_sscale_dimens' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_font_index' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.patch_cambria_domh' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.fixup_fontdata' in `luaotfload.patch_font_unsafe'.
+Inserting `luaotfload.aux.set_capheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.aux.set_xheight' in `luaotfload.patch_font'.
+Inserting `luaotfload.rewrite_fontname' in `luaotfload.patch_font'. L3 programm
+ing layer <2022-12-17>
+Inserting `tracingstacklevels' in `input_level_string'.
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/standalone/standalone.cls
+Document Class: standalone 2022/10/10 v1.3b Class to compile TeX sub-files stan
+dalone
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/tools/shellesc.sty
+Package: shellesc 2019/11/08 v1.0c unified shell escape interface for LaTeX
+Package shellesc Info: Restricted shell escape enabled on input line 77.
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/iftex/ifluatex.sty
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks16
+\XKV@tempa@toks=\toks17
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/xkeyval/keyval.tex))
+\XKV@depth=\count183
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+))
+\sa@internal=\count184
+\c@sapage=\count185
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/standalone/standalone.cfg
+File: standalone.cfg 2022/10/10 v1.3b Default configuration file for 'standalon
+e' class
+) (/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2022/07/02 v1.4n Standard LaTeX file (size option)
+luaotfload | db : Font names database loaded from /home/yosef/.local/texlive/202
+2/texmf-var/luatex-cache/generic/names/luaotfload-names.luc.gz)
+\c@part=\count186
+\c@section=\count187
+\c@subsection=\count188
+\c@subsubsection=\count189
+\c@paragraph=\count190
+\c@subparagraph=\count191
+\c@figure=\count192
+\c@table=\count193
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen139
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/luatex85/luatex85.sty
+Package: luatex85 2016/06/15 v1.4 pdftex aliases for luatex
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.s
+ty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+) (/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+\pdftexcmds@toks=\toks18
+)
+\sa@box=\box51
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgf/frontendlayer/tikz.st
+y (/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfutil-c
+ommon.tex
+\pgfutil@everybye=\toks19
+\pgfutil@tempdima=\dimen140
+\pgfutil@tempdimb=\dimen141
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfutil-c
+ommon-lists.tex))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfutil-l
+atex.def
+\pgfutil@abb=\box52
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfrcs.co
+de.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/pgf.revision.tex)
+Package: pgfrcs 2021/05/15 v3.1.9a (3.1.9a)
+))
+Package: pgf 2021/05/15 v3.1.9a (3.1.9a)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgf/basiclayer/pgfcore.st
+y (/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: luatex.def on input line 107.
+ (/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/graphics-def/luatex.def
+File: luatex.def 2022/09/22 v1.2d Graphics/color driver for luatex
+))
+\Gin@req@height=\dimen142
+\Gin@req@width=\dimen143
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgf/systemlayer/pgfsys.st
+y
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsys.
+code.tex
+Package: pgfsys 2021/05/15 v3.1.9a (3.1.9a)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfkeys.c
+ode.tex
+\pgfkeys@pathtoks=\toks20
+\pgfkeys@temptoks=\toks21
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfkeysfi
+ltered.code.tex
+\pgfkeys@tmptoks=\toks22
+))
+\pgf@x=\dimen144
+\pgf@y=\dimen145
+\pgf@xa=\dimen146
+\pgf@ya=\dimen147
+\pgf@xb=\dimen148
+\pgf@yb=\dimen149
+\pgf@xc=\dimen150
+\pgf@yc=\dimen151
+\pgf@xd=\dimen152
+\pgf@yd=\dimen153
+\w@pgf@writea=\write3
+\r@pgf@reada=\read2
+\c@pgf@counta=\count194
+\c@pgf@countb=\count195
+\c@pgf@countc=\count196
+\c@pgf@countd=\count197
+\t@pgf@toka=\toks23
+\t@pgf@tokb=\toks24
+\t@pgf@tokc=\toks25
+\pgf@sys@id@count=\count198
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2021/05/15 v3.1.9a (3.1.9a)
+)
+Driver file for pgf: pgfsys-luatex.def
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-
+luatex.def
+File: pgfsys-luatex.def 2021/05/15 v3.1.9a (3.1.9a)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsys-
+common-pdf.def
+File: pgfsys-common-pdf.def 2021/05/15 v3.1.9a (3.1.9a)
+)))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsyss
+oftpath.code.tex
+File: pgfsyssoftpath.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfsyssoftpath@smallbuffer@items=\count199
+\pgfsyssoftpath@bigbuffer@items=\count266
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/systemlayer/pgfsysp
+rotocol.code.tex
+File: pgfsysprotocol.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: luatex.def on input line 227.
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1357.
+Package xcolor Info: Model `RGB' extended on input line 1369.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcore.
+code.tex
+Package: pgfcore 2021/05/15 v3.1.9a (3.1.9a)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmath.code.t
+ex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathcalc.co
+de.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathutil.co
+de.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathparser.
+code.tex
+\pgfmath@dimen=\dimen154
+\pgfmath@count=\count267
+\pgfmath@box=\box53
+\pgfmath@toks=\toks26
+\pgfmath@stack@operand=\toks27
+\pgfmath@stack@operation=\toks28
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctio
+ns.code.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctio
+ns.basic.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctio
+ns.trigonometric.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctio
+ns.random.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctio
+ns.comparison.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctio
+ns.base.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctio
+ns.round.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctio
+ns.misc.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfunctio
+ns.integerarithmetics.code.tex)))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmathfloat.c
+ode.tex
+\c@pgfmathroundto@lastzeros=\count268
+))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfint.code.te
+x)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorep
+oints.code.tex
+File: pgfcorepoints.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@picminx=\dimen155
+\pgf@picmaxx=\dimen156
+\pgf@picminy=\dimen157
+\pgf@picmaxy=\dimen158
+\pgf@pathminx=\dimen159
+\pgf@pathmaxx=\dimen160
+\pgf@pathminy=\dimen161
+\pgf@pathmaxy=\dimen162
+\pgf@xx=\dimen163
+\pgf@xy=\dimen164
+\pgf@yx=\dimen165
+\pgf@yy=\dimen166
+\pgf@zx=\dimen167
+\pgf@zy=\dimen168
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorep
+athconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@path@lastx=\dimen169
+\pgf@path@lasty=\dimen170
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorep
+athusage.code.tex
+File: pgfcorepathusage.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@shorten@end@additional=\dimen171
+\pgf@shorten@start@additional=\dimen172
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcores
+copes.code.tex
+File: pgfcorescopes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfpic=\box54
+\pgf@hbox=\box55
+\pgf@layerbox@main=\box56
+\pgf@picture@serial@count=\count269
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreg
+raphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgflinewidth=\dimen173
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoret
+ransformations.code.tex
+File: pgfcoretransformations.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@pt@x=\dimen174
+\pgf@pt@y=\dimen175
+\pgf@pt@temp=\dimen176
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreq
+uick.code.tex
+File: pgfcorequick.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreo
+bjects.code.tex
+File: pgfcoreobjects.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorep
+athprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorea
+rrows.code.tex
+File: pgfcorearrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfarrowsep=\dimen177
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcores
+hade.code.tex
+File: pgfcoreshade.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@max=\dimen178
+\pgf@sys@shading@range@num=\count270
+\pgf@shadingcount=\count271
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorei
+mage.code.tex
+File: pgfcoreimage.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoree
+xternal.code.tex
+File: pgfcoreexternal.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfexternal@startupbox=\box57
+))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorel
+ayers.code.tex
+File: pgfcorelayers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcoret
+ransparency.code.tex
+File: pgfcoretransparency.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorep
+atterns.code.tex
+File: pgfcorepatterns.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/basiclayer/pgfcorer
+df.code.tex
+File: pgfcorerdf.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/modules/pgfmodulesh
+apes.code.tex
+File: pgfmoduleshapes.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfnodeparttextbox=\box58
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/modules/pgfmodulepl
+ot.code.tex
+File: pgfmoduleplot.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgf/compatibility/pgfcomp
+-version-0-65.sty
+Package: pgfcomp-version-0-65 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@nodesepstart=\dimen179
+\pgf@nodesepend=\dimen180
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgf/compatibility/pgfcomp
+-version-1-18.sty
+Package: pgfcomp-version-1-18 2021/05/15 v3.1.9a (3.1.9a)
+))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgfkeys.c
+ode.tex))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgf/math/pgfmath.sty
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmath.code.t
+ex))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/utilities/pgffor.co
+de.tex
+Package: pgffor 2021/05/15 v3.1.9a (3.1.9a)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/math/pgfmath.code.t
+ex)
+\pgffor@iter=\dimen181
+\pgffor@skip=\dimen182
+\pgffor@stack=\toks29
+\pgffor@toks=\toks30
+))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/
+tikz.code.tex
+Package: tikz 2021/05/15 v3.1.9a (3.1.9a)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/pgflibrar
+yplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgf@plot@mark@count=\count272
+\pgfplotmarksize=\dimen183
+)
+\tikz@lastx=\dimen184
+\tikz@lasty=\dimen185
+\tikz@lastxsaved=\dimen186
+\tikz@lastysaved=\dimen187
+\tikz@lastmovetox=\dimen188
+\tikz@lastmovetoy=\dimen189
+\tikzleveldistance=\dimen190
+\tikzsiblingdistance=\dimen191
+\tikz@figbox=\box59
+\tikz@figbox@bg=\box60
+\tikz@tempbox=\box61
+\tikz@tempbox@bg=\box62
+\tikztreelevel=\count273
+\tikznumberofchildren=\count274
+\tikznumberofcurrentchild=\count275
+\tikz@fig@count=\count276
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/modules/pgfmodulema
+trix.code.tex
+File: pgfmodulematrix.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfmatrixcurrentrow=\count277
+\pgfmatrixcurrentcolumn=\count278
+\pgf@matrix@numberofcolumns=\count279
+)
+\tikz@expandcount=\count280
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/
+libraries/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/pgfplots/pgfplots.sty
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplots.revis
+ion.tex)
+Package: pgfplots 2021/05/15 v1.18.1 Data Visualization (1.18.1)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplots.code.
+tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplotscore.c
+ode.tex
+Package pgfplots info on input line 124: Initializing with LUA version Lua 5.3
+\pgfplots@luabackend@table=\catcodetable12
+\t@pgfplots@toka=\toks31
+\t@pgfplots@tokb=\toks32
+\t@pgfplots@tokc=\toks33
+\pgfplots@tmpa=\dimen192
+\c@pgfplots@coordindex=\count281
+\c@pgfplots@scanlineindex=\count282
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/sys/pgfplotssy
+sgeneric.code.tex))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/libs/pgfplotsl
+ibrary.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/oldpgfcompatib
+/pgfplotsoldpgfsupp_loader.code.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/pgflibrar
+yfpu.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/luamath/p
+gflibraryluamath.code.tex)
+Package pgfplots info on input line 290: luamath library shipped with pgf 3.1.9
+a is up-to-date
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/util/pgfplotsu
+til.code.tex
+Package pgfplots info on input line 82: Found new luatex: initializing lua comm
+ands instead of write18 (shell-escape)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/liststructure/
+pgfplotsliststructure.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/liststructure/
+pgfplotsliststructureext.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/liststructure/
+pgfplotsarray.code.tex
+\c@pgfplotsarray@tmp=\count283
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/liststructure/
+pgfplotsmatrix.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/numtable/pgfpl
+otstableshared.code.tex
+\c@pgfplotstable@counta=\count284
+\t@pgfplotstable@a=\toks34
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/liststructure/
+pgfplotsdeque.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/util/pgfplotsb
+inary.code.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/util/pgfplotsb
+inary.data.code.tex))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/util/pgfplotsu
+til.verb.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/libs/pgflibrar
+ypgfplots.surfshading.code.tex
+\c@pgfplotslibrarysurf@no=\count285
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/sys/pgflibrary
+pgfplots.surfshading.pgfsys-luatex.def)))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/util/pgfplotsc
+olormap.code.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/util/pgfplotsc
+olor.code.tex))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplotsstacke
+dplots.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplotsplotha
+ndlers.code.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplotsmeshpl
+othandler.code.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplotsmeshpl
+otimage.code.tex)))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplots.scali
+ng.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplotscoordp
+rocessing.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplots.error
+bars.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplots.marke
+rs.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplotsticks.
+code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/pgfplots.paths
+.code.tex)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/
+libraries/tikzlibrarydecorations.code.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/modules/pgfmodulede
+corations.code.tex
+\pgfdecoratedcompleteddistance=\dimen193
+\pgfdecoratedremainingdistance=\dimen194
+\pgfdecoratedinputsegmentcompleteddistance=\dimen195
+\pgfdecoratedinputsegmentremainingdistance=\dimen196
+\pgf@decorate@distancetomove=\dimen197
+\pgf@decorate@repeatstate=\count286
+\pgfdecorationsegmentamplitude=\dimen198
+\pgfdecorationsegmentlength=\dimen199
+)
+\tikz@lib@dec@box=\box63
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/
+libraries/tikzlibrarydecorations.pathmorphing.code.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/decoratio
+ns/pgflibrarydecorations.pathmorphing.code.tex))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/
+libraries/tikzlibrarydecorations.pathreplacing.code.tex
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/decoratio
+ns/pgflibrarydecorations.pathreplacing.code.tex))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgfplots/libs/tikzlibra
+rypgfplots.contourlua.code.tex)
+\pgfplots@numplots=\count287
+\pgfplots@xmin@reg=\dimen256
+\pgfplots@xmax@reg=\dimen257
+\pgfplots@ymin@reg=\dimen258
+\pgfplots@ymax@reg=\dimen259
+\pgfplots@zmin@reg=\dimen260
+\pgfplots@zmax@reg=\dimen261
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/
+libraries/tikzlibraryplotmarks.code.tex
+File: tikzlibraryplotmarks.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/pgflibrar
+yplotmarks.code.tex
+File: pgflibraryplotmarks.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)))
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/l3backend/l3backend-luate
+x.def
+File: l3backend-luatex.def 2022-10-26 L3 backend support: PDF output (LuaTeX)
+\l__color_backend_stack_int=\count288
+\l__pdf_internal_box=\box64
+) (./sdistance.aux)
+\openout1 = sdistance.aux
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 5.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 5
+.
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 2022/07/10 v2.5l Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count289
+\scratchdimen=\dimen262
+\scratchbox=\box65
+\nofMPsegments=\count290
+\nofMParguments=\count291
+\everyMPshowfont=\toks35
+\MPscratchCnt=\count292
+\MPscratchDim=\dimen263
+\MPnumerator=\count293
+\makeMPintoPDFobject=\count294
+\everyMPtoPDFconversion=\toks36
+)
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-bas
+e.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/home/yosef/.local/texlive/2022/texmf-dist/tex/latex/latexconfig/epstopdf-sys.
+cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+
+Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
+ick labels; missing features). Consider writing \pgfplotsset{compat=1.18} into 
+your preamble.
+ on input line 5.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 9.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 9.
+[1
+
+{/home/yosef/.local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+ (./sdistance.aux))
+
+Here is how much of LuaTeX's memory you used:
+ 23394 strings out of 478384
+ 100000,1977958 words of node,token memory allocated
+ 3684 words of node memory still in use:
+   64 hlist, 1 vlist, 1 rule, 14 math, 110 glue, 4 kern, 21 glyph, 289 attribute
+, 48 glue_spec, 289 attribute_list, 2 write, 161 pdf_literal, 26 pdf_colorstack 
+nodes
+   avail lists: 2:31,3:325,4:62,5:23,6:2,7:310,8:5,9:146
+ 42733 multiletter control sequences out of 65536+600000
+ 26 fonts using 1476743 bytes
+ 100i,7n,98p,704b,639s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</home/yosef/.local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi1
+0.pfb></home/yosef/.local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmmi7.pfb></home/yosef/.local/texlive/2022/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr10.pfb></home/yosef/.local/texlive/2022/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr5.pfb>
+Output written on sdistance.pdf (1 page, 31265 bytes).
+
+PDF statistics: 27 PDF objects out of 1000 (max. 8388607)
+ 19 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 131072)
+ 16 words of extra memory for PDF output out of 10000 (max. 100000000)
+

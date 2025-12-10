@@ -1,0 +1,715 @@
+
+@article{perl_topas_2012,
+	title = {{TOPAS}: {An} innovative proton {Monte} {Carlo} platform for research and clinical applications},
+	volume = {39},
+	copyright = {http://onlinelibrary.wiley.com/termsAndConditions\#vor},
+	issn = {0094-2405, 2473-4209},
+	shorttitle = {{TOPAS}},
+	url = {https://aapm.onlinelibrary.wiley.com/doi/10.1118/1.4758060},
+	doi = {10.1118/1.4758060},
+	abstract = {Purpose:
+              While Monte Carlo particle transport has proven useful in many areas (treatment head design, dose calculation, shielding design, and imaging studies) and has been particularly important for proton therapy (due to the conformal dose distributions and a finite beam range in the patient), the available general purpose Monte Carlo codes in proton therapy have been overly complex for most clinical medical physicists. The learning process has large costs not only in time but also in reliability. To address this issue, we developed an innovative proton Monte Carlo platform and tested the tool in a variety of proton therapy applications.
+            
+            
+              Methods:
+              Our approach was to take one of the already‐established general purpose Monte Carlo codes and wrap and extend it to create a specialized user‐friendly tool for proton therapy. The resulting tool, TOol for PArticle Simulation (TOPAS), should make Monte Carlo simulation more readily available for research and clinical physicists. TOPAS can model a passive scattering or scanning beam treatment head, model a patient geometry based on computed tomography (CT) images, score dose, fluence, etc., save and restart a phase space, provides advanced graphics, and is fully four‐dimensional (4D) to handle variations in beam delivery and patient geometry during treatment. A custom‐designed TOPAS parameter control system was placed at the heart of the code to meet requirements for ease of use, reliability, and repeatability without sacrificing flexibility.
+            
+            
+              Results:
+              We built and tested the TOPAS code. We have shown that the TOPAS parameter system provides easy yet flexible control over all key simulation areas such as geometry setup, particle source setup, scoring setup, etc. Through design consistency, we have insured that user experience gained in configuring one component, scorer or filter applies equally well to configuring any other component, scorer or filter. We have incorporated key lessons from safety management, proactively removing possible sources of user error such as line‐ordering mistakes. We have modeled proton therapy treatment examples including the UCSF eye treatment head, the MGH stereotactic alignment in radiosurgery treatment head and the MGH gantry treatment heads in passive scattering and scanning modes, and we have demonstrated dose calculation based on patient‐specific CT data. Initial validation results show agreement with measured data and demonstrate the capabilities of TOPAS in simulating beam delivery in 3D and 4D.
+            
+            
+              Conclusions:
+              We have demonstrated TOPAS accuracy and usability in a variety of proton therapy setups. As we are preparing to make this tool freely available for researchers in medical physics, we anticipate widespread use of this tool in the growing proton therapy community.},
+	language = {en},
+	number = {11},
+	journal = {Medical Physics},
+	author = {Perl, J. and Shin, J. and Schümann, J. and Faddegon, B. and Paganetti, H.},
+	month = nov,
+	year = {2012},
+	pages = {6818--6837},
+	file = {Volltext:C\:\\Users\\yoffe\\Zotero\\storage\\MML27LYJ\\Perl et al. - 2012 - TOPAS An innovative proton Monte Carlo platform for research and clinical applications.pdf:application/pdf},
+}
+
+@article{faddegon_topas_2020,
+	title = {The {TOPAS} tool for particle simulation, a {Monte} {Carlo} simulation tool for physics, biology and clinical research},
+	volume = {72},
+	issn = {1724-191X},
+	doi = {10.1016/j.ejmp.2020.03.019},
+	abstract = {PURPOSE: This paper covers recent developments and applications of the TOPAS TOol for PArticle Simulation and presents the approaches used to disseminate TOPAS.
+MATERIALS AND METHODS: Fundamental understanding of radiotherapy and imaging is greatly facilitated through accurate and detailed simulation of the passage of ionizing radiation through apparatus and into a patient using Monte Carlo (MC). TOPAS brings Geant4, a reliable, experimentally validated MC tool mainly developed for high energy physics, within easy reach of medical physicists, radiobiologists and clinicians. Requiring no programming knowledge, TOPAS provides all of the flexibility of Geant4.
+RESULTS: After 5 years of development followed by its initial release, TOPAS was subsequently expanded from its focus on proton therapy physics to incorporate radiobiology modeling. Next, in 2018, the developers expanded their user support and code maintenance as well as the scope of TOPAS towards supporting X-ray and electron therapy and medical imaging. Improvements have been achieved in user enhancement through software engineering and a graphical user interface, calculational efficiency, validation through experimental benchmarks and QA measurements, and either newly available or recently published applications. A large and rapidly increasing user base demonstrates success in our approach to dissemination of this uniquely accessible and flexible MC research tool.
+CONCLUSIONS: The TOPAS developers continue to make strides in addressing the needs of the medical community in applications of ionizing radiation to medicine, creating the only fully integrated platform for four-dimensional simulation of all forms of radiotherapy and imaging with ionizing radiation, with a design that promotes inter-institutional collaboration.},
+	language = {eng},
+	journal = {Phys Med},
+	author = {Faddegon, Bruce and Ramos-Méndez, José and Schuemann, Jan and McNamara, Aimee and Shin, Jungwook and Perl, Joseph and Paganetti, Harald},
+	month = apr,
+	year = {2020},
+	pmid = {32247964},
+	pmcid = {PMC7192305},
+	keywords = {Humans, Monte Carlo Method, Proton Therapy},
+	pages = {114--121},
+	file = {Full Text:C\:\\Users\\yoffe\\Zotero\\storage\\PPBNJDSF\\Faddegon et al. - 2020 - The TOPAS tool for particle simulation, a Monte Carlo simulation tool for physics, biology and clini.pdf:application/pdf},
+}
+
+@article{schneider_correlation_2000,
+	title = {Correlation between {CT} numbers and tissue parameters needed for {Monte} {Carlo} simulations of clinical dose distributions},
+	volume = {45},
+	issn = {0031-9155},
+	doi = {10.1088/0031-9155/45/2/314},
+	abstract = {We describe a new method to convert CT numbers into mass density and elemental weights of tissues required as input for dose calculations with Monte Carlo codes such as EGS4. As a first step, we calculate the CT numbers for 71 human tissues. To reduce the effort for the necessary fits of the CT numbers to mass density and elemental weights, we establish four sections on the CT number scale, each confined by selected tissues. Within each section, the mass density and elemental weights of the selected tissues are interpolated. For this purpose, functional relationships between the CT number and each of the tissue parameters, valid for media which are composed of only two components in varying proportions, are derived. Compared with conventional data fits, no loss of accuracy is accepted when using the interpolation functions. Assuming plausible values for the deviations of calculated and measured CT numbers, the mass density can be determined with an accuracy better than 0.04 g cm(-3). The weights of phosphorus and calcium can be determined with maximum uncertainties of 1 or 2.3 percentage points (pp) respectively. Similar values can be achieved for hydrogen (0.8 pp) and nitrogen (3 pp). For carbon and oxygen weights, errors up to 14 pp can occur. The influence of the elemental weights on the results of Monte Carlo dose calculations is investigated and discussed.},
+	language = {eng},
+	number = {2},
+	journal = {Phys Med Biol},
+	author = {Schneider, W. and Bortfeld, T. and Schlegel, W.},
+	month = feb,
+	year = {2000},
+	pmid = {10701515},
+	keywords = {Humans, Monte Carlo Method, Female, Image Processing, Computer-Assisted, Male, Organ Specificity, Phantoms, Imaging, Radiotherapy Planning, Computer-Assisted, Tomography, X-Ray Computed},
+	pages = {459--478},
+}
+
+@incollection{denotter_hounsfield_2024,
+	address = {Treasure Island (FL)},
+	title = {Hounsfield {Unit}},
+	copyright = {Copyright © 2024, StatPearls Publishing LLC.},
+	url = {http://www.ncbi.nlm.nih.gov/books/NBK547721/},
+	abstract = {The Hounsfield unit (HU) is a relative quantitative measurement of radio density used by radiologists in the interpretation of computed tomography (CT) images. The absorption/attenuation coefficient of radiation within a tissue is used during CT reconstruction to produce a grayscale image. The physical density of tissue is proportional to the absorption/attenuation of the X-ray beam. The Hounsfield unit, also referred to as the CT unit, is then calculated based on a linear transformation of the baseline linear attenuation coefficient of the X-ray beam, where distilled water (at standard temperature and pressure) is arbitrarily defined to be zero Hounsfield Units and air defined as -1000 HU. The upper limits can reach up to 1000 for bones, 2000 for dense bones like the cochlea, and more than 3000 for metals like steel or silver. The linear transformation produces a Hounsfield scale that displays as gray tones. More dense tissue, with greater X-ray beam absorption, has positive values and appears bright; less dense tissue, with less X-ray beam absorption, has negative values and appears dark. The Hounsfield unit was named after Sir Godfrey Hounsfield, recipient of the Nobel Prize in Physiology or Medicine in 1979, for his part in the invention of CT, as it had immediate recognition as a revolutionary diagnostic instrument.},
+	language = {eng},
+	booktitle = {{StatPearls}},
+	publisher = {StatPearls Publishing},
+	author = {DenOtter, Tami D. and Schubert, Johanna},
+	year = {2024},
+	pmid = {31613501},
+	annote = {for using bone CT number: 1000 HU
+
+},
+	file = {Printable HTML:C\:\\Users\\yoffe\\Zotero\\storage\\QZU8MC9J\\NBK547721.html:text/html},
+}
+
+@misc{grzanka_libamtrack_nodate,
+	title = {Libamtrack: {AT}\_PhysicsRoutines.c},
+	url = {https://github.com/libamtrack/library/blob/master/src/AT_PhysicsRoutines.c},
+	abstract = {Core library code. Contribute to libamtrack/library development by creating an account on GitHub.},
+	language = {en},
+	journal = {GitHub},
+	author = {Grzanka, Leszek},
+}
+
+@article{czarnecki_impact_2018,
+	title = {Impact of new {ICRU} {Report} 90 recommendations on calculated correction factors for reference dosimetry},
+	volume = {63},
+	issn = {1361-6560},
+	url = {https://iopscience.iop.org/article/10.1088/1361-6560/aad148},
+	doi = {10.1088/1361-6560/aad148},
+	number = {15},
+	journal = {Phys. Med. Biol.},
+	author = {Czarnecki, Damian and Poppe, Björn and Zink, Klemens},
+	month = aug,
+	year = {2018},
+	pages = {155015},
+	annote = {I = 78 eV, ICRU report 90
+
+},
+}
+
+@misc{perl_30_nodate,
+	title = {3.0 {Series} — {TOPAS} 3.1 documentation},
+	url = {https://topas.readthedocs.io/en/3.6.1/getting-started/history/3_0.html?highlight=excitation},
+	author = {Perl, Joseph},
+	annote = {I = 78 eV in TOPAS
+
+},
+	file = {3.0 Series — TOPAS 3.1 documentation:C\:\\Users\\yoffe\\Zotero\\storage\\EX7YFN2J\\3_0.html:text/html},
+}
+
+@article{wieser_development_2017,
+	title = {Development of the open-source dose calculation and optimization toolkit {matRad}},
+	volume = {44},
+	copyright = {http://doi.wiley.com/10.1002/tdm\_license\_1},
+	issn = {00942405},
+	url = {https://onlinelibrary.wiley.com/doi/10.1002/mp.12251},
+	doi = {10.1002/mp.12251},
+	language = {en},
+	number = {6},
+	journal = {Med. Phys.},
+	author = {Wieser, Hans-Peter and Cisternas, Eduardo and Wahl, Niklas and Ulrich, Silke and Stadler, Alexander and Mescher, Henning and Müller, Lucas-Raphael and Klinge, Thomas and Gabrys, Hubert and Burigo, Lucas and Mairani, Andrea and Ecker, Swantje and Ackermann, Benjamin and Ellerbrock, Malte and Parodi, Katia and Jäkel, Oliver and Bangert, Mark},
+	month = jun,
+	year = {2017},
+	pages = {2556--2568},
+	file = {Full Text:C\:\\Users\\yoffe\\Zotero\\storage\\MFP8V2EI\\Wieser et al. - 2017 - Development of the open-source dose calculation and optimization toolkit matRad.pdf:application/pdf},
+}
+
+@misc{bangert_dose_nodate,
+	title = {Dose influence matrix calculation},
+	url = {https://github.com/e0404/matRad/wiki/Dose-influence-matrix-calculation},
+	abstract = {An open source multi-modality radiation treatment planning sytem developed by e0404 @ DKFZ - e0404/matRad},
+	language = {en},
+	journal = {GitHub},
+	author = {Bangert, Mark},
+	file = {Snapshot:C\:\\Users\\yoffe\\Zotero\\storage\\P8XKL4L5\\Dose-influence-matrix-calculation.html:text/html},
+}
+
+@misc{perl_default_nodate,
+	title = {Default {Parameters} — {TOPAS} 3.8 documentation},
+	url = {https://topas.readthedocs.io/en/latest/parameters/defaults.html#parameters-default-physics},
+	author = {Perl, Joseph},
+	annote = {Default physics 6 modules
+
+},
+	file = {Default Parameters — TOPAS 3.8 documentation:C\:\\Users\\yoffe\\Zotero\\storage\\I43LK9VY\\defaults.html:text/html},
+}
+
+@misc{noauthor_decay_nodate,
+	title = {Decay — {Geant4} {Documentation} 11.2 documentation},
+	url = {https://geant4-userdoc.web.cern.ch/UsersGuides/AllGuides/html/PhysicsReferenceManual/decay/decay.html?highlight=g4decay},
+	file = {Decay — Geant4 Documentation 11.2 documentation:C\:\\Users\\yoffe\\Zotero\\storage\\UFH2LYC2\\decay.html:text/html},
+}
+
+@misc{noauthor_qgsp_bic_nodate,
+	title = {{QGSP}\_BIC — {Geant4} {Documentation} 11.2 documentation},
+	url = {https://geant4-userdoc.web.cern.ch/UsersGuides/AllGuides/html/PhysicsListGuide/reference_PL/QGSP_BIC.html},
+	file = {QGSP_BIC — Geant4 Documentation 11.2 documentation:C\:\\Users\\yoffe\\Zotero\\storage\\TGR22RAX\\QGSP_BIC.html:text/html},
+}
+
+@incollection{krieger_wechselwirkungen_2023,
+	address = {Berlin, Heidelberg},
+	title = {Wechselwirkungen geladener {Teilchen}},
+	isbn = {978-3-662-67609-7 978-3-662-67610-3},
+	url = {https://link.springer.com/10.1007/978-3-662-67610-3_10},
+	language = {de},
+	booktitle = {Grundlagen der {Strahlungsphysik} und des {Strahlenschutzes}},
+	publisher = {Springer Berlin Heidelberg},
+	author = {Krieger, Hanno},
+	collaborator = {Krieger, Hanno},
+	year = {2023},
+	doi = {10.1007/978-3-662-67610-3_10},
+	pages = {299--350},
+	annote = {The energy loss of the particles can be described with the nuclear, electronic and radiative enegy loss.
+},
+}
+
+@incollection{hull_ion_2011,
+	address = {Dordrecht},
+	title = {Ion {Matter} {Interaction}},
+	volume = {145},
+	isbn = {978-94-007-1228-7 978-94-007-1229-4},
+	url = {http://link.springer.com/10.1007/978-94-007-1229-4_2},
+	language = {en},
+	booktitle = {Swift {Heavy} {Ions} for {Materials} {Engineering} and {Nanostructuring}},
+	publisher = {Springer Netherlands},
+	author = {Avasthi, D. K. and Mehta, G. K.},
+	editor = {Hull, R. and Jagadish, C. and Osgood, R. M. and Parisi, J. and Wang, Z.},
+	collaborator = {Avasthi, D. K. and Mehta, G. K.},
+	year = {2011},
+	doi = {10.1007/978-94-007-1229-4_2},
+	note = {Series Title: Springer Series in Materials Science},
+	pages = {47--66},
+	annote = {Nuclear energy loss dominates for lower energy levels
+},
+}
+
+@article{mohan_proton_2017,
+	title = {Proton therapy – {Present} and future},
+	volume = {109},
+	issn = {0169409X},
+	url = {https://linkinghub.elsevier.com/retrieve/pii/S0169409X16303192},
+	doi = {10.1016/j.addr.2016.11.006},
+	language = {en},
+	journal = {Advanced Drug Delivery Reviews},
+	author = {Mohan, Radhe and Grosshans, David},
+	month = jan,
+	year = {2017},
+	pages = {26--44},
+	annote = {Protons, accelerated to therapeutic energies ranging from 70 to 250 MeV
+
+},
+	file = {Accepted Version:C\:\\Users\\yoffe\\Zotero\\storage\\7WMZCVLT\\Mohan and Grosshans - 2017 - Proton therapy – Present and future.pdf:application/pdf},
+}
+
+@article{sengbusch_maximum_2009,
+	title = {Maximum proton kinetic energy and patient-generated neutron fluence considerations in proton beam arc delivery radiation therapy},
+	volume = {36},
+	issn = {0094-2405},
+	doi = {10.1118/1.3049787},
+	abstract = {Several compact proton accelerator systems for use in proton therapy have recently been proposed. Of paramount importance to the development of such an accelerator system is the maximum kinetic energy of protons, immediately prior to entry into the patient, that must be reached by the treatment system. The commonly used value for the maximum kinetic energy required for a medical proton accelerator is 250 MeV, but it has not been demonstrated that this energy is indeed necessary to treat all or most patients eligible for proton therapy. This article quantifies the maximum kinetic energy of protons, immediately prior to entry into the patient, necessary to treat a given percentage of patients with rotational proton therapy, and examines the impact of this energy threshold on the cost and feasibility of a compact, gantry-mounted proton accelerator treatment system. One hundred randomized treatment plans from patients treated with IMRT were analyzed. The maximum radiological pathlength from the surface of the patient to the distal edge of the treatment volume was obtained for 180 degrees continuous arc proton therapy and for 180 degrees split arc proton therapy (two 90 degrees arcs) using CT\# profiles from the Pinnacle (Philips Medical Systems, Madison, WI) treatment planning system. In each case, the maximum kinetic energy of protons, immediately prior to entry into the patient, that would be necessary to treat the patient was calculated using proton range tables for various media. In addition, Monte Carlo simulations were performed to quantify neutron production in a water phantom representing a patient as a function of the maximum proton kinetic energy achievable by a proton treatment system. Protons with a kinetic energy of 240 MeV, immediately prior to entry into the patient, were needed to treat 100\% of patients in this study. However, it was shown that 90\% of patients could be treated at 198 MeV, and 95\% of patients could be treated at 207 MeV. Decreasing the proton kinetic energy from 250 to 200 MeV decreases the total neutron energy fluence produced by stopping a monoenergetic pencil beam in a water phantom by a factor of 2.3. It is possible to significantly lower the requirements on the maximum kinetic energy of a compact proton accelerator if the ability to treat a small percentage of patients with rotational therapy is sacrificed. This decrease in maximum kinetic energy, along with the corresponding decrease in neutron production, could lower the cost and ease the engineering constraints on a compact proton accelerator treatment facility.},
+	language = {eng},
+	number = {2},
+	journal = {Med Phys},
+	author = {Sengbusch, E. and Pérez-Andújar, A. and DeLuca, P. M. and Mackie, T. R.},
+	month = feb,
+	year = {2009},
+	pmid = {19291975},
+	pmcid = {PMC2736729},
+	keywords = {Humans, Proton Therapy, Phantoms, Imaging, Kinetics, Neutrons, Photons, Radiotherapy, Water},
+	pages = {364--372},
+	annote = {particle therapy protons energy 200mev e 250mev
+},
+	file = {Full Text:C\:\\Users\\yoffe\\Zotero\\storage\\7KAH2VB3\\Sengbusch et al. - 2009 - Maximum proton kinetic energy and patient-generated neutron fluence considerations in proton beam ar.pdf:application/pdf},
+}
+
+@article{bethe_zur_1930,
+	title = {Zur {Theorie} des {Durchgangs} schneller {Korpuskularstrahlen} durch {Materie}},
+	volume = {397},
+	issn = {0003-3804, 1521-3889},
+	url = {https://onlinelibrary.wiley.com/doi/10.1002/andp.19303970303},
+	doi = {10.1002/andp.19303970303},
+	language = {en},
+	number = {3},
+	journal = {Annalen der Physik},
+	author = {Bethe, H.},
+	month = jan,
+	year = {1930},
+	pages = {325--400},
+}
+
+@article{bloch_bremsvermogen_1933,
+	title = {Bremsvermögen von {Atomen} mit mehreren {Elektronen}},
+	volume = {81},
+	copyright = {http://www.springer.com/tdm},
+	issn = {1434-6001, 1434-601X},
+	url = {http://link.springer.com/10.1007/BF01344553},
+	doi = {10.1007/BF01344553},
+	language = {de},
+	number = {5-6},
+	journal = {Z. Physik},
+	author = {Bloch, F.},
+	month = may,
+	year = {1933},
+	pages = {363--376},
+}
+
+@article{bloch_zur_1933,
+	title = {Zur {Bremsung} rasch bewegter {Teilchen} beim {Durchgang} durch {Materie}},
+	volume = {408},
+	issn = {0003-3804, 1521-3889},
+	url = {https://onlinelibrary.wiley.com/doi/10.1002/andp.19334080303},
+	doi = {10.1002/andp.19334080303},
+	language = {en},
+	number = {3},
+	journal = {Annalen der Physik},
+	author = {Bloch, F.},
+	month = jan,
+	year = {1933},
+	pages = {285--320},
+}
+
+@article{newhauser_physics_2015,
+	title = {The physics of proton therapy},
+	volume = {60},
+	issn = {0031-9155, 1361-6560},
+	url = {https://iopscience.iop.org/article/10.1088/0031-9155/60/8/R155},
+	doi = {10.1088/0031-9155/60/8/R155},
+	number = {8},
+	journal = {Phys. Med. Biol.},
+	author = {Newhauser, Wayne D and Zhang, Rui},
+	month = apr,
+	year = {2015},
+	pages = {R155--R209},
+	file = {Accepted Version:C\:\\Users\\yoffe\\Zotero\\storage\\6GHQNYXP\\Newhauser and Zhang - 2015 - The physics of proton therapy.pdf:application/pdf},
+}
+
+@misc{hoffmann_proton_2015,
+	title = {Proton trajectory in a static homogeneous magnetic field: theoretical aspects},
+	publisher = {HZDR internal research report},
+	author = {Hoffmann, Aswin L.},
+	month = jul,
+	year = {2015},
+}
+
+@book{boyd_convex_2004,
+	address = {Cambridge, UK ; New York},
+	title = {Convex optimization},
+	isbn = {978-0-521-83378-3},
+	language = {en},
+	publisher = {Cambridge University Press},
+	author = {Boyd, Stephen P. and Vandenberghe, Lieven},
+	year = {2004},
+	keywords = {Convex functions, Mathematical optimization},
+	file = {PDF:C\:\\Users\\yoffe\\Zotero\\storage\\SKQ6QHDY\\Boyd and Vandenberghe - 2004 - Convex optimization.pdf:application/pdf},
+}
+
+@article{andreo_monte_2018,
+	title = {Monte {Carlo} simulations in radiotherapy dosimetry},
+	volume = {13},
+	issn = {1748-717X},
+	doi = {10.1186/s13014-018-1065-3},
+	abstract = {BACKGROUND: The use of the Monte Carlo (MC) method in radiotherapy dosimetry has increased almost exponentially in the last decades. Its widespread use in the field has converted this computer simulation technique in a common tool for reference and treatment planning dosimetry calculations.
+METHODS: This work reviews the different MC calculations made on dosimetric quantities, like stopping-power ratios and perturbation correction factors required for reference ionization chamber dosimetry, as well as the fully realistic MC simulations currently available on clinical accelerators, detectors and patient treatment planning.
+CONCLUSIONS: Issues are raised that include the necessity for consistency in the data throughout the entire dosimetry chain in reference dosimetry, and how Bragg-Gray theory breaks down for small photon fields. Both aspects are less critical for MC treatment planning applications, but there are important constraints like tissue characterization and its patient-to-patient variability, which together with the conversion between dose-to-water and dose-to-tissue, are analysed in detail. Although these constraints are common to all methods and algorithms used in different types of treatment planning systems, they make uncertainties involved in MC treatment planning to still remain "uncertain".},
+	language = {eng},
+	number = {1},
+	journal = {Radiat Oncol},
+	author = {Andreo, Pedro},
+	month = jun,
+	year = {2018},
+	pmid = {29945636},
+	pmcid = {PMC6020327},
+	keywords = {Humans, Monte Carlo Method, Radiotherapy Planning, Computer-Assisted, Photons, Algorithms, Computer Simulation, Monte Carlo, Monte Carlo treatment planning, Radiometry, Radiotherapy Dosage, Radiotherapy dosimetry, Radiotherapy physics},
+	pages = {121},
+	file = {Full Text:C\:\\Users\\yoffe\\Zotero\\storage\\77R3CAQH\\Andreo - 2018 - Monte Carlo simulations in radiotherapy dosimetry.pdf:application/pdf},
+}
+
+@article{marvaso_virtual_2022,
+	title = {Virtual and {Augmented} {Reality} as a {Novel} {Opportunity} to {Unleash} the {Power} of {Radiotherapy} in the {Digital} {Era}: {A} {Scoping} {Review}},
+	volume = {12},
+	copyright = {https://creativecommons.org/licenses/by/4.0/},
+	issn = {2076-3417},
+	shorttitle = {Virtual and {Augmented} {Reality} as a {Novel} {Opportunity} to {Unleash} the {Power} of {Radiotherapy} in the {Digital} {Era}},
+	url = {https://www.mdpi.com/2076-3417/12/22/11308},
+	doi = {10.3390/app122211308},
+	abstract = {Although radiation therapy (RT) provides several therapeutic advantages in terms of cancer control and quality of life, it continues to be a poorly understood field by most students and health workers. Theoretical lessons are not sufficient, while practical exercitations are time-consuming, both in terms of man- and machine-hours. Furthermore, RT candidates often have several prejudices that may affect their treatment choices, favoring the more well-known surgical or chemotherapy approaches or resulting in a high level of anxiety during treatment. Moreover, the misperception of low treatment control and its related side effects could worsen the patients’ psychological distress, already brought by a cancer diagnosis. Augmented reality (AR) and virtual reality (VR) could be a valid instrument for promoting the awareness of radiation oncology as a discipline with its own identity and respect in the scientific community. The aim of the present work is to provide a glance at the recent developments in AR/VR to support students’ education, personnel training and patients’ empowerment in this clinical setting. The main findings of our work show that such technologies have already become a reality in many institutions worldwide and it has been shown to be an effective strategy for raising educational standards, improving health workers’ skills and promoting patients’ well-being and compliance. These results seem to promote the further implementation of AR/VR technologies and their development as a driving force of a much-hoped-for revolution in the way patients are treated and radiation oncology is taught.},
+	language = {en},
+	number = {22},
+	journal = {Applied Sciences},
+	author = {Marvaso, Giulia and Pepa, Matteo and Volpe, Stefania and Mastroleo, Federico and Zaffaroni, Mattia and Vincini, Maria Giulia and Corrao, Giulia and Bergamaschi, Luca and Mazzocco, Ketti and Pravettoni, Gabriella and Orecchia, Roberto and Jereczek-Fossa, Barbara Alicja},
+	month = nov,
+	year = {2022},
+	pages = {11308},
+	annote = {for radiotherapy workflow figure
+},
+	file = {Full Text:C\:\\Users\\yoffe\\Zotero\\storage\\9EMMS4VM\\Marvaso et al. - 2022 - Virtual and Augmented Reality as a Novel Opportunity to Unleash the Power of Radiotherapy in the Dig.pdf:application/pdf},
+}
+
+@book{carron_introduction_2006,
+	address = {Boca Raton},
+	edition = {1},
+	title = {An {Introduction} to the {Passage} of {Energetic} {Particles} through {Matter}},
+	copyright = {http://creativecommons.org/licenses/by-nc-nd/4.0},
+	isbn = {978-0-429-13739-6},
+	url = {https://www.taylorfrancis.com/books/9780429137396},
+	language = {en},
+	publisher = {CRC Press},
+	author = {Carron, N J},
+	month = nov,
+	year = {2006},
+	doi = {10.1201/9781420012378},
+	annote = {For showing that CSDA approximates mean range
+},
+	file = {Full Text:C\:\\Users\\yoffe\\Zotero\\storage\\FMXXBMLJ\\Carron - 2006 - An Introduction to the Passage of Energetic Particles through Matter.pdf:application/pdf},
+}
+
+@book{paganetti_proton_2018,
+	address = {Boca Raton, Florida},
+	edition = {2},
+	title = {Proton {Therapy} {Physics}, {Second} {Edition}},
+	isbn = {978-1-138-62650-8},
+	abstract = {Expanding on the highly successful first edition, this second edition of Proton Therapy Physics has been completely restructured and updated throughout, and includes several new chapters. Suitable for both newcomers in medical physics and more seasoned specialists in radiation oncology, this book provides an in-depth overview of the physics of this radiation therapy modality, eliminating the need to dig through information scattered across medical physics literature.After tracing the history of proton therapy, the book explores the atomic and nuclear physics background necessary for understanding proton interactions with tissue. The text then covers dosimetry, including beam delivery, shielding aspects, computer simulations, detector systems and measuring techniques for reference dosimetry. Important for daily operations, acceptance testing, commissioning, quality assurance and monitor unit calibrations are outlined. The book moves on to discussions of treatment planning for single- and multiple-field uniform doses, dose calculation concepts and algorithms, and precision and uncertainties for nonmoving and moving targets. Imaging for treatment guidance as well as treatment monitoring is outlined. Finally, the biological implications of using protons from a physics perspective are discussed. This book is an ideal practical guide for physicians, dosimetrists, radiation therapists, and physicists who already have some experience in radiation oncology. It is also an invaluable reference for graduate students in medical physics programs, physicians in their last year of medical school or residency, and those considering a career in medical physics.Features:Updated with the latest technologies and methods in the field, covering all delivery methods of proton therapy, including beam scanning and passive scatteringDiscusses clinical aspects, such as treatment planning and quality assuranceOffers insight on the past, present, and future of proton therapy from a physics perspective},
+	language = {Englisch},
+	publisher = {CRC Press},
+	editor = {Paganetti, Harald},
+	month = nov,
+	year = {2018},
+	annote = {for showing CSDA = R80 distal fall of
+
+},
+}
+
+@article{nyholm_mr_2018,
+	title = {{MR} and {CT} data with multiobserver delineations of organs in the pelvic area—{Part} of the {Gold} {Atlas} project},
+	volume = {45},
+	copyright = {http://creativecommons.org/licenses/by-nc/4.0/},
+	issn = {0094-2405, 2473-4209},
+	shorttitle = {{\textless}span style="font-variant},
+	url = {https://aapm.onlinelibrary.wiley.com/doi/10.1002/mp.12748},
+	doi = {10.1002/mp.12748},
+	abstract = {Purpose
+              
+                We describe a public dataset with
+                MR
+                and
+                CT
+                images of patients performed in the same position with both multiobserver and expert consensus delineations of relevant organs in the male pelvic region. The purpose was to provide means for training and validation of segmentation algorithms and methods to convert
+                MR
+                to
+                CT
+                like data, i.e., so called synthetic
+                CT
+                (
+                sCT
+                ).
+              
+            
+            
+              Acquisition and validation methods
+              
+                T1‐ and T2‐weighted
+                MR
+                images as well as
+                CT
+                data were collected for 19 patients at three different departments. Five experts delineated nine organs for each patient based on the T2‐weighted
+                MR
+                images. An automatic method was used to fuse the delineations. Starting from each fused delineation, a consensus delineation was agreed upon by the five experts for each organ and patient. Segmentation overlap between user delineations with respect to the consensus delineations was measured to describe the spread of the collected data. Finally, an open‐source software was used to create deformation vector fields describing the relation between
+                MR
+                and
+                CT
+                images to further increase the usability of the dataset.
+              
+            
+            
+              Data format and usage notes
+              
+                The dataset has been made publically available to be used for academic purposes, and can be accessed from
+                https://zenodo.org/record/583096
+                .
+              
+            
+            
+              Potential applications
+              
+                The dataset provides a useful source for training and validation of segmentation algorithms as well as methods to convert
+                MR
+                to
+                CT
+                ‐like data (
+                sCT
+                ). To give some examples: The T2‐weighted
+                MR
+                images with their consensus delineations can directly be used as a template in an existing atlas‐based segmentation engine; the expert delineations are useful to validate the performance of a segmentation algorithm as they provide a way to measure variability among users which can be compared with the result of an automatic segmentation; and the pairwise deformably registered
+                MR
+                and
+                CT
+                images can be a source for an atlas‐based
+                sCT
+                algorithm or for validation of
+                sCT
+                algorithm.},
+	language = {en},
+	number = {3},
+	journal = {Medical Physics},
+	author = {Nyholm, Tufve and Svensson, Stina and Andersson, Sebastian and Jonsson, Joakim and Sohlin, Maja and Gustafsson, Christian and Kjellén, Elisabeth and Söderström, Karin and Albertsson, Per and Blomqvist, Lennart and Zackrisson, Björn and Olsson, Lars E. and Gunnlaugsson, Adalsteinn},
+	month = mar,
+	year = {2018},
+	pages = {1295--1300},
+	annote = {patient origin
+
+},
+	file = {Volltext:C\:\\Users\\yoffe\\Zotero\\storage\\5IP6F4X6\\Nyholm et al. - 2018 - MR and CTspan.pdf:application/pdf},
+}
+
+@article{park_variation_2011,
+	title = {Variation of {Bragg} {Curve} {Characteristic} {Induced} by {Changing} the {Position} of {Inhomogeneous} {Material}: {Geant4} {Simulation} {Study}},
+	volume = {58},
+	issn = {0374-4884},
+	shorttitle = {Variation of {Bragg} {Curve} {Characteristic} {Induced} by {Changing} the {Position} of {Inhomogeneous} {Material}},
+	url = {http://www.jkps.or.kr/journal/DOIx.php?id=10.3938/jkps.58.187},
+	doi = {10.3938/jkps.58.187},
+	language = {en},
+	number = {2},
+	journal = {J. Korean Phy. Soc.},
+	author = {Park, So-Hyun and Jung, Won-Gyun and Suh, Tae-Suk and Jang, Hong-Seok and Choi, Byeong Oak and Rah, Jeong-Eun and Park, Sungyong and Lee, Se Byeong},
+	month = feb,
+	year = {2011},
+	pages = {187--197},
+}
+
+@article{peters_consensus_2023,
+	title = {Consensus guide on {CT}-based prediction of stopping-power ratio using a {Hounsfield} look-up table for proton therapy},
+	volume = {184},
+	issn = {01678140},
+	url = {https://linkinghub.elsevier.com/retrieve/pii/S016781402300213X},
+	doi = {10.1016/j.radonc.2023.109675},
+	language = {en},
+	journal = {Radiotherapy and Oncology},
+	author = {Peters, Nils and Trier Taasti, Vicki and Ackermann, Benjamin and Bolsi, Alessandra and Vallhagen Dahlgren, Christina and Ellerbrock, Malte and Fracchiolla, Francesco and Gomà, Carles and Góra, Joanna and Cambraia Lopes, Patricia and Rinaldi, Ilaria and Salvo, Koen and Sojat Tarp, Ivanka and Vai, Alessandro and Bortfeld, Thomas and Lomax, Antony and Richter, Christian and Wohlfahrt, Patrick},
+	month = jul,
+	year = {2023},
+	pages = {109675},
+	annote = {HLUT plot theory
+
+},
+	file = {Volltext:C\:\\Users\\yoffe\\Zotero\\storage\\PNV2DMI9\\Peters et al. - 2023 - Consensus guide on CT-based prediction of stopping-power ratio using a Hounsfield look-up table for.pdf:application/pdf},
+}
+
+@article{suit_clinical_1977,
+	title = {Clinical experience and expectation with protons and heavy ions},
+	volume = {3},
+	copyright = {https://www.elsevier.com/tdm/userlicense/1.0/},
+	issn = {03603016},
+	url = {https://linkinghub.elsevier.com/retrieve/pii/0360301677902371},
+	doi = {10.1016/0360-3016(77)90237-1},
+	language = {en},
+	journal = {International Journal of Radiation Oncology Biology Physics},
+	author = {Suit, Herman D. and Goitein, Michael and Tepper, Joel E. and Verhey, Lynn and Koehler, Andreas M. and Schneider, Robert and Gragoudas, Evangelos},
+	month = jan,
+	year = {1977},
+	pages = {115--125},
+	annote = {proton greater dose conformaty (for introduction)
+},
+}
+
+@article{schellhammer_integrating_2018,
+	title = {Integrating a low-field open {MR} scanner with a static proton research beam line: proof of concept},
+	volume = {63},
+	issn = {1361-6560},
+	shorttitle = {Integrating a low-field open {MR} scanner with a static proton research beam line},
+	url = {https://iopscience.iop.org/article/10.1088/1361-6560/aaece8},
+	doi = {10.1088/1361-6560/aaece8},
+	number = {23},
+	journal = {Phys. Med. Biol.},
+	author = {Schellhammer, Sonja M and Hoffmann, Aswin L and Gantz, Sebastian and Smeets, Julien and Van Der Kraaij, Erik and Quets, Sébastien and Pieck, Stefan and Karsch, Leonhard and Pawelke, Jörg},
+	month = nov,
+	year = {2018},
+	pages = {23LT01},
+	annote = {for intro talking about MRiPT
+},
+}
+
+@incollection{zeman_basics_2020,
+	title = {Basics of {Radiation} {Therapy}},
+	copyright = {https://www.elsevier.com/tdm/userlicense/1.0/},
+	isbn = {978-0-323-47674-4},
+	url = {https://linkinghub.elsevier.com/retrieve/pii/B978032347674400027X},
+	language = {en},
+	booktitle = {Abeloff's {Clinical} {Oncology}},
+	publisher = {Elsevier},
+	author = {Zeman, Elaine M. and Schreiber, Eric C. and Tepper, Joel E.},
+	year = {2020},
+	doi = {10.1016/B978-0-323-47674-4.00027-X},
+	pages = {431--460.e3},
+	annote = {surgery, chemo and radiotherapy
+},
+}
+
+@book{p_world_nodate,
+	title = {World {Cancer} {Report} 2008},
+	isbn = {978-92-832-0423-7},
+	url = {https://publications.iarc.fr/Non-Series-Publications/World-Cancer-Reports/World-Cancer-Report-2008},
+	language = {en},
+	author = {P, Boyle and B, Levin},
+	annote = {combined treatment
+
+},
+	file = {Snapshot:C\:\\Users\\yoffe\\Zotero\\storage\\XB6LQ4RC\\World-Cancer-Report-2008.html:text/html},
+}
+
+@article{duetschler_fast_2023,
+	title = {A fast analytical dose calculation approach for {MRI}-guided proton therapy},
+	volume = {68},
+	issn = {0031-9155, 1361-6560},
+	url = {https://iopscience.iop.org/article/10.1088/1361-6560/acf90d},
+	doi = {10.1088/1361-6560/acf90d},
+	abstract = {Abstract
+            
+              Objective.
+              Magnetic resonance (MR) is an innovative technology for online image guidance in conventional radiotherapy and is also starting to be considered for proton therapy as well. For MR-guided therapy, particularly for online plan adaptations, fast dose calculation is essential. Monte Carlo (MC) simulations, however, which are considered the gold standard for proton dose calculations, are very time-consuming. To address the need for an efficient dose calculation approach for MRI-guided proton therapy, we have developed a fast GPU-based modification of an analytical dose calculation algorithm incorporating beam deflections caused by magnetic fields.
+              Approach.
+              Proton beams (70–229 MeV) in orthogonal magnetic fields (0.5/1.5 T) were simulated using TOPAS-MC and central beam trajectories were extracted to generate look-up tables (LUTs) of incremental rotation angles as a function of water-equivalent depth. Beam trajectories are then reconstructed using these LUTs for the modified ray casting dose calculation. The algorithm was validated against MC in water, different materials and for four example patient cases, whereby it has also been fully incorporated into a treatment plan optimisation regime.
+              Main results.
+              Excellent agreement between analytical and MC dose distributions could be observed with sub-millimetre range deviations and differences in lateral shifts {\textless}2 mm even for high densities (1000 HU). 2\%/2 mm gamma pass rates were comparable to the 0 T scenario and above 94.5\% apart for the lung case. Further, comparable treatment plan quality could be achieved regardless of magnetic field strength.
+              Significance.
+              A new method for accurate and fast proton dose calculation in magnetic fields has been developed and successfully implemented for treatment plan optimisation.},
+	number = {19},
+	journal = {Phys. Med. Biol.},
+	author = {Duetschler, Alisha and Winterhalter, Carla and Meier, Gabriel and Safai, Sairos and Weber, Damien C and Lomax, Antony J and Zhang, Ye},
+	month = oct,
+	year = {2023},
+	pages = {195020},
+	annote = {mr guided phtoon therapy clincally used
+
+},
+}
+
+@article{han_current_2019,
+	title = {Current status of proton therapy techniques for lung cancer},
+	volume = {37},
+	issn = {2234-1900, 2234-3156},
+	url = {http://e-roj.org/journal/view.php?doi=10.3857/roj.2019.00633},
+	doi = {10.3857/roj.2019.00633},
+	language = {en},
+	number = {4},
+	journal = {Radiat Oncol J},
+	author = {Han, Youngyih},
+	month = dec,
+	year = {2019},
+	pages = {232--248},
+	annote = {increasing use of proton therapy
+},
+	file = {Full Text:C\:\\Users\\yoffe\\Zotero\\storage\\SXPYWKLH\\Han - 2019 - Current status of proton therapy techniques for lung cancer.pdf:application/pdf},
+}
+
+@article{permatasari_material_2020,
+	title = {Material assignment for proton range prediction in {Monte} {Carlo} patient simulations using stopping-power datasets},
+	volume = {65},
+	issn = {0031-9155, 1361-6560},
+	url = {https://iopscience.iop.org/article/10.1088/1361-6560/ab9702},
+	doi = {10.1088/1361-6560/ab9702},
+	abstract = {Abstract
+            
+              Motivation and objective.
+              For each institute, the selection and calibration of the most suitable approach to assign material properties for Monte Carlo (MC) patient simulation in proton therapy is a major challenge. Current conventional approaches based on computed tomography (CT) depend on CT acquisition and reconstruction settings. This study proposes a material assignment approach, referred to as MATA (
+              MAT
+              erial
+              A
+              ssignment), which is independent of CT scanner properties and, therefore, universally applicable by any institute.
+              Materials and methods.
+              The MATA approach assigns material properties to the physical quantity stopping-power ratio (SPR) using a set of 40 material compositions specified for human tissues and linearly determined mass density. The application of clinically available CT-number-to-SPR conversion avoids the need for any further calibration. The MATA approach was validated with homogeneous and heterogeneous SPR datasets by assessing the SPR accuracy after material assignment obtained either based on dose scoring or determination of water-equivalent thickness. Finally, MATA was applied on patient datasets to evaluate dose differences induced by different approaches for material assignment and SPR prediction.
+              Results.
+              The deviation between the SPR after material assignment and the input SPR was close to zero in homogeneous datasets and below 0.002 (0.2\% relative to water) in heterogeneous datasets, which was within the systematic uncertainty in SPR estimation. The comparison of different material assignment approaches revealed relevant differences in dose distribution and SPR. The comparison between two SPR prediction approaches, a standard look-up table and direct SPR determination from dual-energy CT, resulted in patient-specific mean proton range shifts between 1.3 mm and 4.8 mm.
+              Conclusion.
+              MATA eliminates the need for institution-specific adaptations of the material assignment. It allows for using any SPR dataset and thus facilitates the implementation of more accurate SPR prediction approaches. Hence, MATA provides a universal solution for patient modeling in MC-based proton treatment planning.},
+	number = {18},
+	journal = {Phys. Med. Biol.},
+	author = {Permatasari, Felicia Fibiani and Eulitz, Jan and Richter, Christian and Wohlfahrt, Patrick and Lühr, Armin},
+	month = sep,
+	year = {2020},
+	pages = {185004},
+}
+
+@article{wang_magnetic_2022,
+	title = {Magnetic {Resonance}-{Based} {Synthetic} {Computed} {Tomography} {Using} {Generative} {Adversarial} {Networks} for {Intracranial} {Tumor} {Radiotherapy} {Treatment} {Planning}},
+	volume = {12},
+	issn = {2075-4426},
+	doi = {10.3390/jpm12030361},
+	abstract = {The purpose of this work is to develop a reliable deep-learning-based method that is capable of synthesizing needed CT from MRI for radiotherapy treatment planning. Simultaneously, we try to enhance the resolution of synthetic CT. We adopted pix2pix with a 3D framework, which is a conditional generative adversarial network, to map the MRI data domain into the CT data domain of our dataset. The original dataset contains paired MRI and CT images of 31 subjects; 26 pairs were used for model training and 5 were used for model validation. To identify the correctness of the synthetic CT of models, all of the synthetic CTs were calculated by the quantized image similarity formulas: cosine angle distance, Euclidean distance, mean square error, peak signal-to-noise ratio, and mean structural similarity. Two radiologists independently evaluated the satisfaction score, including spatial, detail, contrast, noise, and artifacts, for each imaging attribute. The mean (±standard deviation) of the structural similarity indices (CAD, L2 norm, MSE, PSNR, and MSSIM) between five real CT scans and the synthetic CT scans were 0.96 ± 0.015, 76.83 ± 12.06, 0.00118 ± 0.00037, 29.47 ± 1.35, and 0.84 ± 0.036, respectively. For synthetic CT, radiologists rated the results as evincing excellent satisfaction in spatial geometry and noise level, good satisfaction in contrast and artifacts, and fair imaging details. The similarity index and clinical evaluation results between synthetic CT and original CT guarantee the usability of the proposed method.},
+	language = {eng},
+	number = {3},
+	journal = {J Pers Med},
+	author = {Wang, Chun-Chieh and Wu, Pei-Huan and Lin, Gigin and Huang, Yen-Ling and Lin, Yu-Chun and Chang, Yi-Peng Eve and Weng, Jun-Cheng},
+	month = feb,
+	year = {2022},
+	pmid = {35330361},
+	pmcid = {PMC8955512},
+	keywords = {attenuation correction, brain tumor, deep learning, generative adversarial net (GAN), MR-only simulation, radiotherapy planning},
+	pages = {361},
+	annote = {sCT
+
+},
+	file = {Volltext:C\:\\Users\\yoffe\\Zotero\\storage\\E2R7H488\\Wang et al. - 2022 - Magnetic Resonance-Based Synthetic Computed Tomography Using Generative Adversarial Networks for Int.pdf:application/pdf},
+}
+
+@article{boulanger_deep_2021,
+	title = {Deep learning methods to generate synthetic {CT} from {MRI} in radiotherapy: {A} literature review},
+	volume = {89},
+	issn = {11201797},
+	shorttitle = {Deep learning methods to generate synthetic {CT} from {MRI} in radiotherapy},
+	url = {https://linkinghub.elsevier.com/retrieve/pii/S1120179721002714},
+	doi = {10.1016/j.ejmp.2021.07.027},
+	language = {en},
+	journal = {Physica Medica},
+	author = {Boulanger, M. and Nunes, Jean-Claude and Chourak, H. and Largent, A. and Tahri, S. and Acosta, O. and De Crevoisier, R. and Lafond, C. and Barateau, A.},
+	month = sep,
+	year = {2021},
+	pages = {265--281},
+	annote = {sCT
+},
+	file = {Submitted Version:C\:\\Users\\yoffe\\Zotero\\storage\\SKLGIX47\\Boulanger et al. - 2021 - Deep learning methods to generate synthetic CT from MRI in radiotherapy A literature review.pdf:application/pdf},
+}
+
+@article{paganetti_relative_2002,
+	title = {Relative biological effectiveness ({RBE}) values for proton beam therapy},
+	volume = {53},
+	copyright = {https://www.elsevier.com/tdm/userlicense/1.0/},
+	issn = {03603016},
+	url = {https://linkinghub.elsevier.com/retrieve/pii/S0360301602027542},
+	doi = {10.1016/S0360-3016(02)02754-2},
+	language = {en},
+	number = {2},
+	journal = {International Journal of Radiation Oncology Biology Physics},
+	author = {Paganetti, Harald and Niemierko, Andrzej and Ancukiewicz, Marek and Gerweck, Leo E and Goitein, Michael and Loeffler, Jay S and Suit, Herman D},
+	month = jun,
+	year = {2002},
+	pages = {407--421},
+	annote = {RBE varying. assumed constant 1.1 is not good.
+},
+}

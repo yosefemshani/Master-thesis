@@ -1,0 +1,43 @@
+% analysis of Lihengs idea on reverse dose calculation method with given
+% end position, velocity and angle
+
+% definition of basic 3D 10x10x10 cm^3 box
+x = 10;
+y = 10;
+z = 10;
+
+% definition of parameters for lorentz force calculation
+q = 1.602 * 10^(-19); % [C]
+B = [0, 1.5, 0]; % 1.5 [T] in y-axis
+
+% initial conditions
+initial_position = [0,0,0]; % initial position of x y and z in [m]
+initial_velocity = [269813212.2, 0, 0]; % initial velocity v = 0.9c in x-axis [m/s]
+
+
+% simulation parameters
+dt = 1 * 10^(-9); % time step in [s]
+steps = 1000; % 1000 steps in iteration
+
+% initialize arrays to store position and velocity at each step
+positions = zeros(steps + 1, 3);
+velocities = zeros(steps + 1, 3);
+
+% set initial condition
+positions(1, :) = initial_position;
+velocities(1, :) = initial_velocity;
+
+% calculate Lorentz force with numr
+
+
+
+% calculate Lorentz force
+F = q * cross(v, B);
+
+% display results
+disp('Particle velocity:');
+disp(v);
+disp('Magnetic field:');
+disp(B);
+disp('Lorentz force:');
+disp(F);

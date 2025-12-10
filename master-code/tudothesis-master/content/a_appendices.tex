@@ -1,0 +1,1097 @@
+\chapter{Appendix}
+\section{Developed proton transfer algorithm}
+\label{sec:protontrajectoryappendix}
+\subsection{Proton transfer algorithm}
+\begin{python}
+    classdef ProtonSimulation_half
+    properties
+        % Constant variables
+        mp_MeV = 938.272013;
+        mp = 1.67262158e-27; % [kg]
+        c = 299792458 * 100; % [mm/s]
+        atomic_mass_unit_MeV_c2 = 931.494; % MeV/c^2
+        q = 1.602e-19; % Elementary charge
+
+        % Variables one might change
+        E0_MeV; % Initial proton energy
+        B; % Magnetic field [T]
+        initial_position; % Initial position [mm]
+        initial_velocity; % Initial velocity [mm/s]
+        
+        % Arrays to store results
+        positions;
+        velocities;
+        accelerations;
+        times;
+        energy_losses_adjusted;
+        energies; % To store energy at each step
+        total_trajectory_length;
+        
+        % Initial conditions
+        grid_step; % [m]
+        total_distance; % [mm]
+        num_steps;
+        SPR_values;
+        E_MeV;
+        x_distance = 0;
+    end
+    
+    methods
+        function obj = ProtonSimulation_half(SPR_values, E0_MeV, B, grid_step, total_distance, initial_position, initial_velocity)
+            % Constructor to initialize properties and load SPR values
+            obj.SPR_values = SPR_values;
+            obj.E0_MeV = E0_MeV;
+            obj.B = B;
+            obj.grid_step = grid_step;
+            obj.total_distance = total_distance;
+            obj.initial_position = initial_position;
+            obj.initial_velocity = initial_velocity;
+            steps = round(obj.total_distance / obj.grid_step);
+            obj.num_steps = steps;
+            obj.positions = zeros(3, steps);
+            obj.velocities = zeros(3, steps);
+            obj.accelerations = zeros(3, steps);
+            obj.times = zeros(1, steps);
+            obj.energy_losses_adjusted = zeros(1, steps);
+            obj.energies = zeros(1, steps); % Initialize energies array
+            obj.E_MeV = obj.E0_MeV;
+            obj.total_trajectory_length = 0; % Initialize total trajectory length
+        end
+        
+        function obj = initializeStep(obj)
+            % Initialize first step of velocity and acceleration
+            gamma0 = 1 + obj.E0_MeV / obj.atomic_mass_unit_MeV_c2;
+            beta0 = sqrt(1 - 1/gamma0^2);
+            v0 = beta0 * obj.c;
+            v = obj.initial_velocity; % Use the initial velocity input
+            F = - obj.q * cross(v, obj.B);
+            a = F / obj.mp;
+            obj.positions(:, 1) = obj.initial_position; % Use the initial position input
+            obj.velocities(:, 1) = v;
+            obj.energies(1) = obj.E0_MeV; % Store initial energy
+        end
+        
+        function obj = simulate(obj)
+            [num_rows, num_cols] = size(obj.SPR_values);
+            
+            for step = 2:obj.num_steps
+                % Time step calculation based on half the grid step
+                half_grid_step = obj.grid_step / 2;
+                half_time_step = half_grid_step / norm(obj.velocities(1, step - 1));
+
+                % First half-step to mid-point of the voxel
+                F_mid = - obj.q * cross(obj.velocities(:, step - 1), obj.B);
+                a_mid = F_mid / obj.mp;
+
+                mid_velocities = obj.velocities(:, step - 1) + a_mid * half_time_step;
+                mid_positions = obj.positions(:, step - 1) + obj.velocities(:, step - 1) * half_time_step;
+
+                % Calculate energy loss at the mid-point
+                energy_loss_keV_um = obj.calculate_energy_loss(obj.E_MeV);
+
+                if obj.E_MeV < 0.49
+                    energy_loss_keV_um = 0;
+                    obj.E_MeV = 0;
+                    %disp(['Energy dropped below Bethe lower limit, E=0 MeV']);
+                    break;
+                else
+                    x_pos = mid_positions(1) * 10; % Convert to mm
+                    y_pos = mid_positions(2) * 10; % Convert to mm
+                    x_index = min(max(round(x_pos), 1), num_cols);
+                    y_index = min(max(round(y_pos), 1), num_rows);
+                    SPR_value = obj.SPR_values(y_index, x_index);
+                    energy_loss_keV_um_adjusted = energy_loss_keV_um * SPR_value;
+                    obj.energy_losses_adjusted(step) =
+                    energy_loss_keV_um_adjusted;
+                    obj.E_MeV = obj.E_MeV - energy_loss_keV_um_adjusted * obj.grid_step;
+                    obj.energies(step) = obj.E_MeV; % Store energy at current step
+                end
+
+                % Update gamma and beta
+                gamma = 1 + obj.E_MeV / obj.atomic_mass_unit_MeV_c2;
+                beta = sqrt(1 - 1/gamma^2);
+                if gamma < 1
+                    %disp(['Gamma dropped below 1 at step ', num2str(step)]);
+                    break;
+                end
+
+                % Complete the second half-step to the end of the voxel
+                F_end = - obj.q * cross(mid_velocities, obj.B);
+                a_end = F_end / obj.mp;
+
+                obj.velocities(:, step) = mid_velocities + a_end * half_time_step;
+                obj.positions(:, step) = mid_positions + mid_velocities * half_time_step;
+                obj.accelerations(:, step) = a_end;
+                obj.times(step) = obj.times(step - 1) + 2 * half_time_step;
+
+                % Calculate trajectory length increment for this step
+                delta_position = obj.positions(:, step) - obj.positions(:, step - 1);
+                delta_s = norm(delta_position); % Calculate delta_s using sqrt(Δx^2 + Δy^2 + Δz^2)
+                obj.total_trajectory_length = obj.total_trajectory_length + delta_s; % Accumulate trajectory length
+            end
+        end
+        
+     function energy_loss_MeV_cm = calculate_energy_loss(obj, E_MeV)
+    % constant variables
+    me_MeV = 0.510998918; %(see https://github.com/libamtrack/library/blob/master/include/AT_Constants.h#L38 l. 38)
+    mp_MeV = 938.272013; %(see https://github.com/libamtrack/library/blob/master/include/AT_Constants.h#L35 l. 35)
+    m_MeV = 1.0079 * mp_MeV; %(see https://github.com/libamtrack/library/blob/master/src/AT_PhysicsRoutines.c#L278 l. 280)
+    c = 299792458; % Speed of light in m/s
+    re = 2.8179403262 * 10^(-15); % electron radius in m
+    NA = 6.02214086 * 10^23; % 1/mol
+    atomic_mass_unit_MeV_c2 = 931.494; %MeV/c^2
+    Dirac_constant_J_s = 1.054571628e-34;
+    BETHE_LOWER_LIMIT_E_MEV_U = 0.49;
+    phase_undefined = 0;
+    phase_condensed = 1;
+    phase_gas = 2;
+    Z = 1; %for protons
+
+    % variables one might change!
+    E_restricted_keV = 1000;
+    I_eV = 78; % 75 eV for liquid water / 78 in TOPAS. for others,
+    %see https://github.com/libamtrack/library/blob/
+    %44dc48cfa977c05008ad12646d798d6c4b6ea504/include/AT_DataMaterial.h l. 197-203
+    AT = 18.0006; % mass number for H2O
+    ZT = 10; % ordinary number for target: water (H2O: 2 * 1 + 1 * 8 = 10)
+    phase = phase_condensed; %for liquid water! for others, see https://github.com/libamtrack/library/blob/master/include/AT_DataMaterial.h#L246
+                                                               %lines 240-253 for different materials!
+
+    % simple calculations and conversion factors
+    gamma = 1 + E_MeV / atomic_mass_unit_MeV_c2; %(see https://github.com/libamtrack/library/blob/master/src/AT_PhysicsRoutines.c#L45 lines 65-82)
+    assert(gamma >= 1.0);
+
+    beta = sqrt(1 - 1/gamma^2); %(see https://github.com/libamtrack/library/blob/master/src/AT_PhysicsRoutines.c#L45 line 75)
+    mass_correction_term = 1 + (2 * (me_MeV / m_MeV) / gamma) + (me_MeV / m_MeV)^2; %(see https://github.com/libamtrack/library/blob/master/src/AT_PhysicsRoutines.c#L278 l. 281)
+    Wm_MeV = 2 * me_MeV * beta^2 / (1 - beta^2) / mass_correction_term; %(see https://github.com/libamtrack/library/blob/master/src/AT_PhysicsRoutines.c#L285 l.288)
+    beta2 = beta^2;
+    I_MeV = I_eV * 1e-6;
+    m_to_cm = 100;
+    MeV_to_J = 1.60217646e-13;
+    I_J = I_MeV * MeV_to_J;
+
+    % Stopping power
+
+    % Restricted stopping number requested?
+    restricted = false;
+    if E_restricted_keV > 0.0 && (E_restricted_keV / 1000.0) < Wm_MeV
+        restricted = true;
+    end
+
+    % First part of stopping number
+    SN11 = (2.0 * me_MeV * beta2) / (1.0 - beta2);
+    assert(I_MeV > 0);
+    SN11 = SN11 / I_MeV;
+
+    if restricted
+        Wm_MeV = E_restricted_keV * 1e-3;
+    end
+    SN12 = Wm_MeV / I_MeV;
+
+    % Second part of stopping number
+    SN2 = beta2;
+    if restricted
+        SN2 = SN2 / 2;
+        SN2 = (SN2 + (1.0 - beta2) * Wm_MeV) / (4.0 * me_MeV);
+    end
+
+    % Third part of stopping number (density correction following Sternheimer, 1971)
+    delta = 0.0;
+    if phase ~= phase_undefined
+        gamma_single =  1.0 + E_MeV / atomic_mass_unit_MeV_c2;
+        assert(gamma_single >= 1.0);
+
+        assert(E_MeV >= 0);
+        beta_single = sqrt(1 - (1/gamma_single^2));
+
+        assert(beta_single * gamma_single > 0);
+        kinetic_variable_single = log10(beta_single*gamma_single);
+        kinetic_variable = kinetic_variable_single;
+
+        rho_gcm3 = 1;
+        numbers_of_atoms_per_g = NA / AT;
+        numbers_of_electrons_per_g = numbers_of_atoms_per_g * ZT;
+        electron_density_per_cm3 = numbers_of_electrons_per_g * rho_gcm3;
+        electron_density_m3_single = electron_density_per_cm3 * m_to_cm * m_to_cm * m_to_cm;
+        electron_density_m3 = electron_density_m3_single;
+
+        %https://github.com/libamtrack/library/blob/master/src/AT_DataMaterial.c#L294
+        %line 307
+        plasma_energy_J = sqrt((4 * pi * electron_density_m3 * re) * Dirac_constant_J_s * c);
+
+        C = 1.0 + 2.0 * log(I_J / plasma_energy_J);
+
+        % Find x_0 and x_1 dependent on phase, I-value, and C
+        if phase == phase_condensed
+            if I_eV < 100
+                x_1 = 2.0;
+                if C <= 3.681
+                    x_0 = 0.2;
+                else
+                    x_0 = 0.326 * C - 1.0;
+                end
+            else % I_eV >= 100
+                x_1 = 3.0;
+                if C <= 5.215
+                    x_0 = 0.2;
+                else
+                    x_0 = 0.326 * C - 1.5;
+                end
+            end
+        else % gaseous material
+            x_0 = 0.326 * C - 2.5;
+            x_1 = 5.0;
+            if C < 10.0
+                x_0 = 1.6;
+                x_1 = 4.0;
+            end
+            if C >= 10.0 && C < 10.5
+                x_0 = 1.7;
+                x_1 = 4.0;
+            end
+            if C >= 10.5 && C < 11.0
+                x_0 = 1.8;
+                x_1 = 4.0;
+            end
+            if C >= 11.0 && C < 11.5
+                x_0 = 1.9;
+                x_1 = 4.0;
+            end
+            if C >= 11.5 && C < 12.25
+                x_0 = 2.0;
+                x_1 = 4.0;
+            end
+            if C >= 12.25 && C < 13.804
+                x_0 = 2.0;
+                x_1 = 5.0;
+            end
+        end
+
+        x_a = C / 4.606;
+        m = 3.0;
+        a = 4.606 * (x_a - x_0) / ((x_1 - x_0)^m);
+
+        if kinetic_variable >= x_0 && kinetic_variable <= x_1
+            delta = 4.606 * kinetic_variable - C + a * (x_1 - kinetic_variable)^m;
+        end
+        if kinetic_variable > x_1
+            delta = 4.606 * kinetic_variable - C;
+        end
+    end
+    SN3 = delta;
+
+    % Forth part of stopping number (shell correction) TODO: implement
+
+    %assert(SN11 > 0);
+    %assert(SN12 > 0);
+
+    stopping_number = 0.5 * log(SN11 * SN12) - SN2 - SN3;
+
+    % Leading energy loss term
+    %(we assume that effective charge is used! otherwise, 
+    %change code with the help of
+    %https://github.com/libamtrack/library/blob/
+    %44dc48cfa977c05008ad12646d798d6c4b6ea504/src/AT_StoppingPowerDataBethe.c#L49 l. 62-65)
+
+    assert(AT > 0);
+    assert(beta2 > 0);
+
+    % calculation of effective charge according to Barkas-Bethe approximation
+    if Z ~= 1
+        effective_charge = Z * (1.0 - exp(-125.0 * beta / (Z^(2.0/3.0))));
+    else
+        effective_charge = 1.0 - exp(-125.0 * beta);
+    end
+
+    %since we only use effective charge we can say z = Z;
+    z = Z;
+
+    % ICRU49, p.6, after Cohen and Taylor (1986), k_MeV_cm2_g = 0.307075
+    energy_loss_leading_term_MeV_cm2_g = 0.307075 * (ZT / AT) * (z^2) / beta2;
+
+    
+    % Energy loss
+    % Compute only above 1.0 MeV, otherwise theory is too wrong below return zero
+    % TODO: Find smarter criterion because this may cause problems in the code (as it did
+    % TODO: with the inappropriately set lower limit for CSDA range integration (was 0, now 1.0 MeV)
+    
+    if E_MeV >= BETHE_LOWER_LIMIT_E_MEV_U
+        energy_loss_MeV_cm = energy_loss_leading_term_MeV_cm2_g * stopping_number;
+    else
+       energy_loss_MeV_cm = 0;
+    end
+
+    % unit conversion
+    energy_loss_keV_um = energy_loss_MeV_cm / 10; % [keV/μm] AND [MeV/mm]
+    energy_loss_MeV_m = energy_loss_MeV_cm / 100; % [MeV/m]
+end
+        % Function for saving results
+        function saveResults(obj)
+            non_zero_mask = any(obj.positions ~= 0, 1);
+            filtered_positions = obj.positions(:, non_zero_mask);
+            filtered_energyloss = obj.energy_losses_adjusted(:, non_zero_mask);
+            csvwrite('trajectory.csv', filtered_positions');
+            disp(['Total trajectory length s: ', num2str(obj.total_trajectory_length), ' mm']);
+        end
+        
+        function energy = getEnergyAtStep(obj, step)
+            % Method to retrieve energy at a given step
+            energy = obj.energies(step);
+        end
+
+        % Function for storing and saving step range
+        function num_non_zero_steps = displayStepRange(obj)
+            non_zero_mask = any(obj.positions ~= 0, 1);
+            num_non_zero_steps = sum(non_zero_mask);
+        end
+    end
+end
+\end{python}
+
+\subsection{Initialization of proton transfer algorithm}
+\begin{python}
+y_position = 11.2; % Example initial y-position
+E0_MeV = 100;  % Example initial energy in MeV
+magnetic_field = [0; 0; 3]; % Example magnetic field in T
+SPR = readmatrix('SPR_values.csv'); 
+% Load SPR values SPR_values(_slice).csv watertestSPR.csv bone_SPR.csv heavybone_SPR.csv
+
+final_pos = analyzeProtonTrajectory(y_position, E0_MeV, magnetic_field, SPR);
+% Display last x-position
+disp([num2str(final_pos(1)')]);
+
+% New Function to Analyze Proton Trajectory
+function final_position = analyzeProtonTrajectory(y, E, B, SPR)
+    % Constants (needed for velocity calculation for example)
+    atomic_mass_unit_MeV_c2 = 931.494; % MeV/c^2
+    c = 299792458 * 100; % [mm/s]
+    
+    grid_step = 0.00109375; % [m] This is the CT grid step /"PixelSpacing"  one can aquire by looking at metadata using 3D Slicer for example
+    total_distance = 83.91796875; % [mm] CT rows * CT columns * CT grid step
+    
+    % Pre-calculations for initial velocity
+    gamma0 = 1 + E / atomic_mass_unit_MeV_c2;
+    beta0 = sqrt(1 - 1/gamma0^2);
+    v0 = beta0 * c;
+    
+    % Set initial conditions based on input parameters
+    initial_position = [0; y; 0]; % Initial y-position
+    initial_velocity = [v0; 0; 0]; % Initial velocity
+    
+    % Create an instance of ProtonSimulation
+    protonSim = ProtonSimulation_half(SPR, E, B, grid_step, total_distance, initial_position, initial_velocity);
+    
+    % Initialize and run the simulation
+    protonSim = protonSim.initializeStep();
+    protonSim = protonSim.simulate();
+    protonSim.saveResults();
+    
+
+    % Display the number of steps with non-zero values
+    % Get the number of steps with non-zero values
+    num_non_zero_steps = protonSim.displayStepRange();
+    
+    % Get the final position using the number of non-zero steps
+    if num_non_zero_steps > 0
+        final_position = protonSim.positions(:, num_non_zero_steps); % Extract the last valid position
+        %disp(['Final valid position (x, y, z): ', num2str(final_position')]);
+    else
+        %disp('No valid positions found.');
+    end
+end
+\end{python}
+
+\section{TOPAS}
+\subsection{Simulation setup}
+\label{sec:appendixtopassetup}
+\begin{python}
+# General settings
+
+i:Ts/NumberOfThreads = 0 # Max CPU threads
+includeFile = HUtoMaterialSchneider.txt # Import Schneider HULUT
+
+# Proton source positioning
+s:Ge/BeamPosition/Parent="World"
+s:Ge/BeamPosition/Type="Group"
+d:Ge/BeamPosition/TransX= -18.6484375 cm
+d:Ge/BeamPosition/TransY= 0. cm
+d:Ge/BeamPosition/TransZ= 0. cm
+d:Ge/BeamPosition/RotX=90. deg
+d:Ge/BeamPosition/RotY=270. deg
+d:Ge/BeamPosition/RotZ=0. deg
+
+# Proton beam model
+s:So/Demo/Type = "Beam"
+s:So/Demo/Component = "BeamPosition"
+s:So/Demo/BeamParticle = "proton"
+d:So/Demo/BeamEnergy = X. MeV # set X to desired energy value
+u:So/Demo/BeamEnergySpread = 0
+s:So/Demo/BeamPositionDistribution = "Flat"
+s:So/Demo/BeamPositionCutoffShape = "Ellipse"
+d:So/Demo/BeamPositionCutoffX = 0.5 cm
+d:So/Demo/BeamPositionCutoffY = 0.5 cm
+d:So/Demo/BeamPositionSpreadX = 0.1 mm
+d:So/Demo/BeamPositionSpreadY = 0.1 mm
+s:So/Demo/BeamAngularDistribution = "None"
+d:So/Demo/BeamAngularCutoffX = 90. deg
+d:So/Demo/BeamAngularCutoffY = 90. deg
+d:So/Demo/BeamAngularSpreadX = 0.000000032 rad
+d:So/Demo/BeamAngularSpreadY = 0.000000032 rad
+i:So/Demo/NumberOfHistoriesInRun = 100000
+
+# CT import
+
+s:Ge/Patient/Type                       = "TsDicomPatient"
+s:Ge/Patient/Parent                     = "World"
+s:Ge/Patient/ImagingtoMaterialConverter = "Schneider"
+d:Ge/Patient/RotX   = 0. deg
+d:Ge/Patient/RotY   = 180. deg
+d:Ge/Patient/RotZ   = 180. deg
+s:Ge/Patient/Field 		    	= "DipoleMagnet" 
+u:Ge/Patient/MagneticFieldDirectionX	= 0.0
+u:Ge/Patient/MagneticFieldDirectionY 	= 0.0
+u:Ge/Patient/MagneticFieldDirectionZ 	= 1.0 # for Bz
+s:Ge/Patient/MagneticField3DTable 		= "PurgMag3D.TABLE"
+d:Ge/Patient/MagneticFieldStrength   	= X.X tesla # set X.X to desired magnetic field strength
+
+# Dose scorer
+
+s:Sc/MyScorer/Quantity                  = "DoseToMedium"
+s:Sc/MyScorer/Component                 = "Patient"
+s:Sc/MyScorer/OutputFile                = "TOPAS_Beam"
+s:Sc/MyScorer/OutputType                = "csv"
+s:Sc/MyScorer/IfOutputFileAlreadyExists = "Overwrite"
+\end{python}
+
+
+\subsection{Estimation of proton stopping positions for B > 0 T}
+\label{sec:topasb0tappendix}
+\begin{python}
+import pandas as pd
+import numpy as np
+from matplotlib import pyplot as plt
+from scipy.optimize import curve_fit
+from scipy.interpolate import interp1d
+
+# Define Gaussian function for fitting
+def gaussian(y, a, mean, sigma):
+    return a * np.exp(-0.5 * ((y - mean) / sigma) ** 2)
+
+# Read the csv-file
+outputfile_topas = '../Data/TOPAS_prostate_B3_100MeV.csv'
+#outputfile_topas = '../TOPAS/TOPAS_Beam.csv'
+df = pd.read_csv(outputfile_topas, comment='#', header=None)
+
+# Convert the dataframe to a numpy array
+topas_datamatrix = np.array(df)
+
+# Extract depth (x), height (y), and dose values
+depth = topas_datamatrix[:, 0]  # depth (x)
+y_positions = topas_datamatrix[:, 1]  # y positions (height)
+dose = topas_datamatrix[:, 3]  # dose values
+
+# Reshape the dose data into a 2D grid based on 341 x bins, 225 y bins, and 7 z bins
+n_x_bins = 341
+n_y_bins = 225
+n_z_bins = 62
+
+dose_grid = dose.reshape(n_x_bins, n_y_bins, n_z_bins)
+
+# Define x axis for the plot (convert from cm to mm)
+x_bin_size = 0.109375 * 10  # mm per bin in x
+x_axis = np.arange(n_x_bins) * x_bin_size  # depth in mm
+
+# Sum dose values across all z-bins (integrating across slices)
+integrated_dose_z = np.sum(dose_grid, axis=2)
+
+# Integrate the dose along the y-axis (collapse into 1D dose profile along x)
+integrated_dose = np.sum(integrated_dose_z, axis=1)
+
+# Normalize the integrated dose by its maximum value
+integrated_dose_norm = (integrated_dose / np.max(integrated_dose)) * 100
+
+# Find the peak dose index (where max dose occurs)
+peak_idx = np.argmax(integrated_dose_norm)
+
+# Search for the position after the peak where dose crosses below 80% of the peak dose
+r80_value = 80  # 80% of the maximum dose
+post_peak_dose = integrated_dose_norm[peak_idx:]
+crossing_idx = np.where(post_peak_dose <= r80_value)[0][0] + peak_idx
+
+# Get the values at the two points surrounding the R80 crossing
+x1, x2 = x_axis[crossing_idx - 1], x_axis[crossing_idx]
+y1, y2 = integrated_dose_norm[crossing_idx - 1], integrated_dose_norm[crossing_idx]
+
+# Perform linear interpolation to find the exact x position for R80
+r80_x = x1 + (r80_value - y1) * (x2 - x1) / (y2 - y1)
+
+print(f"R80 value at depth: {r80_x:.2f} mm")
+
+# Define y axis (height) in mm for the plot
+y_bin_size = 0.109375 * 10  # mm per bin in y
+y_axis = np.arange(n_y_bins) * y_bin_size  # height in mm
+
+# Initialize a list to store the (x, y, dose) values
+yshift_array = []
+
+# Boolean flag to track when the first Gaussian fit fails
+fitting_failed = False
+
+# Iterate over all x_bins
+for x_bin in range(n_x_bins):
+    if fitting_failed:
+        x_value = x_bin * x_bin_size  # Convert x_bin to depth in mm
+        yshift_array.append([x_value, 0.0, 0.0])
+        continue
+
+    # Extract dose values along the y-axis for the current x_bin (summed over z)
+    y_dose_distribution = np.sum(dose_grid[x_bin, :, :], axis=1)  # Sum over all z-bins
+
+    # Check if the dose is all zeros or close to zero
+    if np.max(y_dose_distribution) <= 0:
+        x_value = x_bin * x_bin_size  # Convert x_bin to depth in mm
+        yshift_array.append([x_value, 0.0, 0.0])
+        continue
+
+    # Normalize the dose distribution
+    y_dose_distribution_norm = (y_dose_distribution / np.max(y_dose_distribution)) * 100
+
+    if np.isnan(y_dose_distribution_norm).any() or np.isinf(y_dose_distribution_norm).any():
+        x_value = x_bin * x_bin_size  # Convert x_bin to depth in mm
+        yshift_array.append([x_value, 0.0, 0.0])
+        continue
+
+    try:
+        # Fit a Gaussian function to the normalized y-dose distribution
+        popt, _ = curve_fit(gaussian, y_axis, y_dose_distribution_norm, 
+                            p0=[np.max(y_dose_distribution_norm), np.mean(y_axis), np.std(y_axis)], 
+                            maxfev=4000)
+
+        # Extract the mean (which corresponds to the y position of the Gaussian peak)
+        mean_fit = popt[1]
+
+        # Get the absolute dose value at the position where the Gaussian peak occurs
+        closest_y_idx = np.argmin(np.abs(y_axis - mean_fit))
+        absolute_dose = y_dose_distribution[closest_y_idx]
+
+        # Append the current x_bin (converted to depth), y value (mean_fit), and absolute dose to the array
+        x_value = x_bin * x_bin_size  # Convert x_bin to depth in mm
+        yshift_array.append([x_value, mean_fit, absolute_dose])
+
+    except RuntimeError:
+        # If curve fitting fails, store 0.0 values for this x_bin
+        fitting_failed = True
+        x_value = x_bin * x_bin_size  # Convert x_bin to depth in mm
+        yshift_array.append([x_value, 0.0, 0.0])
+
+# Convert the list to a DataFrame
+yshift_df = pd.DataFrame(yshift_array, columns=['x (mm)', 'y (mm)', 'dose (absolute)'])
+
+# Filter out rows where both y and dose are zero
+yshift_df_filtered = yshift_df[(yshift_df['y (mm)'] > 0) & (yshift_df['dose (absolute)'] > 0)].copy()
+
+# Calculate cumulative distance 's'
+s_values = [0.0]  # Start with s = 0 for the first point
+for i in range(1, len(yshift_df_filtered)):
+    delta_x = yshift_df_filtered['x (mm)'].iloc[i] - yshift_df_filtered['x (mm)'].iloc[i - 1]
+    delta_y = yshift_df_filtered['y (mm)'].iloc[i] - yshift_df_filtered['y (mm)'].iloc[i - 1]
+    delta_s = np.sqrt(delta_x**2 + delta_y**2)
+    s_values.append(s_values[-1] + delta_s)
+
+yshift_df_filtered.loc[:, 's (mm)'] = s_values
+
+# Normalize the dose
+yshift_df_filtered.loc[:, 'dose_norm'] = (yshift_df_filtered['dose (absolute)'] / np.max(yshift_df_filtered['dose (absolute)'])) * 100
+
+# Apply a threshold to remove very small dose values (e.g., less than 1%)
+dose_threshold = 1.0
+threshold_idx = np.where(yshift_df_filtered['dose_norm'] < dose_threshold)[0]
+
+# Keep the next 4 points after the dose drops below the threshold
+if len(threshold_idx) > 0:
+    first_threshold_idx = threshold_idx[0]
+    end_idx = first_threshold_idx + 4  # Keep 4 more points
+    yshift_df_filtered = yshift_df_filtered.iloc[:min(end_idx, len(yshift_df_filtered))]
+
+
+# Toggle to show Gaussian fit for a specific bin
+show_gaussian_fit = True  # Set to False to disable
+
+# Specify the bin for Gaussian example (this is where the Gaussian will be plotted)
+example_bin = 20  # You can change this bin as needed
+
+# Plot the Gaussian fit for a specific bin if requested
+if show_gaussian_fit:
+    # Extract dose values along the y-axis for the chosen x_bin (summed over z)
+    y_dose_distribution_example = np.sum(dose_grid[example_bin, :, :], axis=1)  # Sum over z-bins
+    
+    # Normalize the dose distribution
+    y_dose_distribution_example_norm = (y_dose_distribution_example / np.max(y_dose_distribution_example)) * 100
+    
+    # Fit a Gaussian function
+    popt, _ = curve_fit(gaussian, y_axis, y_dose_distribution_example_norm, 
+                        p0=[np.max(y_dose_distribution_example_norm), np.mean(y_axis), np.std(y_axis)], 
+                        maxfev=4000)
+    
+    # Extract fitted Gaussian
+    gaussian_fit_example = gaussian(y_axis, *popt)
+
+    # Plot Gaussian fit
+    plt.figure(figsize=(12, 8))
+    plt.plot(y_axis, y_dose_distribution_example_norm, label='Normalized Dose Distribution', color='blue')
+    plt.plot(y_axis, gaussian_fit_example, label='Gaussian Fit', color='orange', linestyle='--')
+    plt.xlabel('Y Position [mm]')
+    plt.ylabel('Normalized Dose [%]')
+    plt.title(f'Gaussian fit for x bin {example_bin}')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
+# Plot the depth-dose distribution for all z-bins (summarized result)
+plt.figure(figsize=(12, 8))
+
+# Plot the depth-dose distribution averaged across all z-bins
+plt.plot(x_axis, integrated_dose_norm, color='blue')
+
+# Add a horizontal line for 80% of the max dose
+plt.axhline(y=r80_value, color='gray', linestyle='--', label='80% of Max. Dose')
+
+# Add a red dot at the R80 position
+plt.plot(r80_x, r80_value, 'ro', label=f'R$_{{80}}$ = {r80_x:.2f} mm')  # Add label to legend
+
+# Add labels and title
+plt.xlabel('Depth [mm]')
+plt.ylabel('Relative Dose [%]')
+plt.title('Percentage depth dose curve for protons (N = $10^5$, E = 200 MeV, B = 0 T) in water')
+plt.legend()
+plt.grid(True)
+
+# Show the depth-dose distribution plot
+plt.show()
+
+
+
+
+# Interpolation to find the dose at the calculated R80 value
+r80_s = r80_x  # Use the calculated R80 value
+s_values = yshift_df_filtered['s (mm)']
+dose_values = yshift_df_filtered['dose_norm']
+
+# Create interpolation function
+interp_function = interp1d(s_values, dose_values, bounds_error=False, fill_value="extrapolate")
+
+# Get interpolated dose at r80_s
+interpolated_dose = interp_function(r80_s)
+
+# Plot the dose vs distance 's' (mm)
+plt.figure(figsize=(12, 8))
+plt.plot(yshift_df_filtered['s (mm)'], yshift_df_filtered['dose_norm'])
+plt.xlabel('Distance (s) [mm]')
+plt.ylabel('Relative Dose [%]')
+plt.grid(True)
+
+# Plot the interpolated R80 point
+plt.plot(r80_s, interpolated_dose, 'ro', label=f'Dose = {interpolated_dose:.2f}% (R$_{{80}}$ = {r80_s:.2f} mm)')
+#plt.plot(r80_s, interpolated_dose, 'ro', label=f'R$_{{80}}$ = {r80_s:.2f} mm (Dose = {interpolated_dose:.2f}%)')
+plt.title('Distance (s) vs. Relative Dose: Searching dose')
+plt.legend()
+
+# Show the plot
+plt.show()
+
+# Search for `s` value based on input relative dose
+search_rel_dose = True  # Toggle on or off
+
+# Allow user to input the desired relative dose % (default: 83.69%)
+target_rel_dose = 83.44 #interpolated_dose # ENTER HERE HOW MUCH r80 we had for B = 0 T !!!
+
+# Find the maximum dose and its corresponding index
+max_dose_idx = np.argmax(yshift_df_filtered['dose_norm'])
+max_dose_value = yshift_df_filtered['dose_norm'].iloc[max_dose_idx]
+
+# Now, slice the data after the maximum dose
+falling_side_df = yshift_df_filtered.iloc[max_dose_idx:]  # Data after reaching 100%
+
+# Check if the target relative dose exists on the falling side
+if target_rel_dose <= max_dose_value:
+    # Interpolation function to find `s` for the given relative dose, only after the peak
+    interp_s_for_dose_falling = 
+    interp1d(falling_side_df['dose_norm'], 
+    falling_side_df['s (mm)'], 
+    kind='linear',
+    bounds_error=False,
+    fill_value="extrapolate")
+    
+    # Get the corresponding `s` value for the target relative dose (83.69%)
+    target_s_value_falling = interp_s_for_dose_falling(target_rel_dose)
+    
+    # Plot the dose vs distance 's' without the R80 point, but with the searched target dose point
+    plt.figure(figsize=(12, 8))
+    plt.plot(yshift_df_filtered['s (mm)'], yshift_df_filtered['dose_norm'], color='blue')
+    
+    # Plot the interpolated point at the target dose
+    plt.plot(target_s_value_falling, target_rel_dose, 'ro', label=f's = {target_s_value_falling:.2f} mm for rel. dose = {target_rel_dose:.2f} %')
+    
+    plt.xlabel('Distance (s) [mm]')
+    plt.ylabel('Relative Dose [%]')
+    plt.title(f'Distance (s) vs. Relative Dose: Searching distance')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+else:
+    print(f"Target relative dose {target_rel_dose}% exceeds the maximum dose.")
+
+# Define the midpoint for the y-axis (example: 122.5 mm for B = 0 T)
+y_midpoint = 122.5
+    
+# Find the two surrounding s-values for interpolation
+s_values = yshift_df_filtered['s (mm)']
+s_before_idx = np.where(s_values <= target_s_value_falling)[0][-1]  # closest s below target
+s_after_idx = np.where(s_values >= target_s_value_falling)[0][0]    # closest s above target
+
+# Get corresponding x and y values
+x1, x2 = yshift_df_filtered['x (mm)'].iloc[s_before_idx], yshift_df_filtered['x (mm)'].iloc[s_after_idx]
+y1, y2 = yshift_df_filtered['y (mm)'].iloc[s_before_idx], yshift_df_filtered['y (mm)'].iloc[s_after_idx]
+s1, s2 = s_values.iloc[s_before_idx], s_values.iloc[s_after_idx]
+
+# Perform linear interpolation to find exact x and y for the target_s_value_falling
+interpolated_x = x1 + (target_s_value_falling - s1) * (x2 - x1) / (s2 - s1)
+interpolated_y = y1 + (target_s_value_falling - s1) * (y2 - y1) / (s2 - s1)
+
+# Check if y values need to be inverted based on the mirroring effect
+if interpolated_y < y_midpoint:
+    interpolated_y = 2 * y_midpoint - interpolated_y  # Flip the y position
+
+print(f"Interpolated x = {interpolated_x:.2f} mm, y = {interpolated_y:.2f} mm for s = {target_s_value_falling:.2f} mm")
+\end{python}
+\newpage
+\section{matRad}
+\label{sec:matradappendix}
+\subsection{Treatment plan setup}
+\label{sec:matradtreatmentplanappendix}
+\begin{python}
+    %% Patient Data Import
+
+    matRad_rc; %If this throws an error, run it from the parent directory first to set the paths
+
+    
+    load('2_04_P_CT_CST.mat'); 
+
+    %% Objective & Constraints
+
+    for i = 1:size(cst, 1)
+        if strcmp(cst{i, 2}, 'Prostate')
+            cst{i, 3}                        = 'TARGET';
+            cst{i, 5}.Priority               = 1; 
+            cst{i, 6}{1, 1}.className        = 'DoseObjectives.matRad_MeanDose';
+            cst{i, 6}{1, 1}.parameters{1,1}  = 50; 
+            cst{i, 6}{1, 1}.penalty          = 1; 
+        end
+    end
+
+    %% Treatment Plan
+
+    pln.radiationMode = 'protons';        
+    pln.machine       = 'Generic';
+    pln.propOpt.bioOptimization = 'const_RBExD';
+    pln.propDoseCalc.calcLET = 1;
+
+    pln.numOfFractions        = 1; 
+    pln.propStf.gantryAngles  = [270];
+    pln.propStf.couchAngles   = [0];
+    pln.propStf.bixelWidth    = 5;
+    pln.propStf.numOfBeams    = numel(pln.propStf.gantryAngles);
+    pln.propStf.isoCenter     = ones(pln.propStf.numOfBeams,1) * matRad_getIsoCenter(cst,ct,0);
+
+    csvwrite('isoCenter.csv', pln.propStf.isoCenter');
+    disp(['Iso Center positions have been saved as isoCenter.csv!']);
+
+    pln.propOpt.runDAO        = 0;
+    pln.propOpt.runSequencing = 0;
+
+    % dose calculation settings
+    pln.propDoseCalc.doseGrid.resolution.x = ct.resolution.x; % [mm]
+    pln.propDoseCalc.doseGrid.resolution.y = ct.resolution.y; % [mm]
+    pln.propDoseCalc.doseGrid.resolution.z = ct.resolution.z; % [mm]
+
+    %% Generate Beam Geometry STF
+    stf = matRad_generateStf(ct,cst,pln);
+
+    %% Dose Calculation
+    % Lets generate dosimetric information by pre-computing dose influence 
+    % matrices for unit beamlet intensities. Having dose influences available 
+    % allows for subsequent inverse optimization. 
+    dij = matRad_calcParticleDose(ct,stf,pln,cst);
+
+    %% Inverse Optimization for IMPT
+    % The goal of the fluence optimization is to find a set of bixel/spot 
+    % weights which yield the best possible dose distribution according to the 
+    % clinical objectives and constraints underlying the radiation treatment
+    resultGUI = matRad_fluenceOptimization(dij,cst,pln);
+
+    %% Plot the Resulting Dose Slice
+    % Let's plot the transversal iso-center dose slice
+    slice = round(pln.propStf.isoCenter(1,3)./ct.resolution.z);
+    figure
+    imagesc(resultGUI.RBExDose(:,:,slice)),colorbar,colormap(jet)
+
+    plane = 3;
+    doseWindow = [0 max([resultGUI.RBExDose(:);])];
+
+    figure,title('original plan')
+    matRad_plotSliceWrapper(gca,ct,cst,1,resultGUI.RBExDose,plane,slice,[],0.75,colorcube,[],doseWindow,[]);
+\end{python}
+
+\newpage
+\subsection{Estimation of matRad proton stopping positions}
+\label{sec:exporting_matRad_R80_positionsappendix}
+
+\begin{python}
+% Initialization for storing x, y values, 80% dose values, and energy
+x_y_energy_values_at_80_percent = [];
+
+% Counter for the current bixel (across all rays)
+current_bixel_id = 1;
+
+% Loop through all rays
+for ray_id = 1:length(stf.ray)
+    % Get the x and y position of the current ray relative to the isocenter
+    ray_y_pos = stf.ray(ray_id).rayPos(2);
+    
+    % Get the isocenter
+    isoCenter_y = stf.isoCenter(2);
+
+    % Actual y position of the ray (relative to the isocenter)
+    ray_y_absolute = isoCenter_y + ray_y_pos;
+
+    % Number of bixels for this ray
+    num_bixels = stf.numOfBixelsPerRay(ray_id);
+    
+    % Loop through all bixels in this ray
+    for bixel_idx = 1:num_bixels
+        % Step 1: Extract the 1D vector for the current bixel
+        doseVector = full(dij.physicalDose{1,1}(:, current_bixel_id));
+        LETVector = full(dij.mLETDose{1,1}(:, current_bixel_id));
+
+        % Dimensions of the dose grid
+        x_dim = dij.doseGrid.dimensions(2); % Number of x coordinates
+        y_dim = dij.doseGrid.dimensions(1); % Number of y coordinates
+        z_dim = dij.doseGrid.dimensions(3); % Number of z layers
+
+        % Step 2: Convert the 1D vector into a 3D matrix
+        doseMatrix = reshape(doseVector, [y_dim, x_dim, z_dim]);
+        LETMatrix = reshape(LETVector, [y_dim, x_dim, z_dim]);
+
+        % Step 3: Restrict to the second z layer
+        doseMatrix_z2 = doseMatrix(:,:,2); % Dose values in the second z layer
+        LETMatrix_z2 = LETMatrix(:,:,2); % LET values in the second z layer
+
+        % Step 4: Sum the dose values along the y-axis for each x coordinate
+        depthDoseCurve = sum(doseMatrix_z2, 1); % Sum over y for each x coordinate
+        depthLETCurve = sum(LETMatrix_z2, 1); % Sum over y for each x coordinate
+
+        % Step 5: Normalize the dose values to the maximum value (relative dose)
+        max_dose = max(depthDoseCurve);
+        relativeDepthDoseCurve = depthDoseCurve / max_dose;
+
+        max_LET = max(depthLETCurve);
+        relativeDepthLETCurve = depthLETCurve / max_LET;
+
+        % Step 6: Find the x value where the dose falls to 80% of the maximum (after the peak)
+        dose_threshold = 0.8; % 80% of the maximum value
+        % Find the peak
+        [~, max_index] = max(relativeDepthDoseCurve);
+        % Find the first value after the peak that falls below 80%
+        idx_above_threshold = find(relativeDepthDoseCurve(max_index:end) >= dose_threshold) + max_index - 1;
+        idx_below_threshold = find(relativeDepthDoseCurve(max_index:end) < dose_threshold, 1, 'first') + max_index - 1;
+
+        % Interpolation between the two points
+        if ~isempty(idx_above_threshold) && ~isempty(idx_below_threshold) && idx_below_threshold > idx_above_threshold(end)
+            x1 = idx_above_threshold(end); % Last index where dose >= 80%
+            x2 = idx_below_threshold; % First index where dose < 80%
+            D1 = relativeDepthDoseCurve(x1); % Dose at x1
+            D2 = relativeDepthDoseCurve(x2); % Dose at x2
+
+            % Linear interpolation for the exact x value where the dose falls to 80%
+            x_80_percent = x1 + (dose_threshold - D1) / (D2 - D1) * (x2 - x1);
+        else
+            x_80_percent = NaN; % If no suitable point is found
+        end
+        
+        % Extract the energy of the current bixel from the current ray
+        energy = stf.ray(ray_id).energy(bixel_idx);
+        
+        % Store the x value (at 80% dose), the corrected y value (Ray + Isocenter), and the energy
+        x_y_energy_values_at_80_percent = 
+        [x_y_energy_values_at_80_percent; 
+        x_80_percent*dij.ctGrid.resolution.x, ray_y_absolute, energy];
+        
+        % Increment the bixel counter
+        current_bixel_id = current_bixel_id + 1;
+    end
+end
+
+% Define the filename
+filename = 'x_y_energy_values_at_80_percent.csv';
+
+% Save the matrix to a CSV file
+writematrix(x_y_energy_values_at_80_percent, filename);
+\end{python}
+\subsection{Hounsfield look-up table}
+\label{sec:hlutmatradappendix}
+\begin{python}
+def matRad_conversion(HU):
+    return np.interp(HU, [-1024, 200, 449, 2000, 2048, 3071],
+            [0.00324, 1.2, 1.20001, 2.49066, 2.5306, 2.53061])
+\end{python}
+
+
+\section{Optimization}
+\label{sec:optimizationappendix}
+\subsection{Computational gradient descent implementation}
+\label{sec:gradientdescentoptimization}
+\begin{python}
+    % Load data and initialize variables as before
+data = readmatrix('x_y_energy_values_at_80_percent.csv');
+y_positions = data(:, 2);  % Column 2 represents y-position
+energy_values = data(:, 3);  % Column 3 represents energy values
+new_x_positions = zeros(size(y_positions));
+new_y_positions = zeros(size(y_positions));  % To store updated y-positions if adjusted
+new_energy_values = zeros(size(energy_values));  % To store updated energy values
+
+% Initialize arrays to store initial positions and adjusted starting positions
+adjusted_starting_x = zeros(size(y_positions));
+adjusted_starting_y = zeros(size(y_positions));
+adjusted_starting_energy = zeros(size(energy_values));
+
+% Initialize arrays to store the initial positions under the magnetic field (for verification)
+initial_x_positions_B = zeros(size(y_positions));
+initial_y_positions_B = zeros(size(y_positions));
+initial_energy_values_B = zeros(size(energy_values));
+
+magnetic_field = [0; 0; 1.5]; % Magnetic field in Tesla
+SPR = readmatrix('SPR_values.csv');
+
+% Parameters for gradient descent
+learning_rate_E = 0.0005; % Step size for energy
+learning_rate_y = 0.0005; % Step size for position (if y is adjusted)
+tolerance = 1e-4;         % Convergence tolerance
+max_steps = 200;          % Maximum iterations
+
+% Error threshold definitions
+small_error_threshold = 0.5;  % Reduce small difference threshold for finer control
+big_error_threshold = 1.5;    % Reduce big difference threshold for finer control
+
+% Loop over each row in the CSV data
+for i = 1:length(y_positions)
+    % Current y and energy
+    y_position = y_positions(i) / 10.9375;  % Divide y-position by pixel factor
+    E0_MeV = energy_values(i);  % Energy value
+
+    % Target without magnetic field
+    Target = analyzeProtonTrajectory(y_position, E0_MeV, [0; 0; 0], SPR);
+
+    % Initial position with magnetic field (Target_start)
+    Target_start = analyzeProtonTrajectory(y_position, E0_MeV, magnetic_field, SPR);
+
+    % Save the initial positions under magnetic field for verification (before gradient descent)
+    initial_x_positions_B(i) = Target_start(1) * 10;  % Scale back to original x-position
+    initial_y_positions_B(i) = Target_start(2) * 10.9375;  % Scale back to original y-position
+    initial_energy_values_B(i) = E0_MeV;  % Initial energy before gradient descent
+
+    % Gradient Descent Loop
+    Ei = E0_MeV;  % This energy will be adjusted
+    yi = y_position;  % This y-position will be adjusted
+
+    % Initialize variables to track the starting positions during the gradient descent
+    initial_yi = yi;  % Keep track of the starting y_position
+    initial_Ei = Ei;  % Keep track of the starting energy
+
+    for step_i = 1:max_steps
+        % Compute the difference between the current position and target
+        position_this_step = analyzeProtonTrajectory(yi, Ei, magnetic_field, SPR);
+        error_x = position_this_step(1) - Target(1);
+        error_y = position_this_step(2) - Target(2);
+
+        % Check for convergence
+        if abs(error_x) < tolerance && abs(error_y) < tolerance
+            break;
+        end
+
+        % Adjust learning rates based on error size
+        if abs(error_x) >= big_error_threshold
+            % Larger errors require larger steps, but within smaller thresholds now
+            dE = -error_x * E0_MeV * learning_rate_E;
+            dy = error_x * y_position * learning_rate_y;
+        elseif abs(error_x) <= small_error_threshold
+            % For small errors, fine-tune the adjustments
+            dE = -error_x * E0_MeV * learning_rate_E * 0.5;
+            dy = error_x * y_position * learning_rate_y * 0.5;
+        end
+
+        % Update energy and position using gradient descent
+        Ei = Ei + dE; % Update energy
+        yi = yi + dy; % Update y-position
+    end
+
+    % Save the final x-position, updated y-position, and energy after gradient descent
+    new_x_positions(i) = position_this_step(1) * 10;  % Convert x to original scale
+    new_y_positions(i) = yi * 10.9375;  % Convert back to original scale for saving
+    new_energy_values(i) = Ei;  % Store the updated energy
+
+    % Calculate the difference in y-position, x-position, and energy between Target_start and final values
+    adjusted_starting_x(i) = Target_start(1) - position_this_step(1);  % Difference in x
+    adjusted_starting_y(i) = Target_start(2) - yi;  % Difference in y-position
+    adjusted_starting_energy(i) = E0_MeV - Ei;  % Difference in energy
+end
+
+% Combine new x-positions, updated y-positions, and updated energy values into a matrix
+new_data = [new_x_positions, new_y_positions, new_energy_values];
+writematrix(new_data, 'x_y_energy_values_at_80_percent_gradient.csv');
+
+% Save the initial starting positions before gradient descent under the magnetic field (Target_start) in a CSV file
+initial_B_data = [initial_x_positions_B, initial_y_positions_B, initial_energy_values_B];
+writematrix(initial_B_data, 'x_y_energy_values_at_80_percent_gradient_B.csv');
+
+% Save the adjusted starting positions (differences in x, y, and energy to reach the target) in a CSV file
+adjusted_starting_data = [adjusted_starting_x * 10, adjusted_starting_y * 10.9375, adjusted_starting_energy];
+writematrix(adjusted_starting_data, 'x_y_new_starting.csv');
+
+
+%%%%%%%%%%%%%%%%%% Function to Analyze Proton Trajectory %%%%%%%%%%%%%%%%%%
+
+function final_position = analyzeProtonTrajectory(y, E, B, SPR)
+    % Constants (needed for velocity calculation for example)
+    atomic_mass_unit_MeV_c2 = 931.494; % MeV/c^2
+    c = 299792458 * 100; % [mm/s]
+    
+    grid_step = 0.00109375; % [m] This is the CT grid step /"PixelSpacing" 
+    total_distance = 83.91796875; % [mm] CT rows * CT columns * CT grid step
+    
+    % Pre-calculations for initial velocity
+    gamma0 = 1 + E / atomic_mass_unit_MeV_c2;
+    beta0 = sqrt(1 - 1/gamma0^2);
+    v0 = beta0 * c;
+    
+    % Set initial conditions based on input parameters
+    initial_position = [0; y; 0]; % Initial y-position
+    initial_velocity = [v0; 0; 0]; % Initial velocity
+    
+    % Create an instance of ProtonSimulation
+    protonSim = ProtonSimulation_half(SPR, E, B, grid_step, total_distance, initial_position, initial_velocity);
+    
+    % Initialize and run the simulation
+    protonSim = protonSim.initializeStep();
+    protonSim = protonSim.simulate();
+    protonSim.saveResults();
+
+    % Get the final position using the number of non-zero steps
+    num_non_zero_steps = protonSim.displayStepRange();
+    if num_non_zero_steps > 0
+        final_position = protonSim.positions(:, num_non_zero_steps); % Extract the last valid position
+    else
+        final_position = [0; 0; 0]; % Default if no valid positions found
+    end
+end
+\end{python}

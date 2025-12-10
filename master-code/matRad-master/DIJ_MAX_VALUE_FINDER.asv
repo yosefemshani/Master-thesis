@@ -1,0 +1,41 @@
+% Initialize maxRows to store the 1D indices of maximum doses
+maxRows = zeros(dij.totalNumOfBixels, 1);
+
+% Initialize maxRows_3D to store the 3D coordinates corresponding to each 1D index
+maxRows_3D = zeros(dij.totalNumOfBixels, 3);  % Each row will hold [x, y, z]
+
+% Dimensions of the 3D matrix
+x_dim = dij.doseGrid.;  % Number of columns
+y_dim = 225;  % Number of rows
+z_dim = 3;    % Number of slices
+
+% Number of elements per slice (x * y)
+elements_per_slice = x_dim * y_dim;
+
+for i = 1:dij.totalNumOfBixels
+    % Find the 1D index of the maximum dose for the current bixel
+    maxRowsRaw = find(dij.physicalDose{1, 1}(:, i) == max(dij.physicalDose{1, 1}(:, i)));
+    maxRows(i) = maxRowsRaw;  % Store the 1D index
+
+    % Convert the 1D index to 3D coordinates (x, y, z)
+    linear_index = maxRowsRaw;
+    
+    % Determine z index
+    z = floor((linear_index - 1) / elements_per_slice) + 1;
+    
+    % Calculate remaining index within the slice
+    remainder = linear_index - (z - 1) * elements_per_slice;
+    
+    % Determine x index
+    x = floor((remainder - 1) / y_dim) + 1;
+    
+    % Determine y index
+    y = remainder - (x - 1) * y_dim;
+
+    % Store the 3D coordinates in maxRows_3D
+    maxRows_3D(i, :) = [x, y, z];
+end
+
+% Display the results
+disp('1D to 3D transformation completed. Here are the first few 3D indices:');
+disp(maxRows_3D(1:min(10, dij.totalNumOfBixels), :)); % Display the first few entries

@@ -1,0 +1,757 @@
+\chapter{Results}
+\label{sec:Results}
+This chapter presents the results of the developed algorithm across cases of increasing complexity, verified against ground truth references and previously discussed methods (see \autoref{sec:VerifyBeam}). The analysis then extends to the initial results of a candidate treatment field using the \gls{tps}, comparing it to the developed algorithm, and exploring pencil beam spot optimization under the influence of a magnetic field (see \autoref{sec:matRadPlan}).
+\section{Verification of proton stopping position}
+\label{sec:VerifyBeam}
+\subsection{Vacuum state}
+\label{sec:vacuum}
+%Before verifying the energy loss calculations for materials of varying complexity, the influence of the magnetic field is examined. For this investigation, a fixed energy value is analyzed under four different magnetic field strengths, and vice versa. An illustration of an example proton beam trajectory calculated under influence of a magnetic field using the developed algorithm is visualized in \autoref{fig:vacuumexample}. For simplicity, this developed algorithm will be referred to as the MATLAB code for the remainder of this thesis.
+%\\
+%
+The comparison between radii calculated using the developed proton transfer algorithm ($r_{\symup{ana}}$) and analytical calculation using \autoref{eqn:radiusmagnet} ($r_{\symup{eq}}$) is listed in table \ref{tab:compareMATLABanalytical}.
+~\\
+
+In a vacuum, with a fixed magnetic field strength of \(\symup{1.5 \, \, T}\), relative differences remain positive and converge around an average of $\symup{0.3075 \, \,\%}$. Additionally, relative differences decrease as energy increases. For a set energy of \(\symup{100 \, \, MeV}\), analysis across four different magnetic field strengths shows that positive relative differences continue, converging around $\symup{0.3275 \, \, \%}$. Varying magnetic field strength thus appears to produce a stable relative difference. Absolute differences slightly increase with higher energy values but decrease with increasing magnetic field strength.
+%\begin{figure}[h]
+%    \begin{minipage}{0.5\textwidth}
+%        \centering
+%        \includegraphics[width=8cm]{../Screenshots/vacuum/VacuumB15E50MeV.png}
+%        \label{fig:VacuumB15E50MeV}
+%    \end{minipage}
+%    \hfill
+%    \begin{minipage}[c]{0.5\textwidth}
+%        \centering
+%        \includegraphics[width=8cm]{../Screenshots/vacuum/VacuumB3E100MeV.png}
+%        \label{fig:VacuumB3E100MeV}
+%    \end{minipage}
+%    \caption{The left figure is ight figure.}
+%    \label{fig:VacuumExample}
+%\end{figure}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[height=7cm]{../Screenshots/vacuum/VacuumB15E50MeV.png}
+    \caption{Example proton trajectory in a vacuum under influence of a magnetic field with $E = \symup{50 \, \, MeV}$ and $B_z = \symup{1.5 \, \,T}$ resulting from MATLAB simulation. Highlighted position (red dot) marks the diameter of the circular trajectory.}
+    \label{fig:vacuumexample}
+\end{figure}
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of resulting radii calculated using the developed proton transfer algorithm ($r_{\symup{ana}}$) and analytical equation for the helical radius ($r_{\symup{eq}}$) under influence of a magnetic field ($B_z$) in a vacuum state. The first table has a fixed magnetic field strength with four different energy values, while the second table shows the results for a fixed energy value and four different magnetic field strengths. Absolute and relative differences between those radii are also listed.}
+    \label{tab:compareMATLABanalytical}
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{B = 1.5 T}} \\
+        \hline
+        E [MeV] & $r_{\symup{ana}}$ [cm] & $r_{\symup{eq}}$ [cm] & Abs. Difference [cm] & Rel. Difference [\%] \\
+        \hline
+        50  & 65.76 & 65.53 & 0.23 & 0.35 \\
+        
+        100 & 89.63 & 89.35 & 0.28 & 0.31 \\
+        
+        150 & 106.03 & 105.71 & 0.32 & 0.30 \\
+        
+        200 & 118.46 & 118.14 & 0.32 & 0.27 \\
+        \hline
+    \end{tabular}
+    
+    \vspace{1cm}
+
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{E = 100 MeV}} \\
+        \hline
+        B [T] & $r_{\symup{ana}}$ [cm] & $r_{\symup{eq}}$ [cm] & Abs. Difference [cm] & Rel. Difference [\%] \\
+        \hline
+        0.5 & 268.89 & 268.04 & 0.85 &  0.32 \\
+        
+        1   & 134.45 & 134.02 & 0.43 & 0.32 \\
+        
+        2   & 67.23  & 67.01  & 0.22 & 0.33 \\
+        
+        3   & 44.82  & 44.67  & 0.15 & 0.34 \\
+        \hline
+    \end{tabular}
+\end{table}
+\newpage
+
+\subsection{Water phantom}
+\label{sec:waterphantom}
+\subsubsection{B = 0 T}
+%~\\As explained in section \ref{sec:TOPAS}, \gls{topas} will be used as a reference for given MATLAB results. Both simulations are intuitively carried out under the same conditions. These conditions include, for example, the inital energy, the starting position of our beam source and the same \gls{hulut}.
+An example of proton beam trajectories calculated using the developed proton transfer algorithm and \gls{mc} simulations is visualized in \autoref{fig:waterb0e200mev}. For the \gls{mc} simulated pencil beam, the laterally integrated dose and corresponding proton range, \( R_{\symup{80}} \), are shown in \autoref{fig:waterb0e200mevddc}. A comparison of proton ranges calculated using the developed proton transfer algorithm ($r_{\symup{ana}}$) and those extracted from \gls{mc} simulations ($r_{\symup{MC}}$) for proton beams with different energies in a water phantom without a magnetic field is listed in \autoref{tab:MATLABTOPASwaterB0}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[height=9cm]{../Screenshots/water/Water_B0_E200MeV.png}
+    \caption{Resulting proton beam trajectories from the developed algorithm and \gls{mc} simulations (\gls{topas}) in water for $E = \symup{200 \, \,MeV}$ and $B_z = \symup{0 \, \,T}$. The white line shows the trajectory calculated in the developed algorithm, while the heatmap dose distribution refers to the \gls{mc} simulated proton beam trajectory.}
+    \label{fig:waterb0e200mev}
+\end{figure}
+~\\
+Qualitatively, the proton trajectory from a \gls{mc} simulation shows a dimensional spread, contrasting with the simpler trajectory from the developed proton transfer algorithm. Furthermore, the stopping position calculated using the developed algorithm occurs shortly after the maximum relative dose observed in the \gls{mc} based calculation.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[height=9.5cm]{../Screenshots/water/Water_B0_E200MeV_ddc.png}
+    \caption{Resulting percentage depth dose curve with marked proton range, $\symup{R_{80}}$, from a \gls{mc} simulation (\gls{topas}) in water for $E = 200\symup{\, \, MeV}$ and $B_z = 0\symup{\, \,T}$ with $N = 10^5$ protons.}
+    \label{fig:waterb0e200mevddc}
+\end{figure}
+%Results for MATLAB \gls{csda} ranges ($r_{\symup{ana}}$) and \gls{topas} $\symup{R_{80}}$ ranges ($r_{\symup{MC}}$), with their differences, for four different energy values are listed in the following table \ref{tab:MATLABTOPASwaterB0}.
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of proton ranges calculated analytically using the developed proton transfer algorithm ($r_{\symup{ana}}$) and proton ranges ranges extracted from \gls{mc} simulation (\gls{topas}) depth dose curves ($r_{\symup{MC}}$) for a water phantom without a magnetic field. Four different energy values are analyzed and the resulting relative and absolute differences between the two ranges can be seen.}
+    \label{tab:MATLABTOPASwaterB0}
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{B = 0 T}} \\
+        \hline
+        E [MeV] & $r_{\symup{ana}}$ [mm] & $r_{\symup{MC}}$ [mm] & Abs. Difference [mm] & Rel. Difference [\%] \\
+        \hline
+        50  & 22.19 & 21.26 & 0.93 & 4.37 \\
+        
+        100 & 76.92 & 76.28 & 0.64 & 0.84 \\
+        
+        150 & 157.21 & 156.87 & 0.34 & 0.22 \\
+        
+        200 & 258.63 & 258.64 & -0.01 & -0.0039 \\
+        \hline
+    \end{tabular}
+\end{table}
+~\\Without a magnetic field and for a water phantom, relative differences decrease significantly with increasing energy. In all cases, the range calculated analytically using the developed algorithm is higher, except for \( \symup{E = 200 \, \, MeV} \). Absolute differences also decrease, with a maximum of \( \symup{0.93 \, \, mm} \).
+\newpage
+The relative dose value required to achieve \(s_{\symup{L1}} = s_{\symup{L2}}\), for further magnetic field introductions, is visualized in \autoref{fig:waterb0e200mevdistance}. This example corresponds to the candidate energy value previously examined in the \gls{mc} simulation in water.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/water/Water_B0_200MeV_distance.png}
+    \caption{Percentage depth dose curve and marked $\symup{R_{80}}$ range with the corresponding relative absorbed dose value from a \gls{mc} simulation (\gls{topas}) in water with $E = \symup{200 \, \, MeV}$ and $B_z = \symup{0 \, \, T}$ with $N = 10^5$ protons. $s_{\symup{L1}}$ refers to the proton trajectory length in a magnetic field and $s_{\symup{L2}}$ refers to the proton trajectory length without a magnetic field.}
+    \label{fig:waterb0e200mevdistance}
+\end{figure}
+~\\Multiple relative absorbed dose values for four different energy values with the calculation of $R_{\symup{80}}$ for $s = s_{\symup{L1}} = s_{\symup{L2}}$ for the analyzed water phantom are listed in \autoref{tab:waterrelativedoser80}.
+\begin{table}[h!]
+    \centering
+    \caption{Relative dose values calculated using \gls{mc} simulations (\gls{topas}) in a water phantom with $B_z = \symup{0 \, \, T}$ and four different energy values with prior determined proton ranges and trajectory lengths.}
+    \label{tab:waterrelativedoser80}
+    \begin{tabular}{c c}
+        %\multicolumn{4}{c}{\textbf{B = 0 T}} \\
+        \hline
+        E [MeV] &  Rel. Dose [\%] \\
+        \hline
+        50  & 79.90 \\
+        
+        100 & 81.60 \\
+        
+        150 & 82.60 \\
+        
+        200 & 83.69 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{B > 0 T}
+The relative dose value for the same example previously shown without a magnetic field ($\symup{83.69 \,\, \%}$) and its corresponding trajectory length $s_{\symup{L1}}$ for $B_z = \symup{1.5 \, \, T}$ is analyzed and visualized in \autoref{fig:waterb15e200mevdistance}.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/water/Water_B15_200MeV_distance.png}
+    \caption{Percentage depth dose curve and marked $s = s_{\symup{L1}} = s_{\symup{L2}}$ value with the corresponding relative absorbed dose value from a \gls{mc} simulation (\gls{topas}) in water with $E = \symup{200 \, \, MeV}$ and $B_z = \symup{1.5 \, \, T}$ with $N = 10^5$ protons. $s_{\symup{L1}}$ refers to the proton trajectory length in a magnetic field and $s_{\symup{L2}}$ refers to the proton trajectory length without a magnetic field.}
+    \label{fig:waterb15e200mevdistance}
+\end{figure}
+~\\
+The trajectory lengths $s$ calculated analytically in the developed proton transfer algorithm ($s_{\symup{ana}}$) and with \gls{mc} simulations ($s_{\symup{MC}}$) for the analyzed water phantom are listed in table \autoref{tab:compareMATLABTOPASdistancewater}.
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of trajectory lengths calculated analytically in the developed proton transfer algorithm ($s_{\symup{ana}}$) and with \gls{mc} simulations ($s_{\symup{MC}}$) for a water phantom. Different energy values and magnetic field strengths are analyzed with their absolute and relative differences listed.}
+    \label{tab:compareMATLABTOPASdistancewater}
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{B = 1.5 T}} \\
+        \hline
+        E [MeV] & $s_{\symup{ana}}$ [mm] & $s_{\symup{MC}}$ [mm] & Abs. Difference [mm] & Rel. Difference [\%] \\
+        \hline
+        50  & 22.19 & 21.26 & 0.93 & 4.37 \\
+        
+        100 & 76.92 & 76.22 & 0.70 & 0.92 \\
+        
+        150 & 157.21 & 157.01 & 0.20 & 0.13 \\
+        
+        200 & 258.63 & 258.29 & 0.34 & 0.13 \\
+        \hline
+    \end{tabular}
+    
+    \vspace{1cm}
+
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{E = 100 MeV}} \\
+        \hline
+        B [T] & $s_{\symup{ana}}$ [mm] & $s_{\symup{MC}}$ [mm] & Abs. Difference [mm] & Rel. Difference [\%] \\
+        \hline
+        0.5 & 76.92 & 76.26 & 0.66 & 0.87 \\
+        
+        1   & 76.92 & 76.27 & 0.65 & 0.85 \\
+        
+        2   & 76.92  & 76.24 & 0.68 & 0.89 \\
+        
+        3   & 76.92  & 76.32 & 0.60 & 0.79 \\
+        \hline
+    \end{tabular}
+\end{table}
+~\\
+
+In addition, \autoref{tab:compareMATLABTOPAScoordinateswater} lists the coordinates for the proton stopping positions calculated using the developed proton transfer algorithm ($\vec{V}_{\symup{ana}}$) and using \gls{mc} simulations ($\vec{V}_{\symup{MC}}$) for the analyzed water phantom.
+%\begin{table}[h!]
+%    \centering
+%    \caption{Comparison of \(\vec{X}_{\symup{MATLAB}}\) and \(\vec{X}_{\symup{TOPAS}}\) for a water phantom with \(\vec{X} = (x \, \, \, y)^{\symup{T}}\). Different energy values and magnetic field strengths are analyzed with their differences listed.}
+%    \label{tab:compareMATLABTOPAScoordinateswater}
+%    \begin{tabular}{c c c c }
+%        \multicolumn{4}{c}{\textbf{B = 1.5 T}} \\
+%        \hline
+%        E [MeV] & \(\vec{X}_{\symup{MATLAB}}\) [mm] & \(\vec{X}_{\symup{TOPAS}}\) [mm] & Difference [\%] \\
+%        \hline
+%        50  & 
+%        \(\begin{pmatrix} 22.19 \\ 122.87 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 21.26 \\ 122.89 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 4.37 \\ 0.016 \end{pmatrix} \) \\
+%        \vspace{0.005cm} \\
+%        
+%        100 & 
+%        \(\begin{pmatrix} 76.83 \\ 125.79 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 76.11 \\ 125.87 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 0.94 \\ 0.064 \end{pmatrix} \) \\
+%        \vspace{0.005cm} \\
+%        
+%        150 & 
+%        \(\begin{pmatrix} 156.63 \\ 134.13 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 156.38 \\ 133.97 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 0.16 \\ 0.12 \end{pmatrix} \) \\
+%        \vspace{0.005cm} \\
+%        
+%        200 & 
+%        \(\begin{pmatrix} 256.58 \\ 150.62 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 256.21 \\ 149.24 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 0.14 \\ 0.92 \end{pmatrix} \) \\
+%        \hline
+%    \end{tabular}
+%    
+%    \vspace{1cm}
+%    
+%    \begin{tabular}{c c c c}
+%        \multicolumn{4}{c}{\textbf{E = 100 MeV}} \\
+%        \hline
+%        B [T] & \(\vec{X}_{\symup{MATLAB}}\) [mm] & \(\vec{X}_{\symup{TOPAS}}\) [mm] & Difference [\%] \\
+%        \hline
+%        0.5 & 
+%        \(\begin{pmatrix} 76.91 \\ 123.60 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 76.24 \\ 123.64 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 0.87 \\ 0.032 \end{pmatrix} \) \\
+%        \vspace{0.005cm} \\
+%        
+%        1   & 
+%        \(\begin{pmatrix} 76.88 \\ 124.70 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 76.22 \\ 124.76 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 0.86 \\ 0.048 \end{pmatrix} \) \\
+%        \vspace{0.005cm} \\
+%        
+%        2   & 
+%        \(\begin{pmatrix} 76.76 \\ 126.89 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 76.04 \\ 126.99 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 0.94 \\ 0.079 \end{pmatrix} \) \\
+%        \vspace{0.005cm} \\
+%        
+%        3   & 
+%        \(\begin{pmatrix} 76.55 \\ 129.09 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 75.89 \\ 129.21 \end{pmatrix}\) & 
+%        \(\begin{pmatrix} 0.86 \\ 0.093 \end{pmatrix} \) \\
+%        \hline
+%    \end{tabular}
+%\end{table}
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of end positions calculated analytically using the developed proton transfer algorithm (\(\vec{V}_{\symup{ana}}\)) and using \gls{mc} simulations (\(\vec{V}_{\symup{MC}}\)) for a water phantom with \(\vec{V} = (x, \, y)\). Different energy values and magnetic field strengths are analyzed and their vectorial absolute differences ($\increment \vec{V}$) are listed. Additionally, the Euclidean distances ($| \vec{V} | = \sqrt{(x_{\symup{MC}} - x_{\symup{ana}})^2 + (y_{\symup{MC}} - y_{\symup{ana}})^2}$) are shown.}
+    \label{tab:compareMATLABTOPAScoordinateswater}
+    \begin{tabular}{c c c c c}
+        \multicolumn{5}{c}{\textbf{B = 1.5 T}} \\
+        \hline
+        E [MeV] & \(\vec{V}_{\symup{ana}}\) [$\symup{mm}$] & \(\vec{V}_{\symup{MC}}\) [$\symup{mm}$] & $\increment \vec{V}$ [$\symup{mm}$] & $| \vec{V} |$ [mm] \\
+        \hline
+        50  & 
+        \((22.19, 122.87)\) & 
+        \((21.26, 122.89)\) &
+        \((0.93, - 0.02)\) &
+        0.93 \\
+        
+        100 & 
+        \((76.83, 125.79)\) & 
+        \((76.11, 125.87)\) &
+        \((0.72, - 0.08)\) &
+        0.72 \\
+        
+        150 & 
+        \((156.63, 134.13)\) & 
+        \((156.38, 133.97)\) &
+        \((0.25, 0.16)\) &
+        0.30 \\
+        
+        200 & 
+        \((256.58, 150.62)\) & 
+        \((256.21, 149.24)\) &
+        \((0.37, 1.38)\) &
+        1.43 \\
+        \hline
+    \end{tabular}
+    
+    \vspace{1cm}
+    
+    \begin{tabular}{c c c c c}
+        \multicolumn{5}{c}{\textbf{E = 100 MeV}} \\
+        \hline
+        B [T] & \(\vec{V}_{\symup{ana}}\) [$\symup{mm}$] & \(\vec{V}_{\symup{MC}}\) [$\symup{mm}$] & $\increment \vec{V}$ [$\symup{mm}$] & $| \vec{V} |$ [mm] \\
+        \hline
+        0.5 & 
+        \((76.91, 123.60)\) & 
+        \((76.24, 123.64)\) &
+        \((0.67, - 0.04)\) &
+        0.67 \\
+        
+        1   & 
+        \((76.88, 124.70)\) & 
+        \((76.22, 124.76)\) &
+        \((0.66, - 0.06)\) &
+        0.66 \\
+        
+        2   & 
+        \((76.76, 126.89)\) & 
+        \((76.04, 126.99)\) &
+        \((0.72, - 0.10)\) &
+        0.73 \\
+        
+        3   & 
+        \((76.55, 129.09)\) & 
+        \((75.89, 129.21)\) &
+        \((0.66, -0.12)\) & 
+        0.67 \\
+        \hline
+    \end{tabular}
+\end{table}
+~\\
+~\\
+~\\
+~\\
+For trajectory lengths calculated and listed in \autoref{tab:compareMATLABTOPASdistancewater}, absolute differences vary from \( \symup{0.34 \, \, mm} \) to \( \symup{0.93 \, \, mm} \). Generally, relative differences decrease with increasing energy, while they remain nearly constant across varying magnetic field strengths. In \autoref{tab:compareMATLABTOPAScoordinateswater}, absolute differences for increasing energy values appear to decrease until \( \symup{200 \, \, MeV} \), where a slight increase in \( x \) and a larger increase in \( y \) can be observed. Additionally, distances initially decrease until reaching \( \symup{200 \, \, MeV} \), at which point an increase in distance is seen. In contrast, for a fixed energy value and varying magnetic field strengths, dimensional absolute differences and distances appear to converge to an average value.
+\subsection{Bone phantom}
+\label{sec:bonephantom}
+\subsubsection*{B = 0 T}
+\label{sec:bonephantomb0t}
+%A next possible analysis step is to focus on the effect of the \gls{hulut} used and the proton interaction with a more complex material. For this purpose, bone material is examined. Bone structures can have different CT number values. For this work, a CT number of 1000 HU is assumed to represent bone material \cite{denotter_hounsfield_2024}.
+%~\\
+A comparison of proton ranges calculated using the developed proton transfer algorithm ($r_{\symup{ana}}$) and those extracted from \gls{mc} simulations ($r_{\symup{MC}}$) for proton beams with different energies in a bone phantom without a magnetic field is listed in \autoref{tab:MATLABTOPASboneB0}.\begin{table}[h!]
+    \centering
+    \caption{Comparison of proton ranges calculated analytically using the developed proton transfer algorithm ($r_{\symup{ana}}$) and proton ranges ranges extracted from \gls{mc} simulation (\gls{topas}) depth dose curves ($r_{\symup{MC}}$) for a bone phantom without a magnetic field. Four different energy values are analyzed and the resulting relative and absolute differences between the two ranges can be seen.}    \label{tab:MATLABTOPASboneB0}
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{B = 0 T}} \\
+        \hline
+        E [MeV] & $r_{\symup{ana}}$ [mm] & $r_{\symup{MC}}$ [mm] & Abs. Difference [mm] & Rel. Difference [\%] \\
+        \hline
+        50  & 15.19 & 14.38 & 0.81 & 5.63 \\
+        
+        100 & 52.63 & 50.17 & 2.46 & 4.90 \\
+        
+        150 & 107.55 & 103.07 & 4.48 & 4.35 \\
+        
+        200 & 176.93 & 169.84 & 7.09 & 4.17 \\
+        \hline
+    \end{tabular}
+\end{table}
+~\\In the bone phantom, with increasing energy values and without a magnetic field, both absolute and relative differences are larger than the results for the water phantom (cf. \autoref{sec:waterphantom}). Generally, all analytically calculated proton stopping positions (\( r_{\symup{ana}} \)) are higher than the \gls{mc} based calculated proton stopping positions (\( r_{\symup{MC}} \)). With increasing energy, absolute differences rise from an initial value of \( \symup{0.81 \, mm} \) up to \( \symup{7.09 \, mm} \).
+~\\
+
+Relative dose values calculated with $R_{\symup{80}}$ needed for $s = s_{\symup{L1}} = s_{\symup{L2}}$ are analyzed for the bone phantom. These results are listed in table \autoref{tab:bonerelativedoser80}.
+\begin{table}[h!]
+    \centering
+    \caption{Relative dose values calculated using \gls{mc} simulations (\gls{topas}) in a bone phantom with $B_z = \symup{0 \, \, T}$ and four different energy values with prior determined proton ranges and trajectory lengths.}
+    \label{tab:bonerelativedoser80}
+    \begin{tabular}{c c}
+        %\multicolumn{4}{c}{\textbf{B = 0 T}} \\
+        \hline
+        E [MeV] &  Rel. Dose [\%] \\
+        \hline
+        50  & 87.76 \\
+        
+        100 & 82.85 \\
+        
+        150 & 82.28 \\
+        
+        200 & 82.48 \\
+        \hline
+    \end{tabular}
+\end{table}
+\subsubsection*{B > 0 T}
+\label{sec:bonephantombg0t}
+The trajectory lengths $s$ calculated analytically in the developed proton transfer algorithm ($s_{\symup{ana}}$) and with \gls{mc} simulations ($s_{\symup{MC}}$) for the analyzed bone phantom are listed in table \autoref{tab:compareMATLABTOPASdistancebone}.
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of trajectory lengths calculated analytically in the developed proton transfer algorithm ($s_{\symup{ana}}$) and with \gls{mc} simulations ($s_{\symup{MC}}$) for a bone phantom. Different energy values and magnetic field strengths are analyzed with their absolute and relative differences listed.}
+    \label{tab:compareMATLABTOPASdistancebone}
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{B = 1.5 T}} \\
+        \hline
+        E [MeV] & $s_{\symup{ana}}$ [mm] & $s_{\symup{MC}}$ [mm] & Abs. Difference [mm] & Rel. Difference [\%] \\
+        \hline
+        50  & 15.19 & 14.29 & 0.9 & 6.29 \\
+        
+        100 & 52.63 & 50.04 & 2.59 & 5.18 \\
+        
+        150 & 107.55 & 103.11 & 4.44 & 4.31 \\
+        
+        200 & 176.93 & 169.82 & 7.11 & 4.19 \\
+        \hline
+    \end{tabular}
+    
+    \vspace{1cm}
+
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{E = 100 MeV}} \\
+        \hline
+        B [T] & $s_{\symup{ana}}$ [mm] & $s_{\symup{MC}}$ [mm] & Abs. Difference [mm] & Rel. Difference [\%] \\
+        \hline
+        0.5 & 52.63 & 50.15 & 2.48 & 4.95 \\
+        
+        1   & 52.63 & 50.08 & 2.55 & 5.09 \\
+        
+        2   & 52.63  & 50.00 & 2.63 & 5.26\\
+        
+        3   & 52.63  & 49.90 & 2.73 & 5.47 \\
+        \hline
+    \end{tabular}
+\end{table}
+~\\Relative differences decrease with increasing energy, though less pronounced than in the water phantom analysis (cf. \autoref{tab:compareMATLABTOPASdistancewater}). Absolute differences, however, increase with energy, reaching a maximum of \( \symup{7.11 \, \, \mathrm{mm}} \). For varying magnetic field strengths, both absolute and relative differences converge to nearly constant values, mirroring observations in the water phantom analysis.
+\newpage
+For this bone phantom, \autoref{tab:compareMATLABTOPAScoordinatesbone} lists the coordinates for the proton stopping positions calculated using the developed proton transfer algorithm ($\vec{V}_{\symup{ana}}$) and using \gls{mc} simulations ($\vec{V}_{\symup{MC}}$).
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of end positions calculated analytically using the developed proton transfer algorithm (\(\vec{V}_{\symup{ana}}\)) and using \gls{mc} simulations (\(\vec{V}_{\symup{MC}}\)) for a bone phantom with \(\vec{V} = (x, \, y)\) assuming a constant \gls{ct} number of $\symup{1000 \, \, HU}$. Different energy values and magnetic field strengths are analyzed and their vectorial absolute differences ($\increment \vec{V}$) are listed. Additionally, the Euclidean distances ($| \vec{V} | = \sqrt{(x_{\symup{MC}} - x_{\symup{ana}})^2 + (y_{\symup{MC}} - y_{\symup{ana}})^2}$) are shown.}
+    \label{tab:compareMATLABTOPAScoordinatesbone}
+    \begin{tabular}{c c c c c}
+        \multicolumn{5}{c}{\textbf{B = 1.5 T}} \\
+        \hline
+        E [MeV] & \(\vec{V}_{\symup{ana}}\) [$\symup{mm}$] & \(\vec{V}_{\symup{MC}}\) [$\symup{mm}$] & $\increment \vec{V}$ [$\symup{mm}$] & $| \vec{V} |$ [mm] \\
+        \hline
+        50  & 
+        \((15.19, 122.68)\) & 
+        \((14.29, 122.67)\) &
+        \((0.9, 0.01)\) &
+        0.90 \\
+        
+        100 & 
+        \((52.60, 124.05)\) & 
+        \((50.01, 123.93)\) &
+        \((2.59, 0.12)\) &
+        2.59 \\
+        
+        150 & 
+        \((107.36, 127.95)\) & 
+        \((102.92, 127.38)\) &
+        \((4.44, 0.57)\) &
+        4.48 \\
+        
+        200 & 
+        \((176.27, 135.69)\) & 
+        \((169.18, 133.87)\) &
+        \((7.09, 1.82)\) &
+        7.32 \\
+        \hline
+    \end{tabular}
+    
+    \vspace{1cm}
+    
+    \begin{tabular}{c c c c c}
+        \multicolumn{5}{c}{\textbf{E = 100 MeV}} \\
+        \hline
+        B [T] & \(\vec{V}_{\symup{ana}}\) [$\symup{mm}$] & \(\vec{V}_{\symup{MC}}\) [$\symup{mm}$] & $\increment \vec{V}$ [$\symup{mm}$] & $| \vec{V} |$ [mm] \\
+        \hline
+        0.5 & 
+        \((52.63, 123.02)\) & 
+        \((50.14, 122.97)\) &
+        \((2.49, 0.06)\) &
+        2.49 \\
+        
+        1   & 
+        \((52.62, 123.53)\) & 
+        \((50.06, 123.46)\) &
+        \((2.56, 0.07)\) &
+        2.56 \\
+        
+        2   & 
+        \((52.58, 124.56)\) & 
+        \((49.94, 124.42)\) &
+        \((2.64, 0.14)\) &
+        2.64 \\
+        
+        3   & 
+        \((52.51, 125.59)\) & 
+        \((49.78, 125.38)\) &
+        \((2.73, 0.21)\) & 
+        2.73 \\
+        \hline
+    \end{tabular}
+\end{table}
+~\\Evaluating proton stopping positions for the bone phantom shows that, with increasing energy, the difference between \( \vec{V}_{\symup{ana}} \) and \( \vec{V}_{\symup{MC}} \) increases significantly along \( x \), while the increase along \( y \) is present but less pronounced. Additionally, the analytically developed proton transfer algorithm consistently yields higher proton stopping positions than those calculated using \gls{mc} simulations. For fixed energy and varying magnetic field strengths, differences along \( x \) are more prominent than along \( y \).
+\newpage
+\subsection{Prostate patient}
+\label{sec:prostate}
+\subsubsection*{B = 0 T}
+Finally, for the given prostate patient \gls{ct} dataset, a comparison of proton ranges calculated using the developed proton transfer algorithm ($r_{\symup{ana}}$) and those extracted from \gls{mc} simulations ($r_{\symup{MC}}$) for proton beams with different energies without a magnetic field is listed in \autoref{tab:MATLABTOPASboneB0}.
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of proton ranges calculated analytically using the developed proton transfer algorithm ($r_{\symup{ana}}$) and proton ranges ranges extracted from \gls{mc} simulation (\gls{topas}) depth dose curves ($r_{\symup{MC}}$) for given prostate patient \gls{ct} dataset without a magnetic field. Four different energy values are analyzed and the resulting relative and absolute differences between the two ranges can be seen.}
+    \label{tab:MATLABTOPASprostateB0}
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{B = 0 T}} \\
+        \hline
+        E [MeV] & $r_{\symup{ana}}$ [mm] & $r_{\symup{MC}}$ [mm] & Abs. Difference [mm] & Rel. Difference [\%] \\
+        \hline
+        50  & 31.48 & 30.74 & 0.74 & 2.41 \\
+        
+        100 & 81.03 & 80.80 & 0.23 & 0.28 \\
+        
+        150 & 150.66 & 152.33 & -1.67 & -1.11 \\
+        
+        200 & 244.97 & 249.97 & -5.00 & -2.04 \\
+        \hline
+    \end{tabular}
+\end{table}
+~\\Without a magnetic field, absolute differences between \( r_{\symup{ana}} \) and \( r_{\symup{MC}} \) decrease, starting from \( \symup{0.74 \, \, mm} \) and reaching \( \symup{-5.00 \, \, mm} \). Up to \( \symup{100 \, \, MeV} \), \( r_{\symup{ana}} > r_{\symup{MC}} \) is given, which is consistent with previous results. However, at higher energies, \( r_{\symup{ana}} < r_{\symup{MC}} \) can be observed. Relative differences follow a similar decreasing trend.
+~\\
+
+Multiple relative absorbed dose values for four different energy values with the calculation of $R_{\symup{80}}$ for $s = s_{\symup{L1}} = s_{\symup{L2}}$ for the prostate patient dataset are listed in \autoref{tab:waterrelativedoser80}.
+\begin{table}[h!]
+    \centering
+    \caption{Relative dose values calculated using \gls{mc} simulations (\gls{topas}) in given prostate patient \gls{ct} dataset with $B_z = \symup{0 \, \, T}$ and four different energy values with prior determined proton ranges and trajectory lengths.}
+    \label{tab:prostaterelativedoser80}
+    \begin{tabular}{c c}
+        %\multicolumn{4}{c}{\textbf{B = 0 T}} \\
+        \hline
+        E [MeV] &  Rel. Dose [\%] \\
+        \hline
+        50  & 83.33 \\
+        
+        100 & 83.44 \\
+        
+        150 & 82.95 \\
+        
+        200 & 79.04 \\
+        \hline
+    \end{tabular}
+\end{table}
+\newpage
+\subsubsection*{B > 0 T}
+Additionally, the trajectory lengths $s$ calculated analytically in the developed proton transfer algorithm ($s_{\symup{ana}}$) and with \gls{mc} simulations ($s_{\symup{MC}}$) for the given prostate patient \gls{ct} dataset are listed in table \autoref{tab:compareMATLABTOPASdistanceprostate}.
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of trajectory lengths calculated analytically in the developed proton transfer algorithm ($s_{\symup{ana}}$) and with \gls{mc} simulations ($s_{\symup{MC}}$) for given prostate patient \gls{ct} dataset. Different energy values and magnetic field strengths are analyzed with their absolute and relative differences listed.}
+    \label{tab:compareMATLABTOPASdistanceprostate}
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{B = 1.5 T}} \\
+        \hline
+        E [MeV] & $s_{\symup{ana}}$ [mm] & $s_{\symup{MC}}$ [mm] & Abs. Difference [mm] & Rel. Difference [\%] \\
+        \hline
+        50  & 31.49 & 30.41 & 1.08 & 3.55 \\
+        
+        100 & 82.94 & 80.62 & 2.32 & 2.75 \\
+        
+        150 & 154.96 & 153.60 & 1.36 & 0.89 \\
+        
+        200 & 254.35 & 256.92 & -2.57 & -1.01 \\
+        \hline
+    \end{tabular}
+    
+    \vspace{1cm}
+
+    \begin{tabular}{c c c c c}
+        
+        \multicolumn{5}{c}{\textbf{E = 100 MeV}} \\
+        \hline
+        B [T] & $s_{\symup{ana}}$ [mm] & $s_{\symup{MC}}$ [mm] & Abs. Difference [mm] & Rel. Difference [\%] \\
+        \hline
+        0.5 & 81.04 & 80.69 & 0.35 & 0.43 \\
+        
+        1   & 81.55 & 80.68 & 0.87 & 1.08 \\
+        
+        2   & 84.36  & 80.61 & 3.75 & 4.65 \\
+        
+        3   & 84.09  & 80.93 & 3.16 & 3.90 \\
+        \hline
+    \end{tabular}
+\end{table}
+~\\Relative differences between \( s_{\symup{ana}} \) and \( s_{\symup{MC}} \) appear to decrease with increasing energy. A trend of \( r_{\symup{ana}} > r_{\symup{MC}} \) is observed up to the final energy value of \( \symup{E = 200 \, MeV} \), where \( r_{\symup{ana}} < r_{\symup{MC}} \) occurs. For a fixed energy and increasing magnetic field strength, a notable jump in absolute and relative difference values is observed from \( \symup{1 \, T} \) to \( \symup{2 \, T} \).
+
+
+\newpage
+The \autoref{tab:compareMATLABTOPAScoordinatesprostate} lists the coordinates for the proton stopping positions calculated using the developed proton transfer algorithm ($\vec{V}_{\symup{ana}}$) and using \gls{mc} simulations ($\vec{V}_{\symup{MC}}$) for the given prostate patient \gls{ct} dataset.
+\begin{table}[h!]
+    \centering
+    \caption{Comparison of end positions calculated analytically using the developed proton transfer algorithm (\(\vec{V}_{\symup{ana}}\)) and using \gls{mc} simulations (\(\vec{V}_{\symup{MC}}\)) for given prostate patient \gls{ct} dataset with \(\vec{V} = (x, \, y)\). Different energy values and magnetic field strengths are analyzed and their vectorial absolute differences ($\increment \vec{V}$) are listed. Additionally, the Euclidean distances ($| \vec{V} | = \sqrt{(x_{\symup{MC}} - x_{\symup{ana}})^2 + (y_{\symup{MC}} - y_{\symup{ana}})^2}$) are shown.}
+    \label{tab:compareMATLABTOPAScoordinatesprostate}
+    \begin{tabular}{c c c c c}
+        \multicolumn{5}{c}{\textbf{B = 1.5 T}} \\
+        \hline
+        E [MeV] & \(\vec{V}_{\symup{ana}}\) [$\symup{mm}$] & \(\vec{V}_{\symup{MC}}\) [$\symup{mm}$] & $\increment \vec{V}$ [$\symup{mm}$] & $| \vec{V} |$ [mm] \\
+        \hline
+        50  & 
+        \((31.49, 123.25)\) & 
+        \((30.39, 123.24)\) &
+        \((1.10, 0.01)\) &
+        1.10 \\
+        
+        100 & 
+        \((82.82, 126.33)\) & 
+        \((80.48, 126.10)\) &
+        \((2.34, 0.23)\) &
+        2.35 \\
+        
+        150 & 
+        \((154.41, 133.80)\) & 
+        \((152.73, 134.26)\) &
+        \((1.68, -0.46)\) &
+        1.74 \\
+        
+        200 & 
+        \((252.41, 149.70)\) & 
+        \((254.33, 150.72)\) &
+        \((-1.92, -1.02)\) &
+        2.17 \\
+        \hline
+    \end{tabular}
+    
+    \vspace{1cm}
+    
+    \begin{tabular}{c c c c c}
+        \multicolumn{5}{c}{\textbf{E = 100 MeV}} \\
+        \hline
+        B [T] & \(\vec{V}_{\symup{ana}}\) [$\symup{mm}$] & \(\vec{V}_{\symup{MC}}\) [$\symup{mm}$] & $\increment \vec{V}$ [$\symup{mm}$] & $| \vec{V} |$ [mm] \\
+        \hline
+        0.5 & 
+        \((81.03, 123.72)\) & 
+        \((80.65, 123.84)\) &
+        \((0.38, -0.12)\) &
+        0.40 \\
+        
+        1   & 
+        \((81.49, 124.72)\) & 
+        \((80.62, 125.00)\) &
+        \((0.87, -0.28)\) &
+        0.91 \\
+        
+        2   & 
+        \((84.14, 127.79)\) & 
+        \((80.35, 127.18)\) &
+        \((3.79, 0.61)\) &
+        3.84 \\
+        
+        3   & 
+        \((83.61, 130.34)\) & 
+        \((80.19, 129.01)\) &
+        \((3.42, 1.33)\) & 
+        3.67 \\
+        \hline
+    \end{tabular}
+\end{table}
+~\\For the complex case of a prostate patient, no consistent trend of increase or decrease in absolute differences is observed, contrasting with previous analyses (cf. \autoref{tab:compareMATLABTOPAScoordinateswater}, \autoref{tab:compareMATLABTOPAScoordinatesbone}). Increasing energy values lead to both increases and decreases in absolute differences. Distances show similar results, ranging from \( \symup{1.10 \, \, mm} \) to \( \symup{2.35 \, \, mm} \). However, for a fixed energy value and increasing magnetic field strengths, a shift in absolute differences and distances is observed when increasing the field from \( \symup{1 \, \, T} \) to \( \symup{2 \, \, T} \). Across varying energy values and magnetic field strengths, no clear trend or correlation between \( \vec{V}_{\symup{ana}} \) and \( \vec{V}_{\symup{MC}} \) is apparent.
+\newpage
+An example of two magnetic field proton beam trajectories for analyzed prostate patient \gls{ct} dataset is visualized in \autoref{fig:prostatetrajectories}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/prostate/prostate.png}
+    \caption{Visualization of proton beam trajectories from \gls{mc} simulations (\gls{topas}) with an introduced magnetic field ($B_z = \symup{1.5 \, \, T}$) and two candidate energy values ($E = \symup{150 \, \, MeV}$ and $E = \symup{200 \, \, MeV}$) for the prostate patient \gls{ct} dataset. The proton stopping positions are highlighted for $E = \symup{150 \, \, MeV}$ at $\vec{V}_{\symup{150 \, MeV}} = \left(152.73, 134.26\right) \, \symup{mm}$ (light green dot) and for $E = \symup{200 \, \, MeV}$ at $\vec{V}_{\symup{200 \, MeV}} = \left(254.33, 150.72\right) \, \symup{mm}$ (cyan dot), where $\vec{V} = (x, \, y)$.}
+    \label{fig:prostatetrajectories}
+\end{figure}
+
+\newpage
+\section{Recalculation of spot selection for a matRad treatment field}
+\label{sec:matRadPlan}
+After comparing the results from the developed proton transfer algorithm with those obtained from \gls{mc} simulations, the focus shifts to the \gls{tps} matRad. Initially, a treatment field is introduced along with its resulting dose distribution (see \autoref{sec:treatment}). The initial starting positions and energy values are exported for comparison of pencil beam end-positions within the \gls{ctv} (see \autoref{sec:comparison}). Furthermore, a magnetic field is introduced, and position differences are analyzed (see \autoref{sec:matradmagneticfield}). Finally, the gradient descent algorithm is applied to optimize and recalculate deflected coordinate positions, shifting them towards the initial end positions (see \autoref{sec:matradgradientdescent}).
+
+\subsection{Proton treatment field}
+\label{sec:treatment}
+The prostate patient \gls{ct} is overlaid with the combined dose distribution of 88 proton pencil beams, generated by the \gls{tps} to cover the \gls{ctv}, as visualized in \autoref{fig:treatmentplanmatraddose}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=12cm]{../Screenshots/matrad/treatmentmatrad.png}
+    \caption{Dose distribution for given prostate \gls{ct} dataset with objective of achieving a mean dose of $\symup{50 \, \, Gy}$. A candidate \gls{ctv} (prostate) is highlighted in red, along with potential \glspl{oar} (femoral heads and rectum) in pink and dark red.}
+    \label{fig:treatmentplanmatraddose}
+\end{figure}
+\newpage
+The exported stopping positions for each pencil beam for this treatment field are visualized in \autoref{fig:matradr80bixels}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/matrad/matradr80.png}
+    \caption{Visualization of a simplified contour representing only the body contour of given prostate patient \gls{ct} dataset. The \gls{ctv} is highlighted (white) as well as the proton stopping positions for each pencil beam retrieved from the "dij" matrix after matRad irradiation (blue dots).}
+    \label{fig:matradr80bixels}
+\end{figure}
+~\\For the following analysis, a section of the body contour around the \gls{ctv} is focused on to facilitate visualization and to better differentiate pencil beam spots.
+
+\newpage
+
+\subsection{Verifying treatment field beam positions}
+\label{sec:comparison}
+%In order to introduce a magnetic field into matRad, the current end positions visualized in \autoref{fig:matradr80bixels} need to be reproduced in MATLAB. These initial positions and energy values are exported from the "stf" structure, imported and calculated in MATLAB.
+The following \autoref{fig:matradmatlabr80bixels} visualizes the proton stopping positions calculated using the developed proton transfer algorithm and compares them with previously mentioned matRad extracted proton stopping positions.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/matrad/matradmatlabr80.png}
+    \caption{Visualization of the enlarged prostate patient \gls{ct} dataset with highlighted \gls{ctv} (white). Qualitative comparison between proton stopping positions for each pencil beam calculated via the developed proton transfer algorithm (orange dots) and matRad (blue dots) using the same initial positions and energy values.}
+    \label{fig:matradmatlabr80bixels}
+\end{figure}
+~\\Using identical initial starting positions and energy values, a trend is observed across the rows. For instance, in the first row, the proton stopping positions are closer to the matRad stopping positions compared to those in the second row. However, within each row, a consistent difference is maintained between the proton stopping positions calculated using the developed proton transfer algorithm and the matRad stopping positions.
+\newpage
+A quantitative analysis is done by calculating the Euclidean distances of matRad and proton stopping positions calculated via the developed proton transfer algorithm. This is visualized as a histogram in \autoref{fig:matradmatlabr80bixelshistogram}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/statistics/initialmatlabvsmatradhistogram.png}
+    \caption{Histogram for quantitatively analyzing difference between stopping positions calculated via the developed proton transfer algorithm ($B_z = \symup{0 \, \, T}$) and matRad extracted stopping positions using initial matRad starting positions and energy values. Median (red) and mean (green) values are highlighted.}
+    \label{fig:matradmatlabr80bixelshistogram}
+\end{figure}
+~\\A general trend is observed, with most pencil beams showing distances below \( \symup{1.0 \, \, mm} \). The median distance is \( \symup{0.49 \, \, mm} \), and the mean distance is \( \symup{0.77 \, \, mm} \).
+\newpage
+\subsection{Calculation of deflected spots}
+\label{sec:matradmagneticfield}
+The initial proton stopping positions extracted from matRad are visually compared to the proton stopping positions influenced by a magnetic field ($B_z = \symup{1.5 \, \, \mathrm{T}}$) in \autoref{fig:matradmatlabr80bixelsshifted}. The magnetic field influenced stopping positions are calculated using the developed proton transfer algorithm.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/matrad/matradmatlabr80shifted.png}
+    \caption{Visualization of the enlarged prostate patient \gls{ct} dataset with highlighted \gls{ctv} (white). Qualitative comparison between stopping positions calculated using the developed proton transfer algorithm (orange dots) and extracted from matRad (blue dots) using the same initial positions and energy values. A magnetic field ($B_z = \symup{1.5 \, \, T}$) is introduced in the developed proton transfer algorithm.}
+    \label{fig:matradmatlabr80bixelsshifted}
+\end{figure}
+~\\Without further optimization of the original pencil beams in terms of energy and position, the \gls{ctv} would no longer be fully covered under the influence of a magnetic field.
+\newpage
+A histogram visualizing the Euclidean distances between stopping positions calculated using the developed proton transfer algorithm and extracted from matRad is visualized in \autoref{fig:matradmatlabr80bixelshistogramshifted}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/statistics/initialmatlabvsmatradhistogramshifted.png}
+    \caption{Histogram for quantitatively analyzing difference between stopping positions calculated using the developed proton transfer algorithm and stopping positions extracted from matRad using initial matRad starting positions and energy values. A magnetic field ($B_z = \symup{1.5 \, \, \mathrm{T}}$) is introduced in the developed proton transfer algorithm. Median (red) and mean (green) values are highlighted.}
+    \label{fig:matradmatlabr80bixelshistogramshifted}
+\end{figure}
+~\\The introduction of a magnetic field results in larger distances between the proton stopping positions calculated using the developed proton transfer algorithm and those extracted from matRad. The median distance is \( \symup{18.23 \, \, \mathrm{mm}} \), while the mean distance is \( \symup{18.38 \, \, \mathrm{mm}} \).
+\newpage
+\subsection{Optimization of deflected spots}
+\label{sec:matradgradientdescent}
+%The goal is to optimize and recalculate the spots that are shifted due to the introduction of a magnetic field, so that they converge to the initial positions. To achieve this goal, the previously explained gradient descent algorithm is applied.
+%~\\
+%
+Optimized proton stopping positions, calculated using the developed proton transfer algorithm with the introduction of a magnetic field (\( B_z = \symup{1.5 \, \, T} \)), are compared with the initial matRad stopping positions without a magnetic field, as visualized in \autoref{fig:gradientdescentspotsplus}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/matrad/gradientandmatradplus.png}
+    \caption{Visualization of the enlarged prostate patient \gls{ct} dataset with highlighted \gls{ctv} (white). Qualitative comparison between magnetic field influenced and optimized spots calculated using the developed proton transfer algorithm (red dots) and matRad extracted proton stopping positions (blue dots) for each pencil beam. A candidate spot without optimization (orange dot) with its updated position is shown (orange arrow).}
+    \label{fig:gradientdescentspotsplus}
+\end{figure}
+~\\Qualitatively, the optimization shows that the deflected proton stopping positions calculated using the developed proton transfer algorithm are shifted around a position approximately matching the initial matRad proton stopping positions.
+\newpage
+The following \autoref{fig:matradmatlabr80bixelshistogramshiftedoptimized} presents the quantitative analysis of the optimized spots in a histogram, comparing this dataset to the previously calculated stopping positions using the developed proton transfer algorithm without a magnetic field (see \autoref{sec:comparison}).
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/statistics/initialmatlabvsmatradhistogramshiftedoptimized.png}
+    \caption{Histogram for quantitatively analyzing the differences between optimized stopping positions calculated using the developed proton transfer algorithm with an introduced magnetic field (\(B_z = \symup{1.5 \, \, \mathrm{T}} \)) and proton stopping positions extracted from matRad (blue bars). For comparison, initial stopping positions calculated using the developed proton transfer algorithm without a magnetic field are shown (gray bars). Euclidean distances are used, with their frequency distribution displayed. Median (red) and mean (green) values for both datasets are highlighted.}
+    \label{fig:matradmatlabr80bixelshistogramshiftedoptimized}
+\end{figure}
+~\\After optimization, the majority of distances between the optimized stopping positions calculated using the developed proton transfer algorithm and proton stopping positions extracted from matRad are below \( \symup{2 \, \, mm} \), as indicated by the blue bars. In contrast, the initial distances between stopping positions calculated using the developed proton transfer algorithm and those extracted from matRad, without the introduction of a magnetic field, were predominantly below \( \symup{1 \, \, mm} \) (cf. \autoref{fig:matradmatlabr80bixelshistogram}). After introducing a magnetic field and performing optimization, the mean distance increased to \( \symup{1.47 \, \, mm} \), with the median distance at \( \symup{1.06 \, \, mm} \).

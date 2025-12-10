@@ -1,0 +1,33 @@
+water matlab vs. Topas:
+
+B = 0T:
+
+E = 50 MeV:
+
+Depth (x) in TOPAS: 21.23 mm
+---------------------------------------------------
+Depth (x) in MATLAB: 22.19 mm
+
+
+
+E = 100 MeV:
+
+Depth (x) in TOPAS: 76.67 mm
+---------------------------------------------------
+Depth (x) in MATLAB: 76.92 mm
+
+
+
+E = 150 MeV:
+
+Depth (x) in TOPAS: 157.39 mm
+---------------------------------------------------
+Depth (x) in MATLAB: 157.21 mm
+
+
+
+E = 200 MeV: EXAMPLE WITH SCREENSHTOS
+
+Depth (x) in TOPAS: 259.25  mm
+---------------------------------------------------
+Depth (x) in MATLAB: 258.63 mm

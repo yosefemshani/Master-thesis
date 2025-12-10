@@ -1,0 +1,25 @@
+\chapter{Introduction}
+%first paragraph:
+%- radiotherapy is relevant method to treat cancer
+%- conventional radiotherapy uses photons
+%- protons in proton therapy show greater sparing of health tissue \cite{suit_clinical_1977}
+%
+%second paragraph:
+%- high precision of deposition in proton therapy leads to sensitivity to morphological changes 
+%- thus, image guided proton therapy could maximize sparing health tissue
+%- MRI good candidate imaging since it has excellent, soft-tissue constrast and no ionising dose \cite{schellhammer_integrating_2018}
+%- thus growing interest to investiagte MR-integrated proton therapy (MRiPT)
+%
+%third paragraph (focus of this thesis):
+%- basically: create ground work for MRiPT planning for a candidate treatment planning system
+%for that:
+%- develop an algorithm which allows calculating the proton transfer in various materials under influence of a magnetic field
+%- export proton pencil beam status from example treatment plan and import in developed algorithm
+%- run optimization algorithm to account for the deflection due to the magnetic field in order to roughly have same pencil beam spots as seen without a magnetic field
+Cancer therapy currently comprises three primary modalities: surgery, chemotherapy, and radiotherapy \cite{zeman_basics_2020}. Among these, radiotherapy is widely applied, either as a standalone treatment or in combination with other therapeutic approaches \cite{p_world_nodate}. It is a well-established and highly effective method for treating cancer. Conventional radiotherapy predominantly uses photons to deliver the prescribed dose to tumor sites. However, proton therapy offers notable advantages, particularly in its ability to spare healthy tissue, owing to the unique dose deposition characteristics of protons \cite{suit_clinical_1977}. Consequently, the number of treatments and centers utilizing particle therapy, particularly proton therapy, has significantly increased in recent years \cite{han_current_2019}.
+~\\
+
+The high precision of energy deposition in proton therapy, while beneficial, also makes it particularly sensitive to morphological changes in patient anatomy. Consequently, image-guided proton therapy has the potential to further enhance the sparing of healthy tissue. \Gls{mri} is a promising candidate for image guidance due to its excellent soft-tissue contrast and the absence of ionizing radiation \cite{schellhammer_integrating_2018}. This has led to growing interest in exploring \gls{mript}. Although MR-guided photon therapy already has commercial systems in clinical use \cite{duetschler_fast_2023}, \gls{mript} remains a novel concept under investigation. Unlike photons, the primary proton beam is deflected by the magnetic field of an \gls{mri} system due to its charged nature. This deflection must be considered when determining proton stopping positions within the specified target in the patient.
+~\\
+
+This thesis establishes the foundation for integrating magnetic field influenced pencil beam spot selection within a candidate \gls{tps}. To achieve this, an algorithm is proposed to calculate proton trajectories through various materials under the influence of a magnetic field. The algorithm is validated using a candidate \gls{mc} simulation platform. Proton pencil beam properties, such as initial energy and starting position, are exported from a candidate treatment field and imported into the developed algorithm. The resulting pencil beam spots are compared to those initially calculated in the \gls{tps}. An optimization algorithm is then applied to account for magnetic field induced deflections, ensuring that the adjusted pencil beam spots closely align with those calculated in the absence of a magnetic field.

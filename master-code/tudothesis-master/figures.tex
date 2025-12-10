@@ -1,0 +1,83 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning}
+\usepackage{graphicx}  % For scaling and rotating the curly brace
+
+\begin{document}
+
+\begin{tikzpicture}[scale=1, every node/.style={scale=0.85}]
+
+    % Define a custom color for consistency
+    \definecolor{myblue}{RGB}{80, 50, 255}  % Adjust RGB values for your desired color
+    \definecolor{myred}{RGB}{255, 153, 153}  % Define a red color matching red!20
+
+    % Label above the flowchart
+    \node at (-1,4.5) {\textbf{\Huge (A)}};
+
+    % Flowchart part (now on the left)
+    \node (flowchart) [anchor=west] at (0,0) {
+        \begin{tikzpicture}[scale=1, every node/.style={scale=0.85}]
+            % Initialization node
+            \node[draw, rectangle, minimum width=4cm, minimum height=1cm, fill=myblue!20] (init1) {\Large Initialization (Positions, Velocities, etc.)};
+
+            % Iteration steps for Code 1
+            \node[draw, rectangle, minimum width=4cm, minimum height=1cm, below=1.5cm of init1] (iter1) {\Large Iteration Step 1 (Force \& Acceleration)};
+            \node[draw, rectangle, minimum width=4cm, minimum height=1cm, below=1.5cm of iter1] (iter2) {\Large Iteration Step 2 (Velocity \& Position)};
+            \node[draw, rectangle, minimum width=4cm, minimum height=1cm, below=1.5cm of iter2] (iter3) {\Large Iteration Step 3 (Energy Loss \& Energy)};
+            \node[draw, rectangle, minimum width=4cm, minimum height=1cm, below=1.5cm of iter3] (check1) {\Large Convergence Check (Target Reached?)};
+
+            % New Stop node with red fill
+            \node[draw, rectangle, minimum width=4cm, minimum height=1cm, fill=red!20, below=1.5cm of check1] (stop) {\Large Stop};
+
+            % Arrows for Code 1
+            \draw[->, thick] (init1) -- (iter1);
+            \draw[->, thick] (iter1) -- (iter2);
+            \draw[->, thick] (iter2) -- (iter3);
+            \draw[->, thick] (iter3) -- (check1);
+
+            % Downward arrow from Convergence Check to Stop with Yes label
+            \draw[->, thick] (check1.south) -- (stop.north) node[midway,right] {\Large Yes};
+
+            % Upward arrow from Convergence Check to Iteration Step 1 with "No" label above the arrow
+            \draw[->, thick] (check1.west) -- ++(-1.0,0) node[midway,above,xshift=-0.1cm, yshift=-0.75cm] {\Large No} |- (iter1.west);
+        \end{tikzpicture}
+    };
+
+    % Label above the square
+    \node at (12.35,4.5) {\textbf{\Huge (B)}};
+
+    % Create a node for the first square (now only one square)
+    \node (squares) [anchor=west, right=3cm of flowchart] {
+        \begin{tikzpicture}
+            % First 8x8 square
+            \draw[thick] (0,0) rectangle (8,8);
+
+            % Adding a small blue dot at the center of the left side of the square with the same color
+            \filldraw[myblue!20] (0,5) circle (0.2cm);
+
+            % Vertical dashed line in the center of the square (at x = 4) with increased dash spacing
+            \draw[dashed, thick] (4,0) -- (4,8) [dash pattern=on 3pt off 5pt]; % Increased spacing between dashes
+            
+            % Adjusted arrows in the square
+            \draw[->, thick, blue] (0,5) -- (4,4); % First arrow in blue
+            \draw[->, thick, green] (4,4) -- (8,2); % Second arrow in green
+            
+            % Adding labels "Step 1-3" in the quadrants
+            \node[text=myblue] at (1.25,6) {\Large \textbf{Step 1-3}}; % First step 1-3 in blue
+            \node[text=green] at (5.25,6) {\Large \textbf{Step 1-3}}; % Second step 1-3 in green
+
+            % Adding a red dot at (8,2) with the same red color as the stop node
+            \filldraw[myred] (8,2) circle (0.2cm);
+
+        \end{tikzpicture}
+    };
+
+    % Adjusting the curly brace size and position, and making it thinner and centered
+    \node at (14.17,-4) {\resizebox{!}{1cm}{\rotatebox{90}{$\{$}}};  % Thinner and centered curly brace
+
+    % Move the label below the rotated curly brace and make it bold
+    \node at (14.17,-4.75) (label) {\textbf{\Large 1.09375 mm}};
+
+\end{tikzpicture}
+
+\end{document}

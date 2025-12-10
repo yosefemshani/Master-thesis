@@ -1,0 +1,245 @@
+\chapter{Materials and methods}
+\label{sec:materials}
+To integrate a magnetic field influenced pencil beam spot selection algorithm for a given patient dataset (see \autoref{sec:patientdataset}) and treatment plan setup (see \autoref{sec:treatmentplansetup}), analytical calculations of the proton stopping position are discussed (see \autoref{sec:analyticalmethod}). To validate these calculations, a comparison is made with proton stopping positions determined in a \gls{mc} environment (\gls{topas}) (see \autoref{sec:TOPAS}). Finally, an optimization algorithm for magnetic field influenced pencil beam spot selection is introduced (see \autoref{sec:gradientdescentmaterial}).
+%To achieve the goal of integrating a magnetic field influenced pencil beam spot selection algorithm for a candidate \gls{tps}, the developed proton trajectory calculation is discussed (see \autoref{sec:iterative}). Its general workflow and settings are explained (see \autoref{sec:MATLABworkflow}). To verify the results of this proton trajectory calculation, a candidate \gls{mc} environment (\gls{topas}) is presented for comparison. The settings used for the \gls{mc} simulation in \gls{topas} are demonstrated (see \autoref{sec:TOPAS}). In addition, two candidate methods for verifying the proton trajectory calculation with \gls{topas} are described (see \autoref{sec:topasB0T} and \autoref{sec:topasBGT}). Finally, matRad, which is the \gls{tps} analyzed in this work, is demonstrated (see \autoref{sec:matRad}). The general workflow (see \autoref{sec:matRadworkflow}) and the settings used (see \autoref{sec:treatmentplansetup}) are explained. To compare the proton trajectory calculation with matRad, the method of exporting matRad variables is also studied (see \autoref{sec:exportingmatradvariables}). Finally, for the introduction of a magnetic field, a possible optimization of the matRad pencil beam spot selection is introduced (see \autoref{sec:gradientdescentmaterial}).
+%This chapter focuses on explaining how the proton beam trajectory is calculated (see \autoref{sec:iterative}), for which a schematic workflow is given (see \autoref{sec:MATLABworkflow}). Then, the implementation of the gradient descent algorithm is discussed (see \autoref{sec:gradientdescentmaterial}). Furthermore, the open source software matRad will be generally demonstrated (see \autoref{sec:matRad}) with the help of a simplified workflow scheme (see \autoref{sec:matRadworkflow}) and a basic explanation of its' treatment plan setup (see \autoref{sec:treatmentplansetup}). Finally, a candidate method of a magnetic field introduction for matRad will be shown (see \autoref{sec:exportingbeamvariables}).
+\section{Patient dataset}
+\label{sec:patientdataset}
+The patient dataset used in this thesis is publicly available as part of the Gold Atlas project \cite{nyholm_mr_2018}. This project includes data from 19 patients, each with defined anatomical structures and delineation details. The delineations were independently performed in RayStation v4.7.2 via remote connections by four experienced radiation oncologists and one radiologist. Each patient’s imaging data is stored in \gls{dicom} format.
+~\\
+
+For this thesis, the dataset labeled "2\_04\_P" (patient ID 9) is used as an example. This dataset includes five structures: the urinary bladder, rectum, both femoral heads, and prostate. The \gls{ct} images were acquired using a Toshiba Aquilion \gls{ct} scanner.
+~\\
+
+The voxel dimensions are \((1.09375 \times 1.03975 \times 2) \, \symup{mm^3}\), with an overall resolution of \(341 \times 225 \times 62\). Of the 62 slices available, the slice labeled "IMG0036" and its pixel data is presented for explanation in this thesis.
+~\\
+
+Throughout this thesis, this analyzed dataset will be referred to as the prostate patient dataset.
+
+\newpage
+\section{Treatment plan setup}
+\label{sec:treatmentplansetup}
+%\label{sec:matRad}
+%matRad is an open source radiation treatment planning software supporting intensity modulated photon, proton, and carbon ion therapy. It is developed for educational and research purposes only and is not intended for clinical use. The software environment is completely coded in MATLAB \cite{wieser_development_2017}. In this work, the feature of proton therapy is focused on.
+%~\\
+%
+%This section deals with the general matRad workflow, which consists of six different steps. These are explain in \autoref{sec:matRadworkflow}. After that, the settings used for these steps are described, which can be seen in \autoref{sec:treatmentplansetup}.
+%\subsection{Workflow}
+%\label{sec:matRadworkflow}
+%The matRad workflow is visually illustrated in \autoref{fig:matradworkflow}.
+%\begin{figure}[h!]
+%    \centering
+%    \includegraphics[width=\textwidth]{matradworkflow.pdf}
+%    \caption{Illustration of the matRad workflow consisting of six different steps.}
+%    \label{fig:matradworkflow}
+%\end{figure}
+%\subsubsection*{Imaging}
+%The first step is to import an imaging dataset, e.g. \gls{mri} or \gls{ct}. matRad allows the transformation of common imaging formats, such as \gls{dicom}, into ".mat" files for compatibility reasons. This transformation can be done by using the \gls{gui} provided by matRad. All of the other functions in the following steps can be used from the source code.
+%
+%\subsubsection*{Objectives}
+%For the imported image and contours of \glspl{oar} and \gls{ctv}, objectives and constraints must be set, such as limiting the maximum dose or achieving a mean dose. In matRad, users can also define the goal's priority and set a penalty for unmet targets, with higher penalties increasing computational cost.
+%
+%\subsubsection*{Treatment plan setup}
+%The treatment plan setup sets field values, such as the gantry and couch angle, the radiation mode, e.g. photons, carbons or protons and the \gls{rbe} calculation method. The isocenter and number of beams are also set. Furthermore, the bixel width will be set. This bixel concept is explained further in the next step.
+%
+%\subsubsection*{Steering information}
+%All geometric information about the irradiation is stored in the "stf" structure, which uses prior steps to calculate steering information. The overall geometry follows a ray and bixel concept, illustrated in \autoref{fig:raybixelconcept}. In the steering information the end position coordinates are calculated, which is the focus of this work.
+%\begin{figure}[h!]
+%    \centering
+%    \includegraphics[width=\textwidth]{../Screenshots/matrad/raybixelconcept.png}
+%    \caption{A virtual radiation source (yellow) emits equidistant rays (solid black) to cover the target volume (red) within the patient (green). In the isocenter plane (not shown), the distance between beams equals the bixel width, representing discrete fluence elements (dashed black). The depth of the target is determined along each ray, and spots (black dots) are placed accordingly \cite{bangert_dose_nodate}.}
+%    \label{fig:raybixelconcept}
+%\end{figure}
+%
+%\subsubsection*{Dose influence matrix}
+%A conventional pencil beam model is used for dose calculation. A detailed explanation can be found in the literature \cite{bangert_dose_nodate}. The result of the dose calculation is a dose influence matrix, which is stored in a "dij" structure. In general, the "dij" entries are calculated row by row. This matrix has the following syntax:
+%\begin{align*}
+%        D_{ij} = \begin{pmatrix}
+%                    D_{11} & \cdots & D_{1j} \\
+%                    \vdots & \ddots & \vdots \\
+%                    D_{i1} & \cdots & D_{ij} \\
+%                 \end{pmatrix}
+%\end{align*}
+%
+%\subsubsection*{Optimization}
+%The goal of optimization is to determine bixel and spot weights that achieve the best possible dose distribution based on the clinical objectives and constraints of the radiation treatment. This step is particularly important for creating treatment plans that provide approximate clinically relevant \gls{dvh} results.
+%~\\
+%
+%Finally, matRad offers a visualization of the resulting treatment plan with its' dose distribution, as well as printing out a \gls{dvh}.
+%\newpage
+A treatment plan is made for the given prostate patient dataset consisting of three sample slices with the same pixel data, i.e. equal CT numbers, for which one slice is visualized in the following \autoref{fig:patient}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/matrad/patient.png}
+    \caption{Given prostate patient \gls{ct} dataset imported into matRad and visualized using the matRad \gls{gui}. A candidate \gls{ctv}, representing the prostate, is highlighted (red) as well as possible \glspl{oar}, representing both femoral heads and the rectum (pink and dark red).}
+    \label{fig:patient}
+\end{figure}
+~\\As for objectives, the prostate is set as the only target with the goal of achieving a mean dose of $\symup{50 \, \, Gy}$ and a default priority and penalty of 1. Further objectives and constraints for the \glspl{oar} are not set, since this work does not focus on a clinically relevant result, but on the investigation of the pencil beam spot selection.
+~\\
+
+Radiation is delivered from a couch angle of 0° and a gantry angle of 270°. Protons are used, assuming a constant RBE of 1.1. The default pencil beam width of $\symup{5 \, \, mm}$ is used. For patient materials, the matRad \gls{hulut} approach is used.  The dose grid resolution is set equal to the \gls{ct} grid resolution of $\symup{(1.09375, 1.09375) \, \, mm^2}$ for x and y. The slices show a spacing of $\symup{z = 2 \, \, mm}$.
+~\\
+%When generating the steering information in "matRad\_generateStf.m", the variable containing information about the targets' position "voiTarget" is exported for further pencil beam spot selection analysis.
+%~\\
+
+The analytical absorbed dose is calculated using the matRad default pencil beam model. Finally, the default fluence optimization algorithm is applied.
+~\\
+
+This matRad treatment plan simulation is documented and explained in more detail in the appendix (\autoref{sec:matradtreatmentplanappendix}).
+
+%In the step of dose influence matrix calculation, linear interpolation is used to export $\symup{R_{80}}$ ranges of each beam as well as the initial starting position and energy.
+
+\section{Analytical calculation of proton stopping position}
+\label{sec:analyticalmethod}
+\subsection{Developed proton transfer algorithm}
+\label{sec:iterative}
+%WRITE THIS IN DISCUSSION MAYBE? The goal is to optimize a magnetic field influenced pencil beam spot selection in the candidate treatment planning system matRad. For this purpose, the development of a proton trajectory calculation in MATLAB is advantageous, since this is the environment in which matRad was developed.% The general workflow of the developed algorithm is discussed in the following \autoref{sec:MATLABworkflow}.
+%\subsection{Workflow}
+%\label{sec:MATLABworkflow}
+In this section, an analytical method is proposed to provide a rough estimation of the expected proton stopping position in the presence of a magnetic field.
+~\\
+
+The CT slice is assumed to be perpendicular to the magnetic field ($\vec{B} = B_z$). Since the goal is to estimate the approximate stopping location of the proton, random effects such as particle collisions and scattering are not calculated in detail. Instead, the simulation focuses on the general effects of energy loss and deflection due to the magnetic field.
+~\\
+
+The simulation of the expected proton trajectory is calculated in a step-wise manner, with two steps per voxel. In each step, the state of a given incident proton is described by its position $\vec{r}$, velocity $\vec{v}$, magnetic field $\vec{B}$, and material-specific stopping power (\gls{rspr}), determined by the CT number.
+%The implementation of energy loss calculation using \gls{csda} is inspired by "libamtrack" \cite{grzanka_libamtrack_nodate}. This implementation allows to calculate the energy loss up to $E\symup{ = 0.49 \, \, MeV}$. When this energy value is reached, the calculation stops. In Grzanka et al. the mean excitation value, for the Bethe Bloch equation explained in \autoref{eqn:bethebloch}, is $I\symup{ = 75 \, \, eV}$. This was updated with the \gls{icru} report 90 to $I\symup{ = 78 \, \, eV}$ \cite{czarnecki_impact_2018}, which is also used in \gls{topas} \cite{perl_30_nodate}. Thus, the developed calculation for the proton stopping position in this thesis will use the same mean excitation value $I\symup{ = 78 \, \, eV}$.
+~\\
+
+The initialization of a given simulation is conducted by:
+%The first code performs the calculation of force, acceleration, velocity, position and energy loss. A step-wise approach is used to iteratively compute all of the above with a convergence check as the last iteration step. The step size of is set to $\symup{1.09375 \, \, mm}$, which corresponds to the voxel step size of the \gls{ct} datasets analyzed in the following chapters. These aspects are illustrated in \autoref{fig:matlabworkfloww}.
+%~\\
+%\begin{figure}[h!]
+%    \centering
+%    \includegraphics[width=\textwidth]{figures.pdf}
+%    \caption{(A) Demonstration of iterative workflow for MATLAB proton trajectory calculation. (B) MATLAB voxel is graphically illustrated with its' size labeled. For each voxel the calculation steps are calculated twice (blue and green line).}
+%    \label{fig:matlabworkfloww}
+%\end{figure}
+%~\\
+%The second code references and initializes the first. The purpose of this second code is to start a simplified simulation with only the input of varying parameters, e.g. initial energy, initial position, \gls{rspr} map and magnetic field strength. When comparing these results with \gls{topas}, the Schneider \gls{hulut} is used, while for the comparison with matRad, the matRad implemented \gls{hulut} is used.
+%
+%\newpage
+%The calculations for the implemented algorithm are realized by first initializing the first step of velocity and acceleration with
+\begin{align*}
+    \gamma_0       =& \, \, 1 + \frac{E_0}{m_u} \\
+    \beta_0        =& \, \, \sqrt{1 - \frac{1}{\gamma^2_0}} \\
+    \vec{v}_{0}    =& \, \, \beta_0 \cdot c \\
+    \vec{F}_{0}    =& - q \cdot \left(\vec{v}_{0} \times \vec{B_0}\right) \\
+    \vec{a}_{0}    =& \, \frac{\vec{F}_{0}}{m_{\symup{p}}} \, \, \, \, \, ,
+\end{align*}
+~\\where $\gamma_0$ is the Lorentz factor, $E_0$ is the initial energy in MeV, $m_u$ is the atomic mass unit, $\beta_0$ is the relativistic velocity, $c$ is the light of speed and $\vec{v}_0$ is the initial velocity of the proton. Then, the initial Lorentz force $\vec{F}_0$ is computed with the charge of the proton and magnetic field strength $\vec{B}_0$. Finally, the initial acceleration of the proton $\vec{a}_0$ can be described with the initial lorentz force and mass of the proton $m_p$.
+~\\
+Given the status of the proton at step $i-1$ ($\vec{r_{i-1}}, \vec{v_{i-1}}$, $\vec{B_i}$, \gls{rspr}$_i$), the proton status at step $i$ can be calculated iteratively with
+\begin{align*}
+    %\symup{dt}_{i} =& \, \frac{\symup{\increment x}}{\symup{\lVert \vec{v}_{i-1}\rVert}} \\
+    \vec{F}_{i}    =&  - q \cdot \left(\vec{v}_{i-1} \times \vec{B_i}\right) \\
+    \vec{a}_{i}    =& \, \frac{\vec{F}_{i}}{m_{\symup{p}}} \\
+    \vec{v}_{i}    =& \, \, \vec{v}_{i-1} + \vec{a}_{i} \cdot \symup{dt}_{i} \\
+    \vec{r}_{i}    =& \, \, \vec{r}_{i-1} + \vec{v}_{i} \cdot \symup{dt}_{i} \, \, \, \, \, ,
+\end{align*}
+where the deflection, due to a magnetic field $\vec{B}_i$, is calculating using the Lorentz force $\vec{F}_i$ with the charge of the proton $q$, the norm of the prior velocity status $\vec{v}_{i-1}$. With the Lorentz force and the mass of the proton $m_{\symup{p}}$, the updated deflection $\vec{a}_i$ can be computed. The next step is calculating the next velocity step $\vec{v}_i$ using the updated acceleration, time step and prior velocity step $\vec{v}_{i-1}$. Finally, the updated proton position $\vec{r}_i$ is computed using the prior position step $\vec{r}_{i-1}$, updated velocity and time step. The time step itself is calculated by
+\begin{align*}
+    \symup{dt}_{i} =& \, \frac{\symup{\increment x}}{\symup{\lVert \vec{v}_{i-1,x}\rVert}} \, \, \, \, \, ,
+\end{align*}
+where $\symup{dt}_{i}$ is the time step, $\symup{\increment x}$ is half of the grid step size and $\|\vec{v}_{i-1,x}\|$ is the norm of the prior calculated velocity in x-direction.
+~\\
+
+The update of the velocity magnitude depends on the energy of the given proton status. Energy loss is calculated using the \gls{csda}. The implementation of energy loss calculation using \gls{csda} is inspired by "libamtrack" \cite{grzanka_libamtrack_nodate}. This implementation allows to calculate the energy loss up to $E\symup{ = 0.49 \, \, MeV}$. Lower energy values are neglected. Thus, this energy is set as the energy threshold of the proton stopping position calculation in this thesis. The initial mean excitation value for Bethe Bloch (\autoref{eqn:bethebloch}) is $I\symup{ = 75 \, \, eV}$. This was updated with the \gls{icru} report 90 to $I\symup{ = 78 \, \, eV}$ \cite{czarnecki_impact_2018}, which is also used in \gls{topas} \cite{perl_30_nodate}. Thus, the developed proton transfer algorithm is set to have an equal mean excitation value of $I\symup{ = 78 \, \, eV}$.
+~\\
+
+In order to calculate proton energy loss, a \gls{rspr} map is imported. With the help of
+\begin{align*}
+    \increment E_{i,\symup{SPR}} =& \, \, \increment E_{i} \cdot \symup{SPR}_i \\
+    E_{i}                        =& \, \, \increment E_{i,\symup{SPR}} \cdot \increment x \, \, \, \, \, ,
+\end{align*}
+where $\increment E_{i,\symup{SPR}}$ is the energy loss with \gls{rspr} map value applied relative to the current proton position, $\increment E_{i}$ is the energy loss calculated using the "libamtrack" implementation \cite{grzanka_libamtrack_nodate} and $\symup{SPR}_i$ is the \gls{rspr} map value relative to the current proton position. Finally, the energy is updated using the updated energy loss and step size $\increment x$.
+~\\
+A detailed documentation of this developed algorithm can be found in the appendix (\autoref{sec:protontrajectoryappendix}).
+~\\
+
+To verify the developed algorithm of proton transfer, cases of increasing geometric complexity are analyzed. First, the helical radius (\autoref{eqn:radiusmagnet}) is verified via a simulation in a vacuum. For this simulation an energy loss of $\symup{\frac{\mathrm{d}E}{\mathrm{d}x} = 10^{-14} \, \, \frac{\mathrm{keV}}{\mu \mathrm{m}}}$ is assumed. Next, simulations are conducted in water (CT number: $\symup{0 \, \, HU}$ \cite{denotter_hounsfield_2024}), bone (CT number: $\symup{1000 \, \, HU}$ \cite{denotter_hounsfield_2024}), and prostate patient phantoms (CT number: on patient CT) with and without a magnetic field. The voxel dimensions and overall resolutions of all phantoms are set equal to the patient dataset (see \autoref{sec:patientdataset}). Each of these cases is compared to \gls{mc} based calculations of proton stopping positions under matching conditions, including initial energy, beam source position, and the same \gls{hulut}. The specific \gls{hulut} used in verification is the "Schneider" \gls{hulut} \cite{schneider_correlation_2000}.
+
+\subsection{matRad}
+\label{sec:matRad}
+The dose influence matrix $D_{ij}$, generated during matRad treatment planning according to given objectives and constraints, is analyzed to obtain the planned proton pencil beam stopping position, which is determined by the distal fall-off at $\symup{80 \, \,\%}$ of the relative maximum dose $R_{\symup{80}}$ on the laterally integrated dose distribution. With the stopping positions of all pencil beams used in the initial treatment plan, a spot grid, that is supposed to fill a given \gls{ctv}, can be achieved. The \gls{ctv} is visualized by exporting the variable "voiTarget" inside the steering information in $\symup{"matRad\_generateStf.m"}$ is exported. This analysis is documented and can be seen in the appendix (\autoref{sec:exporting_matRad_R80_positionsappendix}).
+~\\
+To further analyze the developed algorithm, initial positions and energy values for each bixel in the treatment field are exported and input into the algorithm code with the matRad \gls{hulut}. The resulting spots are then compared. Finally, a magnetic field is introduced to assess resulting differences, and deflected spots are optimized.
+\newpage
+\section{Monte Carlo based calculation of proton stopping position}
+\label{sec:TOPAS}
+The parameter setup used in this thesis and two candidate methods for verifying the analytical calculation of the proton stopping position for both $\symup{B = 0 \, \, T}$ and $\symup{B > 0 \, \, T}$ are described in \autoref{sec:parametersetup}, \autoref{sec:topasB0T} and \autoref{sec:topasBGT} respectively.
+\subsection{Simulation setup}
+\label{sec:parametersetup}
+The default physics settings are applied for all \gls{topas} simulations in this thesis.
+
+~\\Additionally, the beam model is configured with an energy spread of 0, a "Flat" position distribution, and an "Ellipse" cutoff shape. The cutoffs in both the x- and y-directions are set to \(\symup{0.5 \, cm}\), and the position spread is set to \(\symup{0.1 \, mm}\). No angular distribution is applied. All simulations use the default random seed and a constant initial proton count of \(\symup{N = 10^5}\). The beam is positioned at the left, center-aligned starting voxel of the \gls{ct} dataset, as illustrated in \autoref{fig:parametersetup}. Detailed simulation settings and magnetic field configurations are provided in \autoref{sec:appendixtopassetup}.
+~\\
+~\\\begin{figure}[h!]
+    \centering
+    \includegraphics[height=9cm]{../Screenshots/examples/parametersetup.png}
+    \caption{Visualization of the beam start position in \gls{topas}. In this example, a prostate patient \gls{ct} dataset is irradiated with protons (E = 100 MeV, N$ \,\, = \symup{10^3}$). Primary particles, i.e. protons are marked (blue lines), as well as secondary particles, i.e. electrons (red lines) and gamma rays (green lines).}
+    \label{fig:parametersetup}
+\end{figure}
+~\\
+Intuitively, each voxel in a \gls{ct} slice has a different \gls{ct} number. For all simulations, the "Schneider" conversion method is used to assign \gls{ct} numbers to tissue parameters. The "Schneider" conversion method is implemented with the following lines:
+~\\
+\begin{python}
+    includeFile = HUtoMaterialSchneider.txt
+    s:Ge/Patient/ImagingtoMaterialConverter = "Schneider"
+\end{python}
+For absorbed dose measurements, a volume scorer is used. This scorer divides a geometric volume into symmetrical bins. Imported \gls{ct} datasets for different materials are divided into multiple voxels. Each voxel contains the absorbed dose value for the corresponding bin. The bin size for all dimensions is set equivalent to the default \gls{ct} grid size.
+\newpage
+\subsection{Estimation of proton stopping position for B = 0 T}
+\label{sec:topasB0T}
+In the absence of a magnetic field, no deflection occurs in proton trajectories. The $\symup{80 \, \,\%}$ distal fall-off of the laterally integrated proton dose distribution is taken as the stopping position, consistent with the proton stopping calculation used in matRad (see \autoref{sec:matRad}).
+\subsection{Estimation of proton stopping position for B > 0 T}
+\label{sec:topasBGT}
+To estimate the proton stopping position in a magnetic field, the following method is proposed. First, the \gls{3D} dose distribution \( D(i,j,k) \) is first simplified to a simple proton trajectory curve, \( y(x) \), by applying a Gaussian fit to the \gls{2D} dose cross section at each depth \( x \), i.e.,
+\begin{equation}
+    y(x) = \symup{max}\Biggl(\symup{Gaussian}\Bigl(D\left(x, :, :\right)\Bigr)\Biggr) \, \, \, ,
+\end{equation}
+where $y(x)$ is regarded as the expected trajectory of the corresponding magnetic field influenced deflected proton pencil beam (see \autoref{fig:plottogether}). 
+\\\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{../Screenshots/plottogether.png}
+    \caption{Visualization of magnetic field influenced proton trajectory simulated in \gls{topas} (left). A candidate value of $x = 40 \, \, \symup{mm}$ is marked and the \gls{1D} dose distribution along $y$ with Gaussian fit for specified $x$ value is demonstrated (right).}
+    \label{fig:plottogether}
+\end{figure}
+~\\Once the proton trajectory is determined, the proton stopping position is calculated using the following method. It is assumed that the path length a proton travels is primarily governed by stopping power, which is minimally influenced by the deflection induced by a magnetic field. Therefore, the trajectory lengths of protons with and without a magnetic field are considered approximately equivalent. The proton stopping position is determined by equating the path length of a proton traveling along the deflected trajectory in a magnetic field to the path length of the same proton pencil beam in the absence of a magnetic field. The stopping position is then calculated as follows: First, the trajectory length of \( P_2 \), denoted \( s_{\symup{L2}} \), is determined based on the 80 \% distal fall-off of the corresponding laterally integrated dose distribution. Subsequently, the trajectory length of \( P_1 \), denoted \( s_{\symup{L1}} \), is calculated by
+\begin{align}
+\label{eqn:sdistance}
+    s_{\symup{L1}} = \sum_i \sqrt{\increment x_i^2 + \increment y_i^2} \, \, \, \, \text{with} \, \, \, \, \increment x_i = x_i - x_{i-1} \, \land \, \increment y_i = y_i - x_{i-1} \, \, \, ,
+\end{align}
+until step $i$ for which $s_{\symup{L1}} = s_{\symup{L2}}$. Finally, $(x_i,\, y_i)$ is regarded as the proton stopping position of $P_2$. This approximation is visualized in \autoref{fig:sdistance}. A detailed code implementation can be found in appendix (\autoref{sec:topasb0tappendix}).
+~\\
+
+The results of the \gls{mc} based calculation of proton stopping position are assumed to be the ground truth for verifying the analytically calculated proton stopping position.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=13cm]{sdistance.pdf}
+    \caption{Illustration of magnetic field influenced proton beam trajectory approximation. $P_1$ refers to the magnetic field influenced pencil beam.}
+    \label{fig:sdistance}
+\end{figure}
+\section{Optimization for magnetic field introduction}
+\label{sec:gradientdescentmaterial}
+The purpose of this section is to present a method for modifying and adapting the pencil beam spots of the initial treatment field considering the impact of the influence of an additional given magnetic field, ensuring that the modified spots provide approximately the same coverage of the \gls{ctv} as the original spots without a magnetic field.
+~\\
+
+First, for a given pencil beam $i$ in the initial treatment field with initial position $\vec{r}_i$ and energy $E_i$, the proton stopping position without a magnetic field, $\vec{V}_{i}$, is calculated using the developed algorithm (see \autoref{sec:iterative}). Next, for the same pencil beam, the proton stopping position in the presence of the given magnetic field, $\vec{V}_{{\symup{M}},i}$, is determined. Finally, the updated new position $\vec{r}_{\symup{op,i}}$ and energy $E_{\symup{op,i}}$ is obtained via gradient descent optimization (see \autoref{sec:gradientdescenttheory}) by minimizing the difference between $\vec{V}_{{\symup{M}},i}$ and $\vec{V}_{i}$. Thus, $\vec{r}_{\symup{op},i} \approx \vec{V}_{i}$ is assumed. This is visualized in \autoref{fig:gradientplot}.
+
+\newpage
+The gradient descent parameters used are:
+%The \gls{rspr} map for given \gls{ct} datasets is imported and the proton trajectory calculation (see \autoref{sec:iterative}) is used to compute each gradient descent step. The gradient descent starts at the position shifted by the magnetic field, aiming to minimize the trajectory to converge towards the position without a magnetic field, using the same initial position and energy. The gradient descent parameters are:
+\begin{python}
+    learning_rate_E = 0.0005; % Step size for energy
+    learning_rate_y = 0.0005; % Step size for position (if y is adjusted)
+    tolerance = 1e-4;         % Convergence tolerance
+    max_steps = 200;          % Maximum iterations
+\end{python}
+A detailed documentation of the computational gradient descent implementation can be seen in the appendix (\autoref{sec:gradientdescentoptimization}).
+\begin{figure}[h!]
+    \centering
+    \includegraphics[height=12.8cm]{gradientplot.pdf}
+    \caption{Illustration of gradient descent optimization. P1 marks the magnetic field influenced pencil beam with proton stopping position $\vec{V}_{\symup{M},i}$. P2 refers to the pencil beam without a magnetic field with initial position $\vec{r}_i$ and proton stopping position $\vec{V}_i$. After gradient descent optimization, the pencil beam $P_{\symup{op},1}$ stopping position $\vec{r}_{\symup{op},i}$ is marked.}
+    \label{fig:gradientplot}
+\end{figure}

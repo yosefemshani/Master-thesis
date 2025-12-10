@@ -1,0 +1,284 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%   Vorlage für eine Abschlussarbeit   %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Erstellt von Maximilian Nöthe, <maximilian.noethe@tu-dortmund.de>
+% ausgelegt für lualatex und Biblatex mit biber
+
+% Kompilieren mit
+% latexmk --lualatex --output-directory=build thesis.tex
+% oder einfach mit:
+% make
+
+\documentclass[
+  tucolor,       % remove for less green,
+  BCOR=12mm,     % 12mm binding corrections, adjust to fit your binding
+  parskip=half,  % new paragraphs start with half line vertical space
+  open=any,      % chapters start on both odd and even pages
+  cleardoublepage=plain,  % no header/footer on blank pages
+]{tudothesis}
+
+
+% Warning, if another latex run is needed
+\usepackage[aux]{rerunfilecheck}
+
+% just list chapters and sections in the toc, not subsections or smaller
+\setcounter{tocdepth}{2} % 1 for no subsections in contents, 2 for subsections in contents
+
+%------------------------------------------------------------------------------
+%------------------------------ Fonts, Unicode, Language ----------------------
+%------------------------------------------------------------------------------
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}  % -- becomes en-dash etc.
+
+% load english (for abstract) and ngerman language
+% the main language has to come last
+\usepackage[american, american]{babel}
+
+% intelligent quotation marks, language and nesting sensitive
+\usepackage[autostyle]{csquotes}
+
+% microtypographical features, makes the text look nicer on the small scale
+\usepackage{microtype}
+
+%------------------------------------------------------------------------------
+%------------------------ Math Packages and settings --------------------------
+%------------------------------------------------------------------------------
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+% Enable Unicode-Math and follow the ISO-Standards for typesetting math
+\usepackage[
+  math-style=ISO,
+  bold-style=ISO,
+  sans-style=italic,
+  nabla=upright,
+  partial=upright,
+  warnings-off={mathtools-colon,mathtools-overbracket}, % suppress some unnecessary warnings
+]{unicode-math}
+\setmathfont{Latin Modern Math}
+
+% nice, small fracs for the text with \sfrac{}{}
+\usepackage{xfrac}
+
+
+%------------------------------------------------------------------------------
+%---------------------------- Numbers and Units -------------------------------
+%------------------------------------------------------------------------------
+
+\usepackage[
+  locale=US,
+  separate-uncertainty=true,
+  per-mode=symbol-or-fraction,
+]{siunitx}
+
+%------------------------------------------------------------------------------
+%-------------------------------- tables  -------------------------------------
+%------------------------------------------------------------------------------
+
+\usepackage{booktabs}       % \toprule, \midrule, \bottomrule, etc
+
+%------------------------------------------------------------------------------
+%-------------------------------- graphics -------------------------------------
+%------------------------------------------------------------------------------
+
+\usepackage{graphicx}
+% currently broken
+% \usepackage{grffile}
+
+% allow figures to be placed in the running text by default:
+\usepackage{scrhack}
+\usepackage{float}
+\floatplacement{figure}{htbp}
+\floatplacement{table}{htbp}
+
+% keep figures and tables in the section
+\usepackage[section, below]{placeins}
+
+% allows to include PDFs as full pages
+\usepackage{pdfpages}
+
+% Set the PDF Version of this document to 1.7 (1.4 is the current default)
+% This is needed so that PDFs with Version >1.5 can be included
+\pdfvariable minorversion=7
+
+%------------------------------------------------------------------------------
+%---------------------- customize list environments ---------------------------
+%------------------------------------------------------------------------------
+
+\usepackage{enumitem}
+
+%------------------------------------------------------------------------------
+%------------------------------ Bibliographie ---------------------------------
+%------------------------------------------------------------------------------
+
+\usepackage[
+  backend=biber,   % use modern biber backend
+  autolang=hyphen,
+  style = numeric,
+  sorting= none,   % load hyphenation rules for if language of bibentry is not
+                   % german, has to be loaded with \setotherlanguages
+                   % in the references.bib use langid={en} for english sources
+]{biblatex}
+\addbibresource{references.bib}  % the bib file to use
+\DefineBibliographyStrings{american}{andothers = {{et\,al\adddot}}}  % replace u.a. with et al.
+
+
+% Last packages, do not change order or insert new packages after these ones
+\usepackage[pdfusetitle, unicode, linkbordercolor=tugreen, citebordercolor=tugreen]{hyperref}
+\usepackage[savewrites,nonumberlist, seeautonumberlist, nopostdot, acronym, style=super]{glossaries} %style long or default: list
+\usepackage{bookmark}
+\usepackage[shortcuts]{extdash}
+
+
+\usepackage{pythonhighlight}
+\usepackage{tikz}
+
+
+%------------------------------------------------------------------------------
+%-------------------------    Glossary   --------------------------------------
+%------------------------------------------------------------------------------ 
+
+\newcommand\acrfullr[2][]{\acrshort[#1]{#2}: \acrlong[#1]{#2}}
+% increase space and align entrys similar
+\newglossarystyle{mystyle}{%
+  \glossarystyle{long}%
+  %\renewcommand{\glsgroupskip}{}
+  \renewenvironment{theglossary}%
+     {\begin{longtable}{N p{\glsdescwidth}}}%
+     {\end{longtable}}%
+} 
+
+%\setglossarystyle{mystyle} 
+\makeglossaries
+\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+
+
+% medical physics basics
+\newacronym{ct}{CT}{computed tomography}
+\newacronym{mri}{MRI}{magnetic resonance imaging}
+\newacronym{sct}{sCT}{synthetic computed tomography}
+\newacronym{mript}{MRiPT}{MR-integrated proton therapy}
+%\newacronym{hu}{HU}{Hounsfield unit}
+\newacronym{dicom}{DICOM}{Digital Imaging and Communications in Medicine}
+\newacronym{uid}{UID}{unique identifier}
+\newacronym{gui}{GUI}{graphical user interface}
+% radiotherapy
+\newacronym{rt}{RT}{radiotherapy}
+\newacronym{tps}{TPS}{treatment planning system}
+\newacronym{topas}{TOPAS}{Tool for Particle Simulation}
+\newacronym{csda}{CSDA}{continuous slowing down approximation}
+\newacronym[longplural={Hounsfield look-up tables}]{hulut}{HLUT}{Hounsfield look-up table}
+\newacronym[longplural={Hounsfield units}]{hu}{HU}{Hounsfield unit}
+\newacronym{rspr}{rSPR}{relative stopping power ratio}
+\newacronym{mata}{MATA}{material assignment}
+\newacronym{rbe}{RBE}{relative biological effectiveness}
+\newacronym{linac}{LINAC}{linear accelerator}
+
+
+\newacronym{mc}{MC}{Monte Carlo}
+
+\newacronym{dvh}{DVH}{dose volume histogram}
+\newacronym[longplural={regions of interest}]{roi}{ROI}{region of interest}
+\newacronym[longplural={organs at risk}]{oar}{OAR}{organ at risk}
+\newacronym{dsc}{DSC}{Dice similarity coefficient}
+
+\newacronym{gli}{GLI}{glioblastoma}
+\newacronym{gtv}{GTV}{gross tumor volume}
+\newacronym{ctv}{CTV}{clinical target volume}
+\newacronym{ptv}{PTV}{planning target volume}
+
+% institutions
+\newacronym{nci}{NCI}{National Cancer Institute}
+\newacronym{uf}{UF}{University of Florida}
+\newacronym{aapm}{AAPM}{American Association of Physicists in Medicine}
+\newacronym{dkfz}{DKFZ}{German Cancer Research Center}
+\newacronym{icrp}{ICRP}{International Commission on Radiological Protection}
+\newacronym{icru}{ICRU}{International Commission on Radiation Units and Measurements}
+\newacronym{nhanes}{NHANES}{National Health and Nutrition Examination Surveys}
+\newacronym{cdc}{CDC}{Centers for Disease Control and Prevention}
+
+% general
+\newacronym{1D}{1D}{one-dimensional}
+\newacronym{2D}{2D}{two-dimensional}
+\newacronym{3D}{3D}{three-dimensional}
+\newacronym{id}{ID}{identification number}
+
+%------------------------------------------------------------------------------
+%-------------------------    Angaben zur Arbeit   ----------------------------
+%------------------------------------------------------------------------------
+
+\author{Yosef Emshani}
+\title{Development of magnetic field influenced pencil beam spot selection for proton therapy treatment planning}
+\date{2024}
+\birthplace{Castrop-Rauxel}
+\chair{Lühr Group}
+\division{Department of Physics}
+\thesisclass{Master of Science}
+\submissiondate{December 2, 2024}
+\firstcorrector{Prof. Dr. Armin Lühr}
+\secondcorrector{Prof. Dr. Kevin Kröninger}
+
+% tu logo on top of the titlepage
+\titlehead{\includegraphics[height=1.5cm]{logos/tu-logo.pdf}}
+
+\begin{document}
+
+\def\figureautorefname{figure}
+\def\equationautorefname{equation}
+\def\tableautorefname{table}
+\def\sectionautorefname{section}
+
+
+\frontmatter
+\maketitle
+
+% Gutachterseite
+\makecorrectorpage
+
+% hier beginnt der Vorspann, nummeriert in römischen Zahlen
+\input{content/00_abstract.tex}
+\tableofcontents
+\newpage
+
+%\glsaddall
+\glsfindwidesttoplevelname
+
+\printglossary[title={List of abbreviations}, type=\acronymtype]
+
+
+\mainmatter
+% Hier beginnt der Inhalt mit Seite 1 in arabischen Ziffern
+\input{content/05_introduction.tex}
+\input{content/06_theory.tex}
+\input{content/07_materials_and_methods.tex}
+\input{content/08_results.tex}
+\input{content/09_discussion.tex}
+\input{content/10_conclusion.tex}
+
+\appendix
+% Hier beginnt der Anhang, nummeriert in lateinischen Buchstaben
+\input{content/a_appendices.tex}
+\printbibliography
+\backmatter
+
+\renewcommand*\listfigurename{List of figures}
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+\newpage
+\renewcommand*\listtablename{List of tables}
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+\newpage
+\input{content/04_acknowledgments.tex}
+\addcontentsline{toc}{chapter}{Acknowledgments}
+\includepdf{content/declaration.pdf}
+
+
+%\cleardoublepage
+% From https://www.tu-dortmund.de/studierende/im-studium/pruefungsangelegenheiten/allgemeine-vordrucke/
+\includepdf{content/Eidesstaatliche_Versicherung.pdf}
+
+\end{document}

@@ -1,0 +1,32 @@
+\chapter{Conclusion and outlook}
+In this thesis, a method for analytically calculating magnetic field influenced pencil beam spots was successfully proposed and validated as a foundation for further integration within a research \gls{tps}. 
+~\\
+
+The vacuum state analysis demonstrated converging constant relative differences between the analytical calculations and the developed proton transfer algorithm. Among the phantoms analyzed, the water phantom exhibited the lowest differences between proton ranges calculated using the developed algorithm and \gls{mc} simulations. Conversely, the bone phantom showed the largest discrepancies, while the prostate patient phantom revealed no consistent trend in differences between stopping positions calculated with the developed algorithm and \gls{mc} simulations for magnetic field influenced pencil beams. 
+~\\
+
+The analysis identified several sources of uncertainty in the developed proton transfer algorithm, with stopping power calculations emerging as the most significant. To enhance stopping position accuracy, implementing the \gls{mata} method and recalculating all simulations is recommended. Further investigation into the resolution of the developed algorithm also appears promising. Additionally, the precise determination of stopping positions within a voxel warrants further study to ensure maximal accuracy.
+~\\
+
+The method of estimating proton stopping positions under magnetic fields based on trajectory lengths, assumed to be accurate in this thesis, requires further validation. All calculations performed in this study were limited to a single \gls{ct} slice. Expanding the analysis to volumetric data would generalize the algorithm for \gls{3D} systems, which is a crucial step for its integration into a clinical \gls{tps}. Moreover, the analysis was restricted to a single irradiation starting position. Evaluating multiple and varied starting positions would provide a more comprehensive validation of the algorithm. 
+~\\Despite the identified systematic uncertainties and the need for further refinement, the current method provides an approximate estimation of proton stopping positions. For the prostate patient analysis, the method demonstrated an approximate error of 2 to 3 mm, which underscores its potential for application with further optimization.
+\newpage
+Furthermore, for a candidate proton treatment field in the analyzed \gls{tps} matRad, proton stopping positions, along with the required variables for their calculation, were successfully exported and integrated into the developed proton transfer algorithm.
+~\\
+
+The analysis of initial proton stopping positions, without optimization or an introduced magnetic field, yielded a median distance of $\symup{0.49 \, \, \mathrm{mm}}$. After optimization and introducing a magnetic field ($B_z = \symup{1.5 \, \, \mathrm{T}}$), the median distance increased to $\symup{1.06 \, \, \mathrm{mm}}$, approximately double the value compared to the case without a magnetic field or optimization.
+~\\
+
+The incorporation of inhomogeneous magnetic fields is crucial to improve the realism of calculations and further advance the feasibility of \gls{mript}.
+~\\
+
+For further analysis of the \gls{tps} matRad, a clinically relevant treatment plan needs to be explored. Practical objectives and constraints must be established for the \gls{ctv} and the \glspl{oar}, while incorporating multiple beam sources and varied starting positions. Additionally, developing methods to convert \gls{mri} datasets into \gls{ct} datasets is essential if the current \gls{ct} slice analysis is pursued. In this context, synthetic \gls{ct} methods, as previously mentioned, could provide significant advantages.
+~\\
+
+Optimization was carried out using a gradient descent algorithm. A critical next step is to investigate the optimization parameters, such as the learning rate, convergence criteria, and maximum iterations, to improve its effectiveness. Moreover, extending the optimization to account for different magnetic field strengths, as well as adapting the method to a \gls{3D} system with multiple beams and \gls{ct} slices, should be prioritized.
+~\\
+
+To reduce computational costs, an alternative method for spot selection is recommended. Currently, stopping positions for each pencil beam are optimized individually. By focusing the optimization on an outer layer of pencil beam spots for a given \gls{ctv}, an optimized outer grid could be created for the target. The required dose for the inner layer of the target could then be delivered using standardized pencil beam scanning techniques.
+~\\
+
+Finally, after maximizing proton stopping position accuracy and optimizing magnetic field influenced pencil beam spots, the developed proton transfer algorithm must be integrated into the \gls{tps} for clinical application.

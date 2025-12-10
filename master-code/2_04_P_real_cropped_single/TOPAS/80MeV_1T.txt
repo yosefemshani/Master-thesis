@@ -1,0 +1,107 @@
+s:So/Beam/Type				= "Beam"
+s:So/Beam/Component 			= "BeamPosition"
+s:So/Beam/Material			= "Air"
+s:So/Beam/BeamParticle			= "Proton"
+d:So/Beam/BeamEnergy 			= 80. MeV
+u:So/Beam/BeamEnergySpread 		= 0.
+s:So/Beam/BeamPositionDistribution 	= "Flat"
+s:So/Beam/BeamPositionCutoffShape 	= "Ellipse"
+d:So/Beam/BeamPositionCutoffX 		= 1. cm
+d:So/Beam/BeamPositionCutoffY 		= 1. cm
+d:So/Beam/BeamPositionSpreadX 		= 0.65 cm
+d:So/Beam/BeamPositionSpreadY 		= 0.65 cm
+s:So/Beam/BeamAngularDistribution 	= "None"
+
+i:So/Beam/NumberOfHistoriesInRun 	= 100
+i:Ts/Seed = 2
+
+#sv:Ph/Default/Modules = 1 “StepSize_005”
+sv:Ph/Default/Modules = 1 "g4em-standard_opt0"
+
+s:Ge/BeamPosition/Parent	= "World"
+s:Ge/BeamPosition/Type		= "Group"
+d:Ge/BeamPosition/TransX	= 0. cm
+d:Ge/BeamPosition/TransY	= 0. cm
+d:Ge/BeamPosition/TransZ	= -10. cm
+d:Ge/BeamPosition/RotX		= 0. deg
+d:Ge/BeamPosition/RotY		= 0. deg
+d:Ge/BeamPosition/RotZ		= 0. deg
+
+s:Ge/WaterPhantom/Type				= "TsBox"
+s:Ge/WaterPhantom/Parent			= "World"
+s:Ge/WaterPhantom/Material			= "G4_WATER"
+d:Ge/WaterPhantom/HLX				= 10. cm
+d:Ge/WaterPhantom/HLY				= 10. cm
+d:Ge/WaterPhantom/HLZ				= 1. cm
+d:Ge/WaterPhantom/TransX			= 0.0 cm
+d:Ge/WaterPhantom/TransY			= 0.0 cm
+d:Ge/WaterPhantom/TransZ			= Ge/WaterPhantom/HLZ cm
+s:Ge/WaterPhantom/Color				= "blue"
+s:Ge/WaterPhantom/Field 		    	= "DipoleMagnet" 
+u:Ge/WaterPhantom/MagneticFieldDirectionX	= 0.0
+u:Ge/WaterPhantom/MagneticFieldDirectionY 	= 1.0
+u:Ge/WaterPhantom/MagneticFieldDirectionZ 	= 0.0
+d:Ge/WaterPhantom/MagneticFieldStrength   	= 1.0 tesla
+i:Gr/ViewA/MagneticFieldArrowDensity 		= 10
+s:Ge/WaterPhantom/MagneticField3DTable 		= "PurgMag3D.TABLE"
+
+#Surrounding:
+
+d:chamber_depth = 1 cm
+
+s:Ge/ChamberSurrounding/Type		= "TsCylinder"
+s:Ge/ChamberSurrounding/Parent		= "WaterPhantom"
+s:Ge/ChamberSurrounding/Material	= "G4_WATER"
+d:Ge/ChamberSurrounding/Rmin		= 0. cm
+d:Ge/ChamberSurrounding/Rmax		= 6. mm
+d:Ge/ChamberSurrounding/HL		= 2.1 mm #0.8 mm for water voxel and 2.1 mm for air volume
+d:Ge/ChamberSurrounding/TransZ		= chamber_depth - Ge/WaterPhantom/HLZ cm
+d:Ge/ChamberSurrounding/RotX		= 0. deg
+
+s:Ge/Cavity/Type	= "TsCylinder"
+s:Ge/Cavity/Material	= "Air"
+s:Ge/Cavity/Parent	= "ChamberSurrounding"
+d:Ge/Cavity/RMin	= 0. mm
+d:Ge/Cavity/RMax	= 5. mm
+d:Ge/Cavity/HL		= 1.25 mm
+d:Ge/Cavity/TransX	= 0.  cm
+d:Ge/Cavity/TransY	= 0.  cm
+d:Ge/Cavity/TransZ	= 0.  cm
+d:Ge/Cavity/RotX	= 0.  deg
+d:Ge/Cavity/RotY	= 0.  deg
+d:Ge/Cavity/RotZ	= 0.  deg  
+
+# Cut für alle Teilchen setzen
+d:Ph/Default/CutForAllParticles = 0.5 mm
+
+# Cut für Surrounding setzen
+s:Ge/ChamberSurrounding/AssignToRegionNamed = "ExtraCuts"
+
+d:Ph/Default/ForRegion/ExtraCuts/CutForGamma = 0.001 mm # overrides CutForAllParticles for Gamma
+d:Ph/Default/ForRegion/ExtraCuts/CutForElectron = 0.001 mm # overrides CutForAllParticles for Electron
+d:Ph/Default/ForRegion/ExtraCuts/CutForPositron = 0.001 mm # overrides CutForAllParticles for Positron
+d:Ph/Default/ForRegion/ExtraCuts/CutForProton = 0.001 mm # overrides CutForAllParticles for Proton
+d:Ph/Default/ForRegion/ExtraCuts/CutForAlpha = 0.001 mm # overrides CutForAllParticles for Alpha
+d:Ph/Default/ForRegion/ExtraCuts/CutForDeuteron = 0.001 mm # overrides CutForAllParticles for Deuteron
+d:Ph/Default/ForRegion/ExtraCuts/CutForTriton = 0.001 mm # overrides CutForAllParticles for Triton
+
+#s:Sc/MyScorer/Quantity			= "DoseToMedium"
+#s:Sc/MyScorer/Component			= "Cavity"
+#s:Sc/MyScorer/OutputFile 		= "MitMF_80MeV_1T_2"
+#s:Sc/MyScorer/IfOutputFileAlreadyExists	= "Overwrite"
+#s:Sc/MyScorer/OutputType		= "csv"
+#sv:Sc/MyScorer/Report			= 4 "Mean" "Standard_Deviation" "Variance" "Histories"
+#i:Sc/MyScorer/XBins			= 1
+#i:Sc/MyScorer/YBins			= 1
+#i:Sc/MyScorer/ZBins			= 1
+
+s:Gr/ViewA/Type        = "OpenGL"
+i:Gr/ViewA/WindowSizeX = 900
+i:Gr/ViewA/WindowSizeY = 900
+d:Gr/ViewA/Theta       = 0 deg
+d:Gr/ViewA/Phi         = 0 deg
+u:Gr/ViewA/Zoom        = 100
+i:Gr/ShowOnlyOutlineIfVoxelCountExceeds = 1000000
+
+Ts/UseQt = "True"
+b:Ts/PauseBeforeQuit = "True"
